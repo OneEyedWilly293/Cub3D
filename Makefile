@@ -33,6 +33,7 @@ $(NAME): $(OBJS) $(MLX_LIB) $(LIBFT_DIR)/libft.a
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_LIB) $(MLX_LIB) $(LDFLAGS) -o $(NAME)
 	@echo "✅ Build $(GREEN)$(NAME) $(NC)successfully! 🎉"
 
+# Look into script to install mlx library from git repo
 $(MLX_LIB):
 		cmake $(MLX_DIR) -B $(MLX_BUILD) && make -C $(MLX_BUILD) -j4
 
