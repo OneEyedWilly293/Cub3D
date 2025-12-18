@@ -25,13 +25,17 @@ int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
 #define mapY  8	//map height
 #define mapS  64     //map cube size
 #define TILE_SIZE 100   // Size of each tile (in pixels)
+#define MAX_DOF 32
 
 typedef struct s_player {
 	float	x;
 	float	y;
+	int		xPos;
+	int		yPos;
 	float	dx;
 	float	dy;
 	float	da;
+	float	Size;
 } t_player;
 
 #endif
