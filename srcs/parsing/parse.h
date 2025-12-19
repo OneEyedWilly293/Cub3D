@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 18:35:20 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/18 21:45:10 by jgueon           ###   ########.fr       */
+/*   Updated: 2025/12/19 15:59:43 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,11 @@
 # define WALL_MSG "Map don't have closed walls\n"
 # define WRONG_MSG "Invalid components\n"
 # define CANT_OPEN_MAP "Cannot open map file\n"
+# define INVALID_RGB_CHAR_MSG "Only numeric characters are accepted\n"
+# define INVALID_RGB_VALUE_MSG "Invalid amount of rgb values\n"
+# define INVALID_RGB_RANGE_MSG "The rgb value must be in the range of [0~255]\n"
 
+void	ft_putstr_err(const char *s);
+int	ft_error(const char *msg);
 
 #endif

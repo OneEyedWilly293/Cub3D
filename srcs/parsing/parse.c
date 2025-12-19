@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 18:19:14 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/19 14:22:05 by jgueon           ###   ########.fr       */
+/*   Updated: 2025/12/19 15:44:54 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 // 	return (length);
 // }
 
-static void	ft_putstr_err(const char *s)
+void	ft_putstr_err(const char *s)
 {
 	int	i;
 
@@ -50,7 +50,7 @@ static void	ft_putstr_err(const char *s)
 	}
 }
 
-static int	ft_error(const char *msg)
+int	ft_error(const char *msg)
 {
 	ft_putstr_err("Error\n");
 	ft_putstr_err(msg);
