@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 22:08:33 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/19 16:00:16 by jgueon           ###   ########.fr       */
+/*   Updated: 2025/12/19 16:05:59 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static int	parse_rgb_values(char **color, int *rgb)
 
 	if (!color || !rgb)
 		return (1);
-	if (!color[0] || !color[1] || !color[2] || !color[3])
+	if (!color[0] || !color[1] || !color[2] || color[3])
 		return (ft_error(INVALID_RGB_VALUE_MSG));
 	i = 0;
 	while (i < 3)
