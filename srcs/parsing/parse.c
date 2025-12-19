@@ -6,36 +6,37 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 18:19:14 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/18 21:39:40 by jgueon           ###   ########.fr       */
+/*   Updated: 2025/12/19 14:22:05 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 #include <unistd.h>
 #include <fcntl.h>
+#include <libft.h>
 
-/**
- *  @brief calculates the length of a string
- *
- * This function counts the number of characters in a string until
- * it reaches the null terminator '\0'.
- *
- * @param s: The string whose length is to be calculated
- *
- * @return The number of characters in
- *	the string (excluding the null terminator)
- */
-size_t	ft_strlen(const char *s)
-{
-	size_t	length;
+// /**
+//  *  @brief calculates the length of a string
+//  *
+//  * This function counts the number of characters in a string until
+//  * it reaches the null terminator '\0'.
+//  *
+//  * @param s: The string whose length is to be calculated
+//  *
+//  * @return The number of characters in
+//  *	the string (excluding the null terminator)
+//  */
+// size_t	ft_strlen(const char *s)
+// {
+// 	size_t	length;
 
-	length = 0;
-	while (s[length] != '\0')
-	{
-		length++;
-	}
-	return (length);
-}
+// 	length = 0;
+// 	while (s[length] != '\0')
+// 	{
+// 		length++;
+// 	}
+// 	return (length);
+// }
 
 static void	ft_putstr_err(const char *s)
 {

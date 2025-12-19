@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 22:08:33 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/18 22:18:56 by jgueon           ###   ########.fr       */
+/*   Updated: 2025/12/19 14:19:00 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int check_rgb_range(int i)
 // FUNCTION TO CHECK RGB VALUES 0~255 and if there is 3 values
 static int	parse_rgb_values(char **colors, int *rgb)
 {
+
 }
 
 
