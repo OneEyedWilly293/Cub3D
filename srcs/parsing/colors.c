@@ -136,12 +136,13 @@ int	parse_rgb_line(char identifier, char *line, int *rgb)
 	colors = ft_split(meta, ',');
 	if (!colors)
 		return (ft_error("ft_split failed"));
-	i = parse_rgb_values(colors, rgb);
-	while (*colors)
+	if (trim_tokens(colors))
 	{
-		free(*colors);
-		colors++;
+		free_split(colors);
+		return (ft_error("ft_strtrim failed"));
 	}
+	i = parse_rgb_values(colors, rgb);
+	free_split(colors);
 	return (i);
 }
 
@@ -171,7 +172,7 @@ static int	trim_tokens(char **colors)
 	i = 0;
 	while (colors[i])
 	{
-		trimmed = ft_strtrim(colors[i], " \t");
+		trimmed = ft_strtrim(colors[i], " \t"); // TO CHECK: \n
 		if (!trimmed)
 			return (1);
 		free(colors[i]);
