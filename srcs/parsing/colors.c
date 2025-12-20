@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <parse.h>
+#include <libft.h>
 
 static int	is_digit(char c)
 {
@@ -69,29 +70,77 @@ int check_rgb_range(int i)
 	return ((i >= 0) && (i <= 255));
 }
 
+// Helper function: to count elements in a NULL-terminated char **.
+static int	arrlen(char **arr)
+{
+	int	len;
+
+	len = 0;
+	if (!arr)
+		return (0);
+	while (arr[len])
+		len++;
+	return (len);
+}
+
 // FUNCTION TO CHECK RGB VALUES 0~255 and if there is 3 values
-// colors must contain exactly 3 numeric strings and then NULL:
-// color[0], color[1], color[2], color[3] == NULL
-// rgb is an int[3] where we store the result.
+// color: char ** from ft_split(..., ',')
+// rgb: int[3] output
 static int	parse_rgb_values(char **color, int *rgb)
 {
 	int	i;
+	int	n;
 
 	if (!color || !rgb)
 		return (1);
-	if (!color[0] || !color[1] || !color[2] || color[3])
+	if (arrlen(color) != 3)
 		return (ft_error(INVALID_RGB_VALUE_MSG));
 	i = 0;
 	while (i < 3)
 	{
 		if (!is_str_digits(color[i]))
 			return (ft_error(INVALID_RGB_CHAR_MSG));
-		rgb[i] = ft_atoi_pos(color[i]);
-		if (!check_rgb_range(rgb[i]))
+		n = ft_atoi_pos(color[i]);
+		if (!check_rgb_range(r))
 			return (ft_error(INVALID_RGB_RANGE_MSG));
+		rgb[i] = n;
 		i++;
 	}
 	return (0);
 }
 
+// Function to parse a full line like
+// "F 220, 100, 0"
+// "C 225,30,0"
+// Identifier: 'F' or 'C'
+// Steps:
+// 1) Skip the identifier and spaces -> "200,100,0"
+// 2) Check there are exactly 2 commas
+// 3) Split by ',' using ft_split
+// 4) parse_rgb_values(colors, rgb)
+int	parse_rgb_line(char identifier, char *line, int *rgb)
+{
+	char	*meta;
+	char 	**colors;
+	int		i;
 
+	if (!line || !rgb)
+		return (1);
+	if (line[0] != identifier)
+		return (1);
+	meta = line + 1;
+	while (*meta == ' ' || *meta == '\t')
+		meta++;
+	if (get_nb_comma(meta) != 2)
+		return (ft_error(INVALID_RGB_VALUE_MSG));
+	colors = ft_split(meta, ',');
+	if (!colors)
+		return (ft_error("ft_split failed"));
+	i = parse_rgb_values(colors, rgb);
+	while (*colors)
+	{
+		free(*colors);
+		colors++;
+	}
+	return (i);
+}
