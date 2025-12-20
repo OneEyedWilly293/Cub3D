@@ -144,3 +144,48 @@ int	parse_rgb_line(char identifier, char *line, int *rgb)
 	}
 	return (i);
 }
+
+static void free_split(char **colors)
+{
+	int	i;
+
+	if (!colors)
+		return ;
+	i = 0;
+	while (colors[i])
+	{
+		free(colors[i]);
+		i++;
+	}
+	free(colors);
+}
+
+// Handling spaces: trim tokens after ft_split
+// ft_split: "220, 100, 0" becomes tokens: "220" , " 100" , " 0"
+// This function creates new allocated strings so we need to free the old ones.
+static int	trim_tokens(char **colors)
+{
+	int	i;
+	int	*trimmed;
+
+	i = 0;
+	while (colors[i])
+	{
+		trimmed = ft_strtrim(colors[i], " \t");
+		if (!trimmed)
+			return (1);
+		free(colors[i]);
+		colors[i] = trimmed;
+		i++;
+	}
+	return (0);
+}
+
+
+/*
+** Flow example:
+** colors = ft_split(meta, ',');
+** trim_tokens(colors);
+** parse_rgb_values(colors, rgb);
+** free_split(colors);
+*/
