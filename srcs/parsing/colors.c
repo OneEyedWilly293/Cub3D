@@ -6,19 +6,147 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 22:08:33 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/19 16:05:59 by jgueon           ###   ########.fr       */
+/*   Updated: 2025/12/21 19:15:20 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <parse.h>
-#include <libft.h>
+#include "parse.h"
+#include "../../lib/libft/include/libft.h"
 
-static int	is_digit(char c)
+// =========================== DELETE ===================================
+
+char	*ft_strtrim(char const *s1, char const *set)
+{
+	int	start;
+	int	len;
+
+	start = 0;
+	len = ft_strlen(s1);
+	if (!s1)
+		return (NULL);
+	while (start < len && ft_strchr(set, s1[start]))
+		start++;
+	while (len > start && ft_strchr(set, s1[len - 1]))
+		len--;
+	return (ft_substr(s1, start, len - start));
+}
+
+
+static size_t	count_words(char const *s, char c);
+static char		**allocate_array(char const *s, char c, char **arr);
+static void		free_array(char **arr, size_t i);
+
+char	**ft_split(char const *s, char c)
+{
+	char	**arr;
+	size_t	word_count;
+
+	if (!s)
+		return (NULL);
+	word_count = count_words(s, c);
+	arr = malloc(sizeof(char *) * (word_count + 1));
+	if (!arr)
+		return (NULL);
+	arr = allocate_array(s, c, arr);
+	if (!arr)
+		return (NULL);
+	arr[word_count] = NULL;
+	return (arr);
+}
+
+// Counts how many words to split the string into.
+static size_t	count_words(char const *s, char c)
+{
+	size_t	count;
+
+	count = 0;
+	while (*s)
+	{
+		while (*s == c)
+			s++;
+		if (*s)
+		{
+			count++;
+			while (*s && *s != c)
+				s++;
+		}
+	}
+	return (count);
+}
+
+// Allocates each single word into its array.
+static char	**allocate_array(char const *s, char c, char **arr)
+{
+	size_t	i;
+	size_t	word_len;
+
+	i = 0;
+	while (*s)
+	{
+		while (*s == c)
+			s++;
+		if (*s)
+		{
+			if (ft_strchr(s, c))
+				word_len = ft_strchr(s, c) - s;
+			else
+				word_len = ft_strlen(s);
+			arr[i] = ft_substr(s, 0, word_len);
+			if (!arr[i])
+			{
+				free_array(arr, i);
+				return (NULL);
+			}
+			s += word_len;
+			i++;
+		}
+	}
+	return (arr);
+}
+
+// Frees all allocated arrays.
+static void	free_array(char **arr, size_t i)
+{
+	while (i > 0)
+	{
+		free(arr[i]);
+		arr[i] = NULL;
+		i--;
+	}
+	free(arr[i]);
+	arr[i] = NULL;
+	free(arr);
+	arr = NULL;
+}
+
+char	*ft_strchr(const char *s, int c)
+{
+	int	i;
+
+	c = (unsigned char) c;
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == c)
+			return ((char *) &s[i]);
+		i++;
+	}
+	if (s[i] == c)
+		return ((char *) &s[i]);
+	return (NULL);
+}
+
+
+// =======================================================================
+
+//MOVE TO utils later
+int	is_digit(char c)
 {
 	return (c >= '0' && c <= '9');
 }
 
-static int	is_str_digits(const char *s)
+// MOve to utils later
+int	is_str_digits(const char *s)
 {
 	int	i;
 
@@ -34,7 +162,8 @@ static int	is_str_digits(const char *s)
 	return (1);
 }
 
-static int	ft_atoi_pos(const char *s)
+// move to utils later
+int	ft_atoi_pos(const char *s)
 {
 	int	i;
 	int	n;
@@ -49,7 +178,7 @@ static int	ft_atoi_pos(const char *s)
 	return (n);
 }
 
-static int get_nb_comma(char *line)
+int get_nb_comma(char *line)
 {
 	int	n;
 
@@ -71,7 +200,8 @@ int check_rgb_range(int i)
 }
 
 // Helper function: to count elements in a NULL-terminated char **.
-static int	arrlen(char **arr)
+// MOVE TO utils later
+int	arrlen(char **arr)
 {
 	int	len;
 
@@ -101,12 +231,49 @@ static int	parse_rgb_values(char **color, int *rgb)
 		if (!is_str_digits(color[i]))
 			return (ft_error(INVALID_RGB_CHAR_MSG));
 		n = ft_atoi_pos(color[i]);
-		if (!check_rgb_range(r))
+		if (!check_rgb_range(n))
 			return (ft_error(INVALID_RGB_RANGE_MSG));
 		rgb[i] = n;
 		i++;
 	}
 	return (0);
+}
+
+// Handling spaces: trim tokens after ft_split
+// ft_split: "220, 100, 0" becomes tokens: "220" , " 100" , " 0"
+// This function creates new allocated strings so we need to free the old ones.
+static int	trim_tokens(char **colors)
+{
+	int		i;
+	char	*trimmed;
+
+	i = 0;
+	while (colors[i])
+	{
+		trimmed = ft_strtrim(colors[i], " \t"); // TO CHECK: \n
+		if (!trimmed)
+		return (1);
+		free(colors[i]);
+		colors[i] = trimmed;
+		i++;
+	}
+	return (0);
+}
+
+// move to utils later
+static void free_split(char **colors)
+{
+	int	i;
+
+	if (!colors)
+		return ;
+	i = 0;
+	while (colors[i])
+	{
+		free(colors[i]);
+		i++;
+	}
+	free(colors);
 }
 
 // Function to parse a full line like
@@ -146,41 +313,6 @@ int	parse_rgb_line(char identifier, char *line, int *rgb)
 	return (i);
 }
 
-static void free_split(char **colors)
-{
-	int	i;
-
-	if (!colors)
-		return ;
-	i = 0;
-	while (colors[i])
-	{
-		free(colors[i]);
-		i++;
-	}
-	free(colors);
-}
-
-// Handling spaces: trim tokens after ft_split
-// ft_split: "220, 100, 0" becomes tokens: "220" , " 100" , " 0"
-// This function creates new allocated strings so we need to free the old ones.
-static int	trim_tokens(char **colors)
-{
-	int	i;
-	int	*trimmed;
-
-	i = 0;
-	while (colors[i])
-	{
-		trimmed = ft_strtrim(colors[i], " \t"); // TO CHECK: \n
-		if (!trimmed)
-			return (1);
-		free(colors[i]);
-		colors[i] = trimmed;
-		i++;
-	}
-	return (0);
-}
 
 
 /*
