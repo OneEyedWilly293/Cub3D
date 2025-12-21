@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 18:35:20 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/19 15:59:43 by jgueon           ###   ########.fr       */
+/*   Updated: 2025/12/21 19:58:58 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,19 @@
 # define PARSE_H
 
 // include <cub3d.h>
+# include <unistd.h>
+# include <fcntl.h>
+# include <stdlib.h>
+# include "../../lib/libft/include/libft.h"
 
 // ======= MAP FEATURES =======
 # define MAP_EXTENSION ".cub"
-# define N "North"
-# define E "East"
-# define S "South"
-# define W "West"
-# define F "Floor"
-# define C "Ceiling"
+# define N "NO"
+# define E "EA"
+# define S "SO"
+# define W "WE"
+# define F "F"
+# define C "C"
 # define BUFFER_SIZE 100
 
 // ======= ERROR MESSAGES =======
@@ -40,6 +44,13 @@
 # define INVALID_RGB_RANGE_MSG "The rgb value must be in the range of [0~255]\n"
 
 void	ft_putstr_err(const char *s);
-int	ft_error(const char *msg);
+int		ft_error(const char *msg);
+int		check_args(int argc, char **argv);
+char	*get_line(int fd);
+int	is_digit(char c);
+int	is_str_digits(const char *s);
+int get_nb_comma(char *line);
+int	ft_atoi_pos(const char *s);
+int	arrlen(char **arr);
 
 #endif
