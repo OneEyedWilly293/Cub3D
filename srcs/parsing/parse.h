@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 18:35:20 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/21 19:58:58 by jgueon           ###   ########.fr       */
+/*   Updated: 2025/12/21 20:16:44 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,6 @@ int	is_str_digits(const char *s);
 int get_nb_comma(char *line);
 int	ft_atoi_pos(const char *s);
 int	arrlen(char **arr);
+static int	has_nl(const char *s);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 22:08:33 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/21 19:15:20 by jgueon           ###   ########.fr       */
+/*   Updated: 2025/12/21 20:23:43 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -313,8 +313,6 @@ int	parse_rgb_line(char identifier, char *line, int *rgb)
 	return (i);
 }
 
-
-
 /*
 ** Flow example:
 ** colors = ft_split(meta, ',');
@@ -322,3 +320,47 @@ int	parse_rgb_line(char identifier, char *line, int *rgb)
 ** parse_rgb_values(colors, rgb);
 ** free_split(colors);
 */
+
+
+/*
+** Small helper: skip leading spaces/tabs.
+** This allows us to accept lines like "   F 0,0,255" etc.
+*/
+static char	*skip_spaces(char *s)
+{
+	while (*s == ' ' || *s == '\t')
+		s++;
+	return (s);
+}
+
+/* This function:
+**	- Reads the file line-by-line
+**	- Looks only for F and C lines
+**	- Stores the parsed RGB into floor_rbg and ceiling_rgb
+**
+**	Returns: 0 for success and 1 for error
+*/
+static int	parse_colors_only(int fd, int *floor_rgb, int *ceiling_rgb)
+{
+	char	*line;
+	char	*trim;
+
+	line = get_line(fd);
+	while (line)
+	{
+		trim = skip_spaces(line);
+		if (trim[0] == 'F' && (trim[1] == ' ' || trim[1] == '\t'))
+		{
+			if (parse_rgb_line('F', trim, floor_rgb))
+				return (free(line), 1);
+		}
+		if (trim[0] == 'C' && (trim[1] == ' ' || trim[1] == '\t'))
+		{
+			if (parse_rgb_line('C', trim, ceiling_rgb))
+				return (free(line), 1);
+		}
+		free(line);
+		line = get_line(fd);
+	}
+	return (0);
+}
