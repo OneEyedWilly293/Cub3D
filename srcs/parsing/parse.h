@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 18:35:20 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/21 20:16:44 by jgueon           ###   ########.fr       */
+/*   Updated: 2025/12/22 14:45:05 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdlib.h>
+# include <stdint.h>
 # include "../../lib/libft/include/libft.h"
 
 // ======= MAP FEATURES =======
@@ -43,6 +44,19 @@
 # define INVALID_RGB_VALUE_MSG "Invalid amount of rgb values\n"
 # define INVALID_RGB_RANGE_MSG "The rgb value must be in the range of [0~255]\n"
 
+typedef struct	s_color
+{
+	int	r;
+	int	g;
+	int	b;
+}	t_color;
+
+typedef struct	s_game
+{
+	t_color	floor;
+	t_color	ceiling;
+}	t_game;
+
 void	ft_putstr_err(const char *s);
 int		ft_error(const char *msg);
 int		check_args(int argc, char **argv);
@@ -53,5 +67,7 @@ int get_nb_comma(char *line);
 int	ft_atoi_pos(const char *s);
 int	arrlen(char **arr);
 static int	has_nl(const char *s);
+
+int	parse_rgb_line(char identifier, char *line, int *rgb);
 
 #endif
