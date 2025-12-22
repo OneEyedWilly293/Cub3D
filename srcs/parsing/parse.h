@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 18:35:20 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/22 18:05:02 by jgueon           ###   ########.fr       */
+/*   Updated: 2025/12/22 18:43:44 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,15 @@ typedef struct	s_game
 	t_color	ceiling;
 }	t_game;
 
+/* errors + args */
 void	ft_putstr_err(const char *s);
 int		ft_error(const char *msg);
 int		check_args(int argc, char **argv);
-char	*get_line(int fd);
-int	is_digit(char c);
-int	is_str_digits(const char *s);
-int get_nb_comma(char *line);
-int	ft_atoi_pos(const char *s);
-int	arrlen(char **arr);
 
+/* line reader */
+char	*get_line(int fd);
+
+/* colors parsing */
 int	parse_rgb_line(char identifier, char *line, int *rgb);
 char	*skip_spaces(char *s);
 int	find_color_lines(int fd, t_game *game);
