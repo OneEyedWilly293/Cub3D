@@ -6,138 +6,12 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 22:08:33 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/22 14:42:49 by jgueon           ###   ########.fr       */
+/*   Updated: 2025/12/22 18:32:23 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
-#include "../../lib/libft/include/libft.h"
-
-// =========================== DELETE ===================================
-
-char	*ft_strtrim(char const *s1, char const *set)
-{
-	int	start;
-	int	len;
-
-	start = 0;
-	len = ft_strlen(s1);
-	if (!s1)
-		return (NULL);
-	while (start < len && ft_strchr(set, s1[start]))
-		start++;
-	while (len > start && ft_strchr(set, s1[len - 1]))
-		len--;
-	return (ft_substr(s1, start, len - start));
-}
-
-
-static size_t	count_words(char const *s, char c);
-static char		**allocate_array(char const *s, char c, char **arr);
-static void		free_array(char **arr, size_t i);
-
-char	**ft_split(char const *s, char c)
-{
-	char	**arr;
-	size_t	word_count;
-
-	if (!s)
-		return (NULL);
-	word_count = count_words(s, c);
-	arr = malloc(sizeof(char *) * (word_count + 1));
-	if (!arr)
-		return (NULL);
-	arr = allocate_array(s, c, arr);
-	if (!arr)
-		return (NULL);
-	arr[word_count] = NULL;
-	return (arr);
-}
-
-// Counts how many words to split the string into.
-static size_t	count_words(char const *s, char c)
-{
-	size_t	count;
-
-	count = 0;
-	while (*s)
-	{
-		while (*s == c)
-			s++;
-		if (*s)
-		{
-			count++;
-			while (*s && *s != c)
-				s++;
-		}
-	}
-	return (count);
-}
-
-// Allocates each single word into its array.
-static char	**allocate_array(char const *s, char c, char **arr)
-{
-	size_t	i;
-	size_t	word_len;
-
-	i = 0;
-	while (*s)
-	{
-		while (*s == c)
-			s++;
-		if (*s)
-		{
-			if (ft_strchr(s, c))
-				word_len = ft_strchr(s, c) - s;
-			else
-				word_len = ft_strlen(s);
-			arr[i] = ft_substr(s, 0, word_len);
-			if (!arr[i])
-			{
-				free_array(arr, i);
-				return (NULL);
-			}
-			s += word_len;
-			i++;
-		}
-	}
-	return (arr);
-}
-
-// Frees all allocated arrays.
-static void	free_array(char **arr, size_t i)
-{
-	while (i > 0)
-	{
-		free(arr[i]);
-		arr[i] = NULL;
-		i--;
-	}
-	free(arr[i]);
-	arr[i] = NULL;
-	free(arr);
-	arr = NULL;
-}
-
-char	*ft_strchr(const char *s, int c)
-{
-	int	i;
-
-	c = (unsigned char) c;
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == c)
-			return ((char *) &s[i]);
-		i++;
-	}
-	if (s[i] == c)
-		return ((char *) &s[i]);
-	return (NULL);
-}
-
-
-// =======================================================================
+#include "libft.h"
 
 //MOVE TO utils later
 int	is_digit(char c)
@@ -333,34 +207,73 @@ char	*skip_spaces(char *s)
 	return (s);
 }
 
-/* This function:
-**	- Reads the file line-by-line
-**	- Looks only for F and C lines
-**	- Stores the parsed RGB into floor_rbg and ceiling_rgb
-**
-**	Returns: 0 for success and 1 for error
+/*
+** Helper: verifies there is something after the identifier.
+** Example valid: "F 0,0,255"
+** Example invalid: "F"
 */
-static int	parse_colors_only(int fd, int *floor_rgb, int *ceiling_rgb)
+static int	is_color_line(char *trim)
+{
+	int	i;
+
+	i = 1;
+	while (trim[i] == ' ' || trim[i] == '\t')
+		i++;
+	return (trim[i] != '\0');
+}
+
+
+/*
+** Store parsed RGB into game struct.
+** This MUST be called, otherwise game stays at -1,-1,-1.
+*/
+static void store_color(t_game *game, char id, int *tmp)
+{
+	if (id == 'F')
+	{
+		game->floor.r = tmp[0];
+		game->floor.g = tmp[1];
+		game->floor.b = tmp[2];
+	}
+	else
+	{
+		game->ceiling.r = tmp[0];
+		game->ceiling.g = tmp[1];
+		game->ceiling.b = tmp[2];
+	}
+}
+
+/*
+** Reads file line by line, finds F/C, parses RGB, stores in game.
+** Return 0 on success, 1 on error.
+*/
+int	find_color_lines(int fd, t_game *game)
 {
 	char	*line;
 	char	*trim;
+	int		tmp[3];
 
+	game->floor.r = game->floor.g = game->floor.b = -1;
+	game->ceiling.r = game->ceiling.g = game->ceiling.b = -1;
 	line = get_line(fd);
 	while (line)
 	{
 		trim = skip_spaces(line);
-		if (trim[0] == 'F' && (trim[1] == ' ' || trim[1] == '\t'))
-		{
-			if (parse_rgb_line('F', trim, floor_rgb))
+		if (trim[0] == 'F' && is_color_line(trim))
+			if (parse_rgb_line('F', trim, tmp))
 				return (free(line), 1);
-		}
-		if (trim[0] == 'C' && (trim[1] == ' ' || trim[1] == '\t'))
-		{
-			if (parse_rgb_line('C', trim, ceiling_rgb))
+		if (trim[0] == 'F' && is_color_line(trim))
+			store_color(game, 'F', tmp);
+		if (trim[0] == 'C' && is_color_line(trim))
+			if (parse_rgb_line('C', trim, tmp))
 				return (free(line), 1);
-		}
+		if (trim[0] == 'C' && is_color_line(trim))
+			store_color(game, 'C', tmp);
 		free(line);
 		line = get_line(fd);
 	}
 	return (0);
 }
+
+
+

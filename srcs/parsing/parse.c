@@ -6,11 +6,12 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 18:19:14 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/21 18:50:54 by jgueon           ###   ########.fr       */
+/*   Updated: 2025/12/22 18:32:52 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
+#include "libft.h"
 
 void	ft_putstr_err(const char *s)
 {
@@ -64,28 +65,6 @@ int check_args(int argc, char **argv)
 	fd = open(argv[1], O_RDONLY);
 	if (fd < 0)
 		return (ft_error(CANT_OPEN_MAP));
-	close(fd);
-	return (0);
-}
-
-int main(int argc, char **argv)
-{
-	int	fd;
-	char	*line;
-
-	if (check_args(argc, argv))
-		return (1);
-	fd = open(argv[1], O_RDONLY);
-	if (fd < 0)
-		return (ft_error(CANT_OPEN_MAP));
-	line = get_line(fd);
-	while (line)
-	{
-		write(1, line, ft_strlen(line));
-		write(1, "\n", 1);
-		free(line);
-		line = get_line(fd);
-	}
 	close(fd);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 18:35:20 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/22 14:45:05 by jgueon           ###   ########.fr       */
+/*   Updated: 2025/12/22 18:05:02 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@
 # define INVALID_RGB_VALUE_MSG "Invalid amount of rgb values\n"
 # define INVALID_RGB_RANGE_MSG "The rgb value must be in the range of [0~255]\n"
 
+/* Color struct */
 typedef struct	s_color
 {
 	int	r;
@@ -51,6 +52,7 @@ typedef struct	s_color
 	int	b;
 }	t_color;
 
+/* game struct */
 typedef struct	s_game
 {
 	t_color	floor;
@@ -66,8 +68,9 @@ int	is_str_digits(const char *s);
 int get_nb_comma(char *line);
 int	ft_atoi_pos(const char *s);
 int	arrlen(char **arr);
-static int	has_nl(const char *s);
 
 int	parse_rgb_line(char identifier, char *line, int *rgb);
+char	*skip_spaces(char *s);
+int	find_color_lines(int fd, t_game *game);
 
 #endif
