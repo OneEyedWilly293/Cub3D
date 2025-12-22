@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 22:08:33 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/21 20:23:43 by jgueon           ###   ########.fr       */
+/*   Updated: 2025/12/22 14:42:49 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -326,7 +326,7 @@ int	parse_rgb_line(char identifier, char *line, int *rgb)
 ** Small helper: skip leading spaces/tabs.
 ** This allows us to accept lines like "   F 0,0,255" etc.
 */
-static char	*skip_spaces(char *s)
+char	*skip_spaces(char *s)
 {
 	while (*s == ' ' || *s == '\t')
 		s++;
