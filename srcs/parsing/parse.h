@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 18:35:20 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/28 17:55:51 by jgueon           ###   ########.fr       */
+/*   Updated: 2025/12/28 19:52:13 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@
 # define INVALID_DUP_CEIL "Invalid: More than one 'C' identifier given\n"
 # define INVALID_MISSING_FLOOR "Invalid: Missing 'F' identifier\n"
 # define INVALID_MISSING_CEIL "Invalid: Missing 'C' indentifier\n"
+# define BOTH_IDEN_MISSING "Both Identifiers 'F' and 'C' are missing\n"
 
 /* Color struct */
 typedef struct	s_color
