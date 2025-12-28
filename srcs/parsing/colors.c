@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 22:08:33 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/22 18:32:23 by jgueon           ###   ########.fr       */
+/*   Updated: 2025/12/28 18:28:35 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,14 @@ int get_nb_comma(char *line)
 int check_rgb_range(int i)
 {
 	return ((i >= 0) && (i <= 255));
+}
+
+/*
+** Returns 1 if a t_color is already assigned (not -1,-1,-1 anymore)
+*/
+static int	is_color_set(t_color c)
+{
+	return (c.r != -1 && c.g != -1 && c.b != -1);
 }
 
 // Helper function: to count elements in a NULL-terminated char **.
@@ -244,8 +252,46 @@ static void store_color(t_game *game, char id, int *tmp)
 }
 
 /*
-** Reads file line by line, finds F/C, parses RGB, stores in game.
-** Return 0 on success, 1 on error.
+** Called after EOF: both identifiers must exist
+*/
+static int	check_missing_colors(t_game *game)
+{
+	if (!is_color_set(game->floor))
+		return (ft_error(INVALID_MISSING_FLOOR));
+	if (!is_color_set(game->ceiling))
+		return (ft_error(INVALID_MISSING_CEIL));
+	return (0);
+}
+
+/*
+** Handle ONE trimmed line if it is an F or C identifier.
+** - Duplicated detection
+** - parse_rgb_line validation
+** - Store into game
+*/
+static int	handle_color_line(t_game *game, char *trim, int *tmp)
+{
+	if (trim[0] == 'F' && is_color_line(trim))
+	{
+		if (is_color_set(game->floor))
+			return (ft_error(INVALID_DUP_FLOOR));
+		if (parse_rgb_line('F', trim, tmp))
+			return (1);
+		store_color(game, 'F', tmp);
+	}
+	else if (trim[0] == 'C' && is_color_line(trim))
+	{
+		if (is_color_set(game->ceiling))
+			return (ft_error(INVALID_DUP_CEIL));
+		if (parse_rgb_line('F', trim, tmp))
+			return (1);
+		store_color(game, 'C', tmp);
+	}
+	return (0);
+}
+
+/*
+** Reads the file and apply the helpers.
 */
 int	find_color_lines(int fd, t_game *game)
 {
@@ -259,21 +305,11 @@ int	find_color_lines(int fd, t_game *game)
 	while (line)
 	{
 		trim = skip_spaces(line);
-		if (trim[0] == 'F' && is_color_line(trim))
-			if (parse_rgb_line('F', trim, tmp))
-				return (free(line), 1);
-		if (trim[0] == 'F' && is_color_line(trim))
-			store_color(game, 'F', tmp);
-		if (trim[0] == 'C' && is_color_line(trim))
-			if (parse_rgb_line('C', trim, tmp))
-				return (free(line), 1);
-		if (trim[0] == 'C' && is_color_line(trim))
-			store_color(game, 'C', tmp);
+		if (handle_color_line(game, trim, tmp))
+			return (free(line), 1);
 		free(line);
 		line = get_line(fd);
 	}
-	return (0);
+	return (check_missing_colors(game));
 }
-
-
 
