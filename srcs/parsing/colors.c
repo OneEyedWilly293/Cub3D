@@ -6,50 +6,68 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 22:08:33 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/28 18:33:32 by jgueon           ###   ########.fr       */
+/*   Updated: 2025/12/28 20:07:00 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 #include "libft.h"
 
-//MOVE TO utils later
+//MOVE TO utils later OR DELETE IF NOT USED
 int	is_digit(char c)
 {
 	return (c >= '0' && c <= '9');
 }
 
-// MOve to utils later
-int	is_str_digits(const char *s)
+/**
+ * This function converts the initial portion of the string pointed to by str
+ * to an integer representation. It skips all white-space characters at the
+ * beginning, takes an optional plus or minus sign followed by as many digits
+ * as possible, and interprets them as a numerical value.
+ * ft_atoi - Converts a string to an integer
+ *
+ * @param str: The string to be converted
+ * @return The converted integer value
+ */
+int	ft_dan_atoi(const char *str)
+{
+	int		sign;
+	int		result;
+
+	sign = 1;
+	result = 0;
+	while (*str == ' ' || (*str >= 9 && *str <= 13))
+		str++;
+	if (*str == '-' || *str == '+')
+	{
+		if (*str == '-')
+			sign = -1;
+		str++;
+	}
+	while (*str >= '0' && *str <= '9')
+	{
+		result = result * 10 + (*str - '0');
+		str++;
+	}
+	return (result * sign);
+}
+
+static int	is_signed_number(char *s)
 {
 	int	i;
 
 	i = 0;
 	if (!s || s[0] == '\0')
-		return(0);
-	while (s[i] != '\0')
+		return (0);
+	if (s[i] == '+' || s[i] == '-')
+		i++;
+	while (s[i])
 	{
-		if (!is_digit(s[i]))
+		if (s[i] < '0' || s[i] > '9')
 			return (0);
 		i++;
 	}
 	return (1);
-}
-
-// move to utils later
-int	ft_atoi_pos(const char *s)
-{
-	int	i;
-	int	n;
-
-	i = 0;
-	n = 0;
-	while (s[i] != '\0')
-	{
-		n = (n * 10) + (s[i] - '0');
-		i++;
-	}
-	return (n);
 }
 
 int get_nb_comma(char *line)
@@ -110,9 +128,9 @@ static int	parse_rgb_values(char **color, int *rgb)
 	i = 0;
 	while (i < 3)
 	{
-		if (!is_str_digits(color[i]))
+		if (!is_signed_number(color[i]))
 			return (ft_error(INVALID_RGB_CHAR_MSG));
-		n = ft_atoi_pos(color[i]);
+		n = ft_dan_atoi(color[i]);
 		if (!check_rgb_range(n))
 			return (ft_error(INVALID_RGB_RANGE_MSG));
 		rgb[i] = n;
@@ -174,9 +192,9 @@ int	parse_rgb_line(char identifier, char *line, int *rgb)
 	int		i;
 
 	if (!line || !rgb)
-		return (1);
+		return (ft_error("RGB: NULL input\n"));
 	if (line[0] != identifier)
-		return (1);
+		return (ft_error("RGB: wrong identifier\n"));;
 	meta = line + 1;
 	while (*meta == ' ' || *meta == '\t')
 		meta++;
@@ -260,6 +278,8 @@ static void store_color(t_game *game, char id, int *tmp)
 */
 static int	check_missing_colors(t_game *game)
 {
+	if (!is_color_set(game->floor) && !is_color_set(game->ceiling))
+		return (ft_error(BOTH_IDEN_MISSING));
 	if (!is_color_set(game->floor))
 		return (ft_error(INVALID_MISSING_FLOOR));
 	if (!is_color_set(game->ceiling))
@@ -275,6 +295,10 @@ static int	check_missing_colors(t_game *game)
 */
 static int	handle_color_line(t_game *game, char *trim, int *tmp)
 {
+	if (trim[0] == 'F' && !is_color_line(trim))
+		return (ft_error("Invalid floor color format\n"), 1);
+	if (trim[0] == 'C' && !is_color_line(trim))
+		return (ft_error("Invalid ceiling color format\n"), 1);
 	if (trim[0] == 'F' && is_color_line(trim))
 	{
 		if (is_color_set(game->floor))
@@ -287,7 +311,7 @@ static int	handle_color_line(t_game *game, char *trim, int *tmp)
 	{
 		if (is_color_set(game->ceiling))
 			return (ft_error(INVALID_DUP_CEIL));
-		if (parse_rgb_line('F', trim, tmp))
+		if (parse_rgb_line('C', trim, tmp))
 			return (1);
 		store_color(game, 'C', tmp);
 	}
