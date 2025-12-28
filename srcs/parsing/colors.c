@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 22:08:33 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/28 18:28:35 by jgueon           ###   ########.fr       */
+/*   Updated: 2025/12/28 18:33:32 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,7 +227,11 @@ static int	is_color_line(char *trim)
 	i = 1;
 	while (trim[i] == ' ' || trim[i] == '\t')
 		i++;
-	return (trim[i] != '\0');
+	if (trim[i] == '\0')
+		return (0);
+	if (trim[i] < '0' || trim[i] > '9')
+		return (0);
+	return (1);
 }
 
 
