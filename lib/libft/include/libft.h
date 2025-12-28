@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: bgazur <bgazur@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 09:19:38 by edlucca           #+#    #+#             */
-/*   Updated: 2025/12/21 18:51:19 by jgueon           ###   ########.fr       */
+/*   Updated: 2025/09/04 11:24:12 by bgazur           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,8 @@ typedef struct s_exec
 	char			**app;
 	bool			in_first;
 	bool			out_passed;
-	int				infile;
-	int				outfile;
+	int				infile;	
+	int				outfile;	
 	int				fd[2];
 	int				saved_stdin;
 	int				saved_stdout;
@@ -495,7 +495,7 @@ char	ft_whichifs(int c);
 /* GNL*********************************************************************** */
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 100
+#  define BUFFER_SIZE 10 
 # endif
 
 char	*ft_strtrim(char const *s1, char const *set);
