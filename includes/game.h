@@ -17,13 +17,11 @@
 #define WIN_W  1024 
 #define WIN_H  1024 
 
-#define TILE_SIZE   64
-
-#define MAP_W (MAPX * TILE_SIZE)
-#define MAP_H (MAPY * TILE_SIZE)
-#define MAPX  8	//map width
+#define MAP_W (WIN_W / 2)
+#define MAP_H (WIN_H / 2)
+#define MAPX  20	//map width
 #define MAPY  8	//map height
-#define TILE_SIZE 64   // Size of each tile (in pixels)
+// #define TILE_SIZE (MAP_W / MAPX)   // Size of each tile (in pixels)
 #define PLAYER_SIZE 10   // Size of player (in pixels)
 #define PLAYER_SPEED 0.1  // Size of player (in pixels)
 #define MAX_DOF 8 
@@ -71,6 +69,7 @@ typedef struct s_game {
 	mlx_image_t	*img_map;
 	mlx_image_t	*img_3d;
 	int			*map;
+	int			tile_size;
 	t_raycast	ray;
 } t_game;
 

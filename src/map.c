@@ -13,7 +13,6 @@ void drawMap2D(void *param)
 
 	game = (t_game *)param;
 	int x, y;
-	int tile_size = TILE_SIZE;
 
 	for (y = 0; y < MAPY; ++y)
 	{
@@ -23,25 +22,25 @@ void drawMap2D(void *param)
 			int color = (tile == 1) ? ft_pixel(WHITE) : ft_pixel(BLACK);
 
 			// Draw the tile at the correct position (x, y)
-			for (int i = 0; i < tile_size; ++i)
+			for (int i = 0; i < game->tile_size; ++i)
 			{
-				for (int j = 0; j < tile_size; ++j)
+				for (int j = 0; j < game->tile_size; ++j)
 				{
-					mlx_put_pixel(game->img_map, x * tile_size + i, y * tile_size + j, color);
+					mlx_put_pixel(game->img_map, x * game->tile_size + i, y * game->tile_size + j, color);
 				}
 			}
 			int border_color = (tile == 1) ? ft_pixel(BLACK) : ft_pixel(WHITE);
 
-			for (int i = 0; i < tile_size; ++i) 
+			for (int i = 0; i < game->tile_size; ++i) 
 			{
-				mlx_put_pixel(game->img_map, x * tile_size + i, y * tile_size, border_color);
-				mlx_put_pixel(game->img_map, x * tile_size + i, (y + 1) * tile_size - 1, border_color);
+				mlx_put_pixel(game->img_map, x * game->tile_size + i, y * game->tile_size, border_color);
+				mlx_put_pixel(game->img_map, x * game->tile_size + i, (y + 1) * game->tile_size - 1, border_color);
 			}
 			// Left and right borders
-			for (int j = 0; j < tile_size; ++j) 
+			for (int j = 0; j < game->tile_size; ++j) 
 			{
-				mlx_put_pixel(game->img_map, x * tile_size, y * tile_size + j, border_color);
-				mlx_put_pixel(game->img_map, (x + 1) * tile_size - 1, y * tile_size + j, border_color);
+				mlx_put_pixel(game->img_map, x * game->tile_size, y * game->tile_size + j, border_color);
+				mlx_put_pixel(game->img_map, (x + 1) * game->tile_size - 1, y * game->tile_size + j, border_color);
 			}
 		}
 	}

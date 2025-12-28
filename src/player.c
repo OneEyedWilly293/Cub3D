@@ -9,8 +9,8 @@ void drawPlayer(void *param)
 	int j;
 
 	game = (t_game *)param;
-	game->player->xPos = game->player->x * TILE_SIZE;
-	game->player->yPos = game->player->y * TILE_SIZE;
+	game->player->xPos = game->player->x * game->tile_size;
+	game->player->yPos = game->player->y * game->tile_size;
 
 	// Draw player square on 2dmap
 	i = 0;

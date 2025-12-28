@@ -68,31 +68,31 @@ int	draw_horizontal(t_game *game)
 		// looking up
 		if (game->ray.ra > M_PI)
 		{
-			game->ray.h_ry = ((game->ray.center_y / TILE_SIZE) * TILE_SIZE) - 0.0001;
+			game->ray.h_ry = ((game->ray.center_y / game->tile_size) * game->tile_size) - 0.0001;
 			game->ray.h_rx = (game->ray.center_y - game->ray.h_ry) * aTan + game->ray.center_x;
 
-			game->ray.yo = -TILE_SIZE;
+			game->ray.yo = -game->tile_size;
 			game->ray.xo = -game->ray.yo * aTan;
 		}
 		// looking down
 		else if (game->ray.ra < M_PI)
 		{
-			game->ray.h_ry = ((game->ray.center_y / TILE_SIZE) * TILE_SIZE) + TILE_SIZE;
+			game->ray.h_ry = ((game->ray.center_y / game->tile_size) * game->tile_size) + game->tile_size;
 			game->ray.h_rx = (game->ray.center_y - game->ray.h_ry) * aTan + game->ray.center_x;
 
-			game->ray.yo = TILE_SIZE;
+			game->ray.yo = game->tile_size;
 			game->ray.xo = -game->ray.yo * aTan;
 		}
 	}
 
 	while (game->ray.dof < MAX_DOF)
 	{
-		game->ray.mx = (int)(game->ray.h_rx / TILE_SIZE);
+		game->ray.mx = (int)(game->ray.h_rx / game->tile_size);
 
 		if (game->ray.ra > M_PI)        // looking up
-			game->ray.my = (int)((game->ray.h_ry - 1) / TILE_SIZE);
+			game->ray.my = (int)((game->ray.h_ry - 1) / game->tile_size);
 		else                // looking down
-			game->ray.my = (int)(game->ray.h_ry / TILE_SIZE);
+			game->ray.my = (int)(game->ray.h_ry / game->tile_size);
 
 		if (game->ray.mx < 0 || game->ray.my < 0 || game->ray.mx >= MAPX || game->ray.my >= MAPY)
 			break;
@@ -144,27 +144,27 @@ int	draw_vertical(t_game *game)
 		}
 		else if (game->ray.ra > M_PI_2 && game->ray.ra < 3*M_PI_2) // left
 		{
-			game->ray.v_rx = ((game->ray.center_x / TILE_SIZE) * TILE_SIZE) - 0.0001;
+			game->ray.v_rx = ((game->ray.center_x / game->tile_size) * game->tile_size) - 0.0001;
 			game->ray.v_ry = (game->ray.center_x - game->ray.v_rx) * nTan + game->ray.center_y;
-			game->ray.xo = -TILE_SIZE;
+			game->ray.xo = -game->tile_size;
 			game->ray.yo = -game->ray.xo * nTan;
 		}
 		else // right
 		{
-			game->ray.v_rx = ((game->ray.center_x / TILE_SIZE) * TILE_SIZE) + TILE_SIZE;
+			game->ray.v_rx = ((game->ray.center_x / game->tile_size) * game->tile_size) + game->tile_size;
 			game->ray.v_ry = (game->ray.center_x - game->ray.v_rx) * nTan + game->ray.center_y;
-			game->ray.xo = TILE_SIZE;
+			game->ray.xo = game->tile_size;
 			game->ray.yo = -game->ray.xo * nTan;
 		}
 	}
 	while (game->ray.dof < MAX_DOF)
 	{
 		if (game->ray.ra > M_PI_2 && game->ray.ra < 3 * M_PI_2)   // left
-			game->ray.mx = (int)((game->ray.v_rx - 1) / TILE_SIZE);
+			game->ray.mx = (int)((game->ray.v_rx - 1) / game->tile_size);
 		else                               // right
-			game->ray.mx = (int)(game->ray.v_rx / TILE_SIZE);
+			game->ray.mx = (int)(game->ray.v_rx / game->tile_size);
 
-		game->ray.my = (int)(game->ray.v_ry / TILE_SIZE);
+		game->ray.my = (int)(game->ray.v_ry / game->tile_size);
 
 		if (game->ray.mx < 0 || game->ray.my < 0 || game->ray.mx >= MAPX || game->ray.my >= MAPY)
 			break;
