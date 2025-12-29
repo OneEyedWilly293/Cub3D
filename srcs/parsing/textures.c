@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 17:47:47 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/29 20:44:38 by jgueon           ###   ########.fr       */
+/*   Updated: 2025/12/29 20:57:30 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 /*
 ** Checks if the trimmed line starts with "NO ", "SO ", "WE ", or "EA ".
-** RULE: strict space/tab after 2 letters to prevent false matches like 'NOO;.
+** RULE: strict space/tab after 2 letters to prevent false matches like 'NOO'.
 */
 static int	is_id(char *s, char *id)
 {
