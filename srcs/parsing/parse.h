@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 18:35:20 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/29 18:15:45 by jgueon           ###   ########.fr       */
+/*   Updated: 2025/12/29 20:37:16 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ typedef struct	s_game
 {
 	t_color	floor;
 	t_color	ceiling;
+	t_textures	tex;
 }	t_game;
 
 /* errors + args */

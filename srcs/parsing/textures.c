@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 17:47:47 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/29 20:29:19 by jgueon           ###   ########.fr       */
+/*   Updated: 2025/12/29 20:44:38 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ static int	store_texture(char **dst, char *path)
 		return (ft_error(INVALID_DUP_TEX));
 	if (!path || *path == '\0')
 		return (ft_error(PATH_MSG));
+	if (!has_png_ext(path))
+		return (ft_error(INVALID_TEX_EXT_MSG));
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
 		return (ft_error(PATH_MSG));
@@ -86,7 +88,7 @@ static int	handle_texture_line(t_game *game, char *trim)
 	else if (is_id(trim, W))
 		path = skip_spaces(trim + 2);
 	else if (is_id(trim, E))
-		path = skip_sapces(trim + 2);
+		path = skip_spaces(trim + 2);
 	else
 		return (0);
 	if (is_id(trim, N))
@@ -106,7 +108,7 @@ static int	handle_texture_line(t_game *game, char *trim)
 ** - This function is the same "scan all lines" approach like find_color_lines().
 ** TO DO: MERGE THEM INTO ONE PASS LATER
 */
-int find_texture_line(int fd, t_game *game)
+int find_texture_lines(int fd, t_game *game)
 {
 	char	*line;
 	char	*trim;
