@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 18:35:20 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/28 19:52:13 by jgueon           ###   ########.fr       */
+/*   Updated: 2025/12/29 18:15:45 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,11 @@
 # define INVALID_MISSING_FLOOR "Invalid: Missing 'F' identifier\n"
 # define INVALID_MISSING_CEIL "Invalid: Missing 'C' indentifier\n"
 # define BOTH_IDEN_MISSING "Both Identifiers 'F' and 'C' are missing\n"
+// ======= ERROR MESSAGE REGARDING TEXUTES =======
+# define INVALID_DUP_TEX "Invalid: Duplicate texture identifier\n"
+# define INVALID_MISSING_TEX "Invalid: Missing texture identifier\n"
+# define INVALID_TEX_EXT_MSG "Invalid: texture extension: Use '*.png' file\n"
+
 
 /* Color struct */
 typedef struct	s_color
@@ -57,6 +62,16 @@ typedef struct	s_color
 	int	g;
 	int	b;
 }	t_color;
+
+/* texture struct */
+/* rendering can later read 'game->tex.no' etc */
+typedef struct s_textures
+{
+	char	*no;
+	char	*so;
+	char	*we;
+	char	*ea;
+}	t_textures;
 
 /* game struct */
 typedef struct	s_game
@@ -77,5 +92,6 @@ char	*get_line(int fd);
 int	parse_rgb_line(char identifier, char *line, int *rgb);
 char	*skip_spaces(char *s);
 int	find_color_lines(int fd, t_game *game);
+int	find_texture_lines(int fd, t_game *game);
 
 #endif
