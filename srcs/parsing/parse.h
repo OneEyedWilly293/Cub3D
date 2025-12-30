@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 18:35:20 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/29 20:37:16 by jgueon           ###   ########.fr       */
+/*   Updated: 2025/12/30 13:38:16 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,9 @@
 # define INVALID_DUP_TEX "Invalid: Duplicate texture identifier\n"
 # define INVALID_MISSING_TEX "Invalid: Missing texture identifier\n"
 # define INVALID_TEX_EXT_MSG "Invalid: texture extension: Use '*.png' file\n"
+// ======= ERROR MESSAGE REGARDING MAPS =======
+# define META_AFTER_MAP_MSG "Invalid: Element after map started\n"
+# define EMPTY_LINE_IN_MAP_MSG "Invalid: Empty line inside map\n"
 
 
 /* Color struct */
@@ -94,5 +97,6 @@ int	parse_rgb_line(char identifier, char *line, int *rgb);
 char	*skip_spaces(char *s);
 int	find_color_lines(int fd, t_game *game);
 int	find_texture_lines(int fd, t_game *game);
+int	parse_identifiers_until_map(int fd, t_game *game);
 
 #endif
