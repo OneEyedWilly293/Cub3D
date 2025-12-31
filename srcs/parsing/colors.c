@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 22:08:33 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/31 15:22:59 by jgueon           ###   ########.fr       */
+/*   Updated: 2025/12/31 19:32:23 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -293,7 +293,7 @@ static int	check_missing_colors(t_game *game)
 ** - parse_rgb_line validation
 ** - Store into game
 */
-static int	handle_color_line(t_game *game, char *trim, int *tmp)
+int	handle_color_line(t_game *game, char *trim, int *tmp)
 {
 	if (trim[0] == 'F' && !is_color_line(trim))
 		return (ft_error("Invalid floor color format\n"), 1);

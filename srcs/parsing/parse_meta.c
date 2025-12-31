@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 13:40:25 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/31 15:29:36 by jgueon           ###   ########.fr       */
+/*   Updated: 2025/12/31 19:49:11 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,4 +112,54 @@ static int	check_meta_complete(t_game *game)
 	if (game->floor.r == -1 || game->ceiling.r == -1)
 		return (ft_error(BOTH_IDEN_MISSING));
 	return (0);
+}
+
+/*
+** Helper function to trim a few lines for parse_identifiers_until_map().
+*/
+static int	check_map_mode(char *line)
+{
+	if (is_empty_line(line))
+		return (ft_error(EMPTY_LINE_IN_MAP_MSG));
+	if (!is_map_line(line))
+		return (ft_error(META_AFTER_MAP_MSG));
+	return (0);
+}
+
+
+/*
+** Reads line by line until it finds the FIRST map line.
+** On success:
+** - metadata is complete
+** - the fd is positioned right AFTER reading that first map line,
+**	 so later I need to sotre it and continue building the grid.
+**
+**	 For now, this function only enforeces the boundary and returns success.
+*/
+int	parse_identifiers_until_map(int fd, t_game *game)
+{
+	char	*line;
+	char	*trim;
+	int		in_map;
+
+	init_meta_defaults(game);
+	in_map = 0;
+	line = get_line(fd);
+	while (line)
+	{
+		if (in_map == 1 && check_map_mode(line))
+			return (free(line), 1);
+		trim = skip_spaces(line);
+		if (in_map == 0 && is_map_line(line))
+		{
+			if (check_meta_complete(game))
+				return (free(line), 1);
+			in_map = 1;
+		}
+		if (in_map == 0 && handle_one_meta_line(game, trim))
+			return (free(line), 1);
+		free(line);
+		line = get_line(fd);
+	}
+	return (ft_error(EMPTY_MSG));
 }

@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 17:47:47 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/30 13:25:45 by jgueon           ###   ########.fr       */
+/*   Updated: 2025/12/31 19:31:43 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static int	store_texture(char **dst, char *path)
 ** - If line is a texture identifier line, parse and store the path.
 ** - If not a texture line, return 0 (no error).
 */
-static int	handle_texture_line(t_game *game, char *trim)
+int	handle_texture_line(t_game *game, char *trim)
 {
 	char	*path;
 
