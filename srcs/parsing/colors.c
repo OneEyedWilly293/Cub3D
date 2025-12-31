@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 22:08:33 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/31 19:32:23 by jgueon           ###   ########.fr       */
+/*   Updated: 2025/12/31 21:03:25 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ static int	trim_tokens(char **colors)
 	{
 		trimmed = ft_strtrim(colors[i], " \t"); // TO CHECK: \n
 		if (!trimmed)
-		return (1);
+			return (1);
 		free(colors[i]);
 		colors[i] = trimmed;
 		i++;
