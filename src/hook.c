@@ -1,5 +1,13 @@
 #include "../includes/game.h"
 
+void key_hook(mlx_key_data_t keydata, void *param)
+{
+	t_game *g = param;
+
+	if (keydata.key == MLX_KEY_M && keydata.action == MLX_PRESS)
+		g->show_map = !g->show_map;
+}
+
 // Handle key events
 void ft_hook(void* param)
 {
@@ -143,11 +151,10 @@ void update(void* param)
 
 	game = (t_game *)param;
 
-	clear_image(game->img_3d, 0x000000FF, WIN_W, WIN_H);
+	clear_image(game->img_3d, 0x000000FF, game->map_width, game->map_height);
 	clear_image(game->img_map, 0x000000FF, MINIMAP_SIZE, MINIMAP_SIZE);
 	ft_hook(game);
-	// drawPlayer(game);
-	drawray(game);
 	drawMap3D(game);       
-	drawMap2D(game);       
+	if(game->show_map == true)
+		drawMap2D(game);       
 }

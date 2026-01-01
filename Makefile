@@ -22,7 +22,8 @@ SRC      := $(SRC_DIR)/main.c \
 			$(SRC_DIR)/dda_draw.c \
 			$(SRC_DIR)/raycast.c \
 			$(SRC_DIR)/hook.c \
-			$(SRC_DIR)/map.c \
+			$(SRC_DIR)/map3d.c \
+			$(SRC_DIR)/map2d.c \
 
 
 OBJ      := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

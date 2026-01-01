@@ -20,8 +20,8 @@
 
 #define MAP_W (WIN_W / 2)
 #define MAP_H (WIN_H / 2)
-#define MAPX  20	//map width
-#define MAPY  8	//map height
+#define MAPX  32	//map width
+#define MAPY  16	//map height
 				// #define TILE_SIZE (MAP_W / MAPX)   // Size of each tile (in pixels)
 #define PLAYER_SIZE 10   // Size of player (in pixels)
 #define PLAYER_SPEED 0.1  // Size of player (in pixels)
@@ -56,24 +56,32 @@ typedef struct s_player {
 } t_player;
 
 typedef struct s_raycast{
-	int		mx;
-	int		my;
-	int		mp;
-	int		dof;
-	int		center_x;
-	int		center_y;
-	float	h_rx;
-	float	h_ry;
-	float	v_rx;
-	float	v_ry;
-	float	ra;
-	float	xo;
-	float	yo;
-	float	dist_h;
-	float	dist_v;
+	int		map_x;
+	int		map_y;
+	double	ray_dir_x;
+	double	ray_dir_y;
+	double	delta_dist_x;
+	double	delta_dist_y;
+	int		step_x;
+	int		step_y;
+	double	side_dist_x;
+	double	side_dist_y;
 } t_raycast;
 
+typedef	struct s_map2d {
+	double	scale_x;
+	double	scale_y;
+	int		tile;
+	int		start_x;
+	int		start_y;
+	int		end_x;
+	int		end_y;
+	int		p_px;
+	int		p_py;
+} t_map2d;
+
 typedef struct s_game {
+	bool		show_map;
 	mlx_t		*mlx;
 	t_player	*player;
 	mlx_image_t	*img_map;
@@ -85,6 +93,7 @@ typedef struct s_game {
 	int         map_height;
 	int			tile_size;
 	t_raycast	ray;
+	t_map2d		map2d;
 } t_game;
 
 int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
@@ -96,5 +105,8 @@ void drawPlayer(void *param);
 void ft_hook(void* param);
 void update(void* param);
 void resize_callback(int32_t new_width, int32_t new_height, void *param);
+double cast_ray(double ray_angle, t_game *g);
+void	init_ray_struct(double ray_angle, t_game *g);
+void key_hook(mlx_key_data_t keydata, void *param);
 
 #endif
