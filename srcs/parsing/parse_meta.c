@@ -87,13 +87,13 @@ static void	init_meta_defaults(t_game *game)
 */
 static int	handle_one_meta_line(t_game *game, char *trim)
 {
-	int	tmp[3];
+	// int	tmp[3];
 
 	if (handle_texture_line(game, trim) != 0)
 		return (1);
 	if (trim[0] == 'F' || trim[0] == 'C')
 	{
-		if (handle_color_line(game, trim, tmp))
+		if (handle_color_line(game, trim))
 			return (1);
 		return (0);
 	}

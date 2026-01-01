@@ -293,8 +293,9 @@ static int	check_missing_colors(t_game *game)
 ** - parse_rgb_line validation
 ** - Store into game
 */
-int	handle_color_line(t_game *game, char *trim, int *tmp)
+int	handle_color_line(t_game *game, char *trim)
 {
+	int	tmp[3];
 	if (trim[0] == 'F' && !is_color_line(trim))
 		return (ft_error("Invalid floor color format\n"), 1);
 	if (trim[0] == 'C' && !is_color_line(trim))
@@ -333,7 +334,7 @@ int	find_color_lines(int fd, t_game *game)
 	while (line)
 	{
 		trim = skip_spaces(line);
-		if (handle_color_line(game, trim, tmp))
+		if (handle_color_line(game, trim))
 			return (free(line), 1);
 		free(line);
 		line = get_line(fd);
