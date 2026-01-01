@@ -18,12 +18,14 @@ void drawray(void *param)
 	angle_step = FOV / NUM_RAYS;
 	ray_angle = game->player->da - (FOV / 2);
 
+	double scale_x = (double)MINIMAP_SIZE / (double)MAPX;
+	double scale_y = (double)MINIMAP_SIZE / (double)MAPY;
 	for (r = 0; r < NUM_RAYS; r++)
 	{
 		ft_memset(&game->ray, 0, sizeof(t_raycast));
 
-		game->ray.center_x = game->player->xPos + PLAYER_SIZE / 2;
-		game->ray.center_y = game->player->yPos + PLAYER_SIZE / 2;
+		game->ray.center_x = (int)(game->player->x * scale_x);
+		game->ray.center_y = (int)(game->player->y * scale_y);
 		game->ray.ra = ray_angle;
 
 		// normalize

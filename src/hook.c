@@ -10,25 +10,59 @@ void ft_hook(void* param)
 	if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(game->mlx);
 
-	if (mlx_is_key_down(game->mlx, MLX_KEY_UP)) 
+	double move_x;
+	double move_y;
+
+	if (mlx_is_key_down(game->mlx, MLX_KEY_UP))
 	{
-		if (game->map[(int)(game->player->y - PLAYER_SPEED) * MAPX + (int)(game->player->x)] == 0)
-			game->player->y -= PLAYER_SPEED; // Move up
+		move_x = cos(game->player->da) * PLAYER_SPEED;
+		move_y = sin(game->player->da) * PLAYER_SPEED;
+
+		if (game->map[(int)(game->player->y + move_y) * MAPX
+				+ (int)(game->player->x + move_x)] == 0)
+		{
+			game->player->x += move_x;
+			game->player->y += move_y;
+		}
 	}
-	if (mlx_is_key_down(game->mlx, MLX_KEY_DOWN)) 
+
+	if (mlx_is_key_down(game->mlx, MLX_KEY_DOWN))
 	{
-		if (game->map[(int)(game->player->y + PLAYER_SPEED) * MAPX + (int)(game->player->x)] == 0)
-			game->player->y += PLAYER_SPEED; // Move down
+		move_x = cos(game->player->da) * PLAYER_SPEED;
+		move_y = sin(game->player->da) * PLAYER_SPEED;
+
+		if (game->map[(int)(game->player->y - move_y) * MAPX
+				+ (int)(game->player->x - move_x)] == 0)
+		{
+			game->player->x -= move_x;
+			game->player->y -= move_y;
+		}
 	}
-	if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT)) 
+	if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT))
 	{
-		if (game->map[(int)(game->player->y) * MAPX + (int)(game->player->x - PLAYER_SPEED)] == 0)
-			game->player->x -= PLAYER_SPEED; // Move left
+		move_x = cos(game->player->da - M_PI_2) * PLAYER_SPEED;
+		move_y = sin(game->player->da - M_PI_2) * PLAYER_SPEED;
+
+		if (game->map[(int)(game->player->y + move_y) * MAPX
+				+ (int)(game->player->x + move_x)] == 0)
+		{
+			game->player->x += move_x;
+			game->player->y += move_y;
+		}
 	}
-	if (mlx_is_key_down(game->mlx, MLX_KEY_RIGHT)) 
+
+	/* STRAFE RIGHT */
+	if (mlx_is_key_down(game->mlx, MLX_KEY_RIGHT))
 	{
-		if (game->map[(int)(game->player->y) * MAPX + (int)(game->player->x + PLAYER_SPEED)] == 0)
-			game->player->x += PLAYER_SPEED; // Move right
+		move_x = cos(game->player->da + M_PI_2) * PLAYER_SPEED;
+		move_y = sin(game->player->da + M_PI_2) * PLAYER_SPEED;
+
+		if (game->map[(int)(game->player->y + move_y) * MAPX
+				+ (int)(game->player->x + move_x)] == 0)
+		{
+			game->player->x += move_x;
+			game->player->y += move_y;
+		}
 	}
 
 	// Rotation
@@ -40,25 +74,66 @@ void ft_hook(void* param)
 	{
 		game->player->da += 0.05f;
 	}
-	// if(mlx_is_key_down(game->mlx, MLX_KEY_W))
-	// {
-	// 	game->player->x += game->player->dx; game->player->y += game->player->dy;
-	// }
-	// if(mlx_is_key_down(game->mlx, MLX_KEY_S))
-	// {
-	// 	game->player->x -= game->player->dx; game->player->y -= game->player->dy;
-	// }
+	if (mlx_is_key_down(game->mlx, MLX_KEY_W))
+	{
+		game->player->camera += CAMERA_SPEED;
+		if (game->player->camera > MAX_CAMERA)
+			game->player->camera = MAX_CAMERA;
+	}
+
+	if (mlx_is_key_down(game->mlx, MLX_KEY_S))
+	{
+		game->player->camera -= CAMERA_SPEED;
+		if (game->player->camera < -MAX_CAMERA)
+			game->player->camera = -MAX_CAMERA;
+	}
+
+	if (mlx_is_key_down(game->mlx, MLX_KEY_SPACE))
+	{
+		if (!game->player->is_jumping)
+		{
+			game->player->is_jumping = 1;
+			game->player->jump_velocity = JUMP_SPEED;
+		}
+	}
+	if (game->player->is_jumping)
+	{
+		// Apply velocity
+		game->player->camera += game->player->jump_velocity;
+
+		// Apply gravity
+		game->player->jump_velocity -= GRAVITY;
+
+		// Check if player landed
+		if (game->player->camera <= 0)
+		{
+			game->player->camera = 0;
+			game->player->is_jumping = 0;
+			game->player->jump_velocity = 0;
+		}
+
+		// Clamp to maximum jump
+		if (game->player->camera > MAX_JUMP)
+			game->player->camera = MAX_JUMP;
+	}
 }
 
 void clear_image(mlx_image_t *img, uint32_t color, int width, int height)
 {
-    for (int y = 0; y < height; y++)
-    {
-        for (int x = 0; x < width; x++)
-        {
-            mlx_put_pixel(img, x, y, color);
-        }
-    }
+	int	y;
+	int x;
+
+	y = 0;
+	while(y < height)
+	{
+		x = 0;
+		while(x < width)
+		{
+			mlx_put_pixel(img, x, y, color);
+			x++;
+		}
+		y++;
+	}
 }
 
 // Update the game state
@@ -68,13 +143,11 @@ void update(void* param)
 
 	game = (t_game *)param;
 
-// Clear 3D and 2D map images
-    clear_image(game->img_3d, 0x000000FF, MAP_W, MAP_H);
-    clear_image(game->img_map, 0x000000FF, MAP_W, MAP_H);
-
+	clear_image(game->img_3d, 0x000000FF, WIN_W, WIN_H);
+	clear_image(game->img_map, 0x000000FF, MINIMAP_SIZE, MINIMAP_SIZE);
 	ft_hook(game);
-	drawMap2D(game);       
-	drawPlayer(game);
+	// drawPlayer(game);
 	drawray(game);
 	drawMap3D(game);       
+	drawMap2D(game);       
 }
