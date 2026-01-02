@@ -1,233 +1,50 @@
-// #include "../includes/game.h"
-//
-// int	draw_horizontal(t_game *game);
-// int	draw_vertical(t_game *game);
-//
-// static float	dist(float ax, float ay, float bx, float by)
-// {
-// 	return (sqrtf((bx - ax) * (bx - ax) + (by - ay) * (by - ay)));
-// }
-//
-// void drawray(void *param)
-// {
-// 	t_game *game = param;
-// 	float ray_angle;
-// 	int   r;
-// 	double	ray;
-//
-// 	ray_angle = game->player->da - (FOV / 2);
-//
-// 	double scale_x = (double)MINIMAP_SIZE / (double)MAPX;
-// 	double scale_y = (double)MINIMAP_SIZE / (double)MAPY;
-// 	for (r = 0; r < NUM_RAYS; r++)
-// 	{
-// 		ft_memset(&game->ray, 0, sizeof(t_raycast));
-//
-// 		game->ray.center_x = (int)(game->player->xPos * scale_x);
-// 		game->ray.center_y = (int)(game->player->yPos * scale_y);
-// 		game->ray.ra = ray_angle;
-//
-// 		game->ray.dist_v = draw_vertical(game);
-// 		ray = cast_ray(ray_angle, game);
-//
-// 		if (game->ray.dist_h < game->ray.dist_v)
-// 			draw_line(game->img_map,
-// 					game->ray.center_x, game->ray.center_y,
-// 					game->ray.h_rx, game->ray.h_ry,
-// 					ft_pixel(RED));
-// 		else
-// 			draw_line(game->img_map,
-// 					game->ray.center_x, game->ray.center_y,
-// 					game->ray.v_rx, game->ray.v_ry,
-// 					ft_pixel(RED));
-//
-// 		ray_angle += angle_step;
-// 	}
-// }
-//
-// // void drawray(void *param)
-// // {
-// // 	t_game *game = param;
-// // 	float ray_angle;
-// // 	float angle_step;
-// // 	int   r;
-// //
-// // 	angle_step = FOV / NUM_RAYS;
-// // 	ray_angle = game->player->da - (FOV / 2);
-// //
-// // 	double scale_x = (double)MINIMAP_SIZE / (double)MAPX;
-// // 	double scale_y = (double)MINIMAP_SIZE / (double)MAPY;
-// // 	for (r = 0; r < NUM_RAYS; r++)
-// // 	{
-// // 		ft_memset(&game->ray, 0, sizeof(t_raycast));
-// //
-// // 		game->ray.center_x = (int)(game->player->x * scale_x);
-// // 		game->ray.center_y = (int)(game->player->y * scale_y);
-// // 		game->ray.ra = ray_angle;
-// //
-// // 		// normalize
-// // 		while (game->ray.ra < 0)
-// // 			game->ray.ra += 2 * M_PI;
-// // 		while (game->ray.ra >= 2 * M_PI)
-// // 			game->ray.ra -= 2 * M_PI;
-// //
-// // 		game->ray.dist_h = draw_horizontal(game);
-// // 		game->ray.dist_v = draw_vertical(game);
-// //
-// // 		if (game->ray.dist_h < game->ray.dist_v)
-// // 			draw_line(game->img_map,
-// // 					game->ray.center_x, game->ray.center_y,
-// // 					game->ray.h_rx, game->ray.h_ry,
-// // 					ft_pixel(RED));
-// // 		else
-// // 			draw_line(game->img_map,
-// // 					game->ray.center_x, game->ray.center_y,
-// // 					game->ray.v_rx, game->ray.v_ry,
-// // 					ft_pixel(RED));
-// //
-// // 		ray_angle += angle_step;
-// // 	}
-// // }
-//
-// // int	draw_horizontal(t_game *game)
-// // {
-// // 	// Horizontal 
-// // 	float dist_h;
-// //
-// // 	// looking straight left or right 0 or 180 degrees
-// // 	if (fabs(game->ray.ra) < 0.0001 || fabs(game->ray.ra - M_PI) < 0.0001 || fabs(game->ray.ra - 2 * M_PI) < 0.0001)
-// // 	{
-// // 		game->ray.h_rx = game->ray.center_x;
-// // 		game->ray.h_ry = game->ray.center_y;
-// // 		game->ray.dof = MAX_DOF;
-// // 	}
-// // 	else
-// // 	{
-// // 		float aTan = -1 / tan(game->ray.ra);
-// // 		// looking up
-// // 		if (game->ray.ra > M_PI)
-// // 		{
-// // 			game->ray.h_ry = ((game->ray.center_y / game->tile_size) * game->tile_size) - 0.0001;
-// // 			game->ray.h_rx = (game->ray.center_y - game->ray.h_ry) * aTan + game->ray.center_x;
-// //
-// // 			game->ray.yo = -game->tile_size;
-// // 			game->ray.xo = -game->ray.yo * aTan;
-// // 		}
-// // 		// looking down
-// // 		else if (game->ray.ra < M_PI)
-// // 		{
-// // 			game->ray.h_ry = ((game->ray.center_y / game->tile_size) * game->tile_size) + game->tile_size;
-// // 			game->ray.h_rx = (game->ray.center_y - game->ray.h_ry) * aTan + game->ray.center_x;
-// //
-// // 			game->ray.yo = game->tile_size;
-// // 			game->ray.xo = -game->ray.yo * aTan;
-// // 		}
-// // 	}
-// //
-// // 	while (game->ray.dof < MAX_DOF)
-// // 	{
-// // 		game->ray.mx = (int)(game->ray.h_rx / game->tile_size);
-// //
-// // 		if (game->ray.ra > M_PI)        // looking up
-// // 			game->ray.my = (int)((game->ray.h_ry - 1) / game->tile_size);
-// // 		else                // looking down
-// // 			game->ray.my = (int)(game->ray.h_ry / game->tile_size);
-// //
-// // 		if (game->ray.mx < 0 || game->ray.my < 0 || game->ray.mx >= MAPX || game->ray.my >= MAPY)
-// // 			break;
-// // 		game->ray.mp = game->ray.my * MAPX + game->ray.mx;
-// // 		if (game->map[game->ray.mp] == 1)
-// // 			break;
-// // 		game->ray.h_rx += game->ray.xo;
-// // 		game->ray.h_ry += game->ray.yo;
-// //
-// // 		game->ray.dof++;
-// // 	}
-// //
-// // 	dist_h = dist(
-// // 			game->ray.center_x,
-// // 			game->ray.center_y,
-// // 			game->ray.h_rx,
-// // 			game->ray.h_ry
-// // 			);
-// // 	return(dist_h);
-// // }
-// //
-// // int	draw_vertical(t_game *game)
-// // {
-// // 	// vertical 
-// //
-// // 	float dist_v;
-// //
-// // 	game->ray.xo = 0;
-// // 	game->ray.yo = 0;
-// // 	game->ray.dof = 0;
-// //
-// // 	// vertical singularity dead-zone
-// // 	if ((game->ray.ra > M_PI_2 - 0.0001 && game->ray.ra < M_PI_2 + 0.0001) ||
-// // 			(game->ray.ra > 3*M_PI_2 - 0.0001 && game->ray.ra < 3*M_PI_2 + 0.0001))
-// // 	{
-// // 		game->ray.v_rx = game->ray.center_x;
-// // 		game->ray.v_ry = game->ray.center_y;
-// // 		game->ray.dof = MAX_DOF;
-// // 	}
-// // 	else
-// // 	{
-// // 		float nTan = -tan(game->ray.ra);
-// //
-// // 		if (fabs(nTan) > 1000)
-// // 		{
-// // 			game->ray.v_rx = game->ray.center_x;
-// // 			game->ray.v_ry = game->ray.center_y;
-// // 			game->ray.dof = MAX_DOF;
-// // 		}
-// // 		else if (game->ray.ra > M_PI_2 && game->ray.ra < 3*M_PI_2) // left
-// // 		{
-// // 			game->ray.v_rx = ((game->ray.center_x / game->tile_size) * game->tile_size) - 0.0001;
-// // 			game->ray.v_ry = (game->ray.center_x - game->ray.v_rx) * nTan + game->ray.center_y;
-// // 			game->ray.xo = -game->tile_size;
-// // 			game->ray.yo = -game->ray.xo * nTan;
-// // 		}
-// // 		else // right
-// // 		{
-// // 			game->ray.v_rx = ((game->ray.center_x / game->tile_size) * game->tile_size) + game->tile_size;
-// // 			game->ray.v_ry = (game->ray.center_x - game->ray.v_rx) * nTan + game->ray.center_y;
-// // 			game->ray.xo = game->tile_size;
-// // 			game->ray.yo = -game->ray.xo * nTan;
-// // 		}
-// // 	}
-// // 	while (game->ray.dof < MAX_DOF)
-// // 	{
-// // 		if (game->ray.ra > M_PI_2 && game->ray.ra < 3 * M_PI_2)   // left
-// // 			game->ray.mx = (int)((game->ray.v_rx - 1) / game->tile_size);
-// // 		else                               // right
-// // 			game->ray.mx = (int)(game->ray.v_rx / game->tile_size);
-// //
-// // 		game->ray.my = (int)(game->ray.v_ry / game->tile_size);
-// //
-// // 		if (game->ray.mx < 0 || game->ray.my < 0 || game->ray.mx >= MAPX || game->ray.my >= MAPY)
-// // 			break;
-// //
-// // 		game->ray.mp = game->ray.my * MAPX + game->ray.mx;
-// // 		if (game->map[game->ray.mp] == 1)
-// // 			break;
-// //
-// // 		game->ray.v_rx += game->ray.xo;
-// // 		game->ray.v_ry += game->ray.yo;
-// // 		game->ray.dof++;
-// // 	}
-// // 	// cast width/height to int for safe comparison
-// // 	// printf("end_x: %d game->ray.v_ry: %d\n", end_x, game->ray.v_ry); // DEBUG
-// // 	if (game->ray.v_rx < 0) game->ray.v_rx = 0;
-// // 	if (game->ray.v_rx >= (int)game->img_map->width) game->ray.v_rx = (int)game->img_map->width - 1;
-// // 	if (game->ray.v_ry < 0) game->ray.v_ry = 0;
-// // 	if (game->ray.v_ry >= (int)game->img_map->height) game->ray.v_ry = (int)game->img_map->height - 1;
-// //
-// // 	dist_v = dist(
-// // 			game->ray.center_x,
-// // 			game->ray.center_y,
-// // 			game->ray.v_rx,
-// // 			game->ray.v_ry
-// // 			);
-// // 	return(dist_v);
-// // }
+#include "../includes/game.h"
+
+double cast_ray(double ray_angle, t_game *g)
+{
+	int hit = 0;
+	int side;
+
+	init_ray_struct(ray_angle, g);
+	while (!hit)
+	{
+		if (g->ray.side_dist_x < g->ray.side_dist_y)
+		{
+			g->ray.side_dist_x += g->ray.delta_dist_x;
+			g->ray.map_x += g->ray.step_x;
+			side = 0;
+		}
+		else
+		{
+			g->ray.side_dist_y += g->ray.delta_dist_y;
+			g->ray.map_y += g->ray.step_y;
+			side = 1;
+		}
+
+		if (g->ray.map_y < 0 || g->ray.map_y >= MAPY || g->ray.map_x < 0 || g->ray.map_x >= MAPX)
+			return 1000; // far away to prevent crash
+
+		if (g->map[g->ray.map_y * MAPX + g->ray.map_x] == 1)
+			hit = 1;
+	}
+
+	if (side == 0)
+		return (g->ray.map_x - g->player.x + (1 - g->ray.step_x) / 2) / g->ray.ray_dir_x;
+	else
+		return (g->ray.map_y - g->player.y + (1 - g->ray.step_y) / 2) / g->ray.ray_dir_y;
+}
+
+void	init_ray_struct(double ray_angle, t_game *g)
+{
+	g->ray.map_x = (int)g->player.x;
+	g->ray.map_y = (int)g->player.y;
+	g->ray.ray_dir_x = cos(ray_angle);
+	g->ray.ray_dir_y = sin(ray_angle);
+	g->ray.delta_dist_x = fabs(1 / g->ray.ray_dir_x);
+	g->ray.delta_dist_y = fabs(1 / g->ray.ray_dir_y);
+	g->ray.step_x = g->ray.ray_dir_x < 0 ? -1 : 1;
+	g->ray.step_y = g->ray.ray_dir_y < 0 ? -1 : 1;
+	g->ray.side_dist_x = (g->ray.step_x < 0 ? g->player.x - g->ray.map_x : g->ray.map_x + 1.0 - g->player.x) * g->ray.delta_dist_x;
+	g->ray.side_dist_y = (g->ray.step_y < 0 ? g->player.y - g->ray.map_y : g->ray.map_y + 1.0 - g->player.y) * g->ray.delta_dist_y;
+
+}

@@ -83,7 +83,7 @@ typedef	struct s_map2d {
 typedef struct s_game {
 	bool		show_map;
 	mlx_t		*mlx;
-	t_player	*player;
+	t_player	player;
 	mlx_image_t	*img_map;
 	mlx_image_t	*img_3d;
 	int			*map;
@@ -96,17 +96,23 @@ typedef struct s_game {
 	t_map2d		map2d;
 } t_game;
 
-int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
-void draw_line(mlx_image_t *img, int x0, int y0, int x1, int y1, uint32_t color);
-void drawray(void *param);
-void drawMap2D(void *param);
-void drawMap3D(void *param);
-void drawPlayer(void *param);
-void ft_hook(void* param);
-void update(void* param);
-void resize_callback(int32_t new_width, int32_t new_height, void *param);
-double cast_ray(double ray_angle, t_game *g);
-void	init_ray_struct(double ray_angle, t_game *g);
-void key_hook(mlx_key_data_t keydata, void *param);
+int32_t		ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
+void		draw_line(mlx_image_t *img, int x0, int y0, int x1, int y1, uint32_t color);
+void		drawray(void *param);
+void		drawMap2D(void *param);
+void		drawMap3D(void *param);
+void		draw_player(t_game *game);
+void		ft_hook(void* param);
+void		update(void* param);
+void		resize_callback(int32_t new_width, int32_t new_height, void *param);
+double		cast_ray(double ray_angle, t_game *g);
+void		init_ray_struct(double ray_angle, t_game *g);
+void		key_hook(mlx_key_data_t keydata, void *param);
+
+void		up_down(t_game *game);
+void		left_right(t_game *game);
+void		horizontal_rotation(t_game *game);
+void		vertical_rotation(t_game *game);
+void		jump(t_game *game);
 
 #endif

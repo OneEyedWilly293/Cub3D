@@ -21,52 +21,65 @@ int map[] =
 	1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 };
 
+void	init_player(t_game *game)
+{
+	game->player = (t_player){4.5f, 5.5f, 0, 0, 0.0f, 0.0f, 0.0f, 0, 0, 0};
+}
+
+void	init_map(t_game *game)
+{
+	size_t map_size = sizeof(map) / sizeof(map[0]);
+
+	game->map = malloc(sizeof(int) * map_size);
+	game->tile_size = MAP_W / MAPX;
+	if (!game->map)
+		exit(EXIT_FAILURE);
+	ft_memcpy(game->map, map, sizeof(map));
+}
+
+int	init_mlx(t_game *game)
+{
+	if (!(game->mlx = mlx_init(WIN_W, WIN_H, "MLX42", true))) {
+		puts(mlx_strerror(mlx_errno));
+		return EXIT_FAILURE;
+	}
+	mlx_set_window_title(game->mlx, "title");
+	if(!(game->img_3d  = mlx_new_image(game->mlx, WIN_W, WIN_H)))
+	{
+		mlx_close_window(game->mlx);
+		puts(mlx_strerror(mlx_errno));
+		return EXIT_FAILURE;
+	}
+	if(!(game->img_map = mlx_new_image(game->mlx, MINIMAP_SIZE, MINIMAP_SIZE)))
+	{
+		mlx_close_window(game->mlx);
+		puts(mlx_strerror(mlx_errno));
+		return EXIT_FAILURE;
+	}
+	if(mlx_image_to_window(game->mlx, game->img_3d, 0, 0) == -1)
+	{
+		mlx_close_window(game->mlx);
+		puts(mlx_strerror(mlx_errno));
+		return EXIT_FAILURE;
+	}
+	if(mlx_image_to_window(game->mlx, game->img_map, 0, 0) == -1)
+	{
+		mlx_close_window(game->mlx);
+		puts(mlx_strerror(mlx_errno));
+		return EXIT_FAILURE;
+	}
+	return(0);
+}
+
 // Main function
 int32_t main(void)
 {
 	t_game game;
 	ft_memset(&game, 0, sizeof(t_game));
 
-	game.player = &(t_player){4.5f, 5.5f, 0, 0, 0.0f, 0.0f, 0.0f, 0, 0, 0}; // Initial player position
-	size_t map_size = sizeof(map) / sizeof(map[0]);
-
-	game.map = malloc(sizeof(int) * map_size);
-	game.tile_size = MAP_W / MAPX;
-	if (!game.map)
-		exit(EXIT_FAILURE);
-
-	ft_memcpy(game.map, map, sizeof(map));
-
-	// Initialize MLX
-	if (!(game.mlx = mlx_init(WIN_W, WIN_H, "MLX42", true))) {
-		puts(mlx_strerror(mlx_errno));
-		return EXIT_FAILURE;
-	}
-	mlx_set_window_title(game.mlx, "title");
-	if(!(game.img_3d  = mlx_new_image(game.mlx, WIN_W, WIN_H)))
-	{
-		mlx_close_window(game.mlx);
-		puts(mlx_strerror(mlx_errno));
-		return EXIT_FAILURE;
-	}
-	if(!(game.img_map = mlx_new_image(game.mlx, MINIMAP_SIZE, MINIMAP_SIZE)))
-	{
-		mlx_close_window(game.mlx);
-		puts(mlx_strerror(mlx_errno));
-		return EXIT_FAILURE;
-	}
-	if(mlx_image_to_window(game.mlx, game.img_3d, 0, 0) == -1)
-	{
-		mlx_close_window(game.mlx);
-		puts(mlx_strerror(mlx_errno));
-		return EXIT_FAILURE;
-	}
-	if(mlx_image_to_window(game.mlx, game.img_map, 0, 0) == -1)
-	{
-		mlx_close_window(game.mlx);
-		puts(mlx_strerror(mlx_errno));
-		return EXIT_FAILURE;
-	}
+	init_player(&game);
+	init_map(&game);
+	init_mlx(&game);
 
 	mlx_key_hook(game.mlx, key_hook, &game);
 	mlx_resize_hook(game.mlx, resize_callback, &game);
@@ -77,4 +90,3 @@ int32_t main(void)
 	mlx_terminate(game.mlx);
 	return EXIT_SUCCESS;
 }
-
