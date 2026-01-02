@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 13:40:25 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/02 22:01:54 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/02 22:09:22 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,20 @@ static int	check_map_mode(char *line)
 }
 
 /*
+** Helper function to check map and free
+*/
+static int	check_map_and_free(char *line)
+{
+	int	ret;
+
+	ret = check_map_mode(line);
+	free(line);
+	if (ret != 0)
+		return (1);
+	return (0);
+}
+
+/*
 ** Reads line by line until it finds the FIRST map line.
 ** On success:
 ** - metadata is complete
@@ -139,17 +153,15 @@ int	parse_identifiers_until_map(int fd, t_game *game, char **first_line)
 {
 	char	*line;
 	char	*trim;
-	int		in_map;
 
 	*first_line = NULL;
 	init_meta_defaults(game);
-	in_map = 0;
 	line = get_line(fd);
 	while (line)
 	{
-		if (in_map == 1 && check_map_mode(line))
-			return (free(line), 1);
-		if (in_map == 0 && is_map_line(line))
+		if (*first_line && check_map_and_free(line))
+			return (1);
+		if (!*first_line && is_map_line(line))
 		{
 			if (check_meta_complete(game))
 				return (free(line), 1);
