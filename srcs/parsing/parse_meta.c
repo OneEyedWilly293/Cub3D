@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 13:40:25 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/31 19:49:11 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/02 22:01:54 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,6 @@ static int	check_map_mode(char *line)
 	return (0);
 }
 
-
 /*
 ** Reads line by line until it finds the FIRST map line.
 ** On success:
@@ -136,12 +135,13 @@ static int	check_map_mode(char *line)
 **
 **	 For now, this function only enforeces the boundary and returns success.
 */
-int	parse_identifiers_until_map(int fd, t_game *game)
+int	parse_identifiers_until_map(int fd, t_game *game, char **first_line)
 {
 	char	*line;
 	char	*trim;
 	int		in_map;
 
+	*first_line = NULL;
 	init_meta_defaults(game);
 	in_map = 0;
 	line = get_line(fd);
@@ -149,14 +149,15 @@ int	parse_identifiers_until_map(int fd, t_game *game)
 	{
 		if (in_map == 1 && check_map_mode(line))
 			return (free(line), 1);
-		trim = skip_spaces(line);
 		if (in_map == 0 && is_map_line(line))
 		{
 			if (check_meta_complete(game))
 				return (free(line), 1);
-			in_map = 1;
+			*first_line = line;
+			return (0);
 		}
-		if (in_map == 0 && handle_one_meta_line(game, trim))
+		trim = skip_spaces(line);
+		if (handle_one_meta_line(game, trim))
 			return (free(line), 1);
 		free(line);
 		line = get_line(fd);

@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map_read.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/02 20:24:31 by jgueon            #+#    #+#             */
+/*   Updated: 2026/01/02 20:45:14 by jgueon           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "parse.h"
 #include "libft.h"
@@ -5,71 +16,97 @@
 // strlen but with a NULL check(and int instead of size_t)
 static int  row_len(char *s)
 {
-    int i;
+	int i;
 
-    i = 0;
-    while (s && s[i])
-        i++;
-    return (i);
-}
-
-static int  fill_row(t_game *game, int y, char *line)
-{
-    char    *row;
-
-    row = (char *)malloc((size_t)game->map_w + 1);
-    if (!row)
-        return (ft_error("Malloc failed\n"));
-    ft_memset(row, ' ', (size_t)game->map_w);
-    row[game->map_w] = '\0';
-    ft_memcpy(row, line, (size_t)row_len(line));
-    game->map[y] = row;
-    return (0);
+	i = 0;
+	while (s && s[i])
+		i++;
+	return (i);
 }
 
 void    free_map(char **map)
 {
-    int i;
+	int i;
 
-    i = 0;
-    while (map && map[i])
-    {
-        free(map[i]);
-        i++;
-    }
-    free(map);
+	i = 0;
+	while (map && map[i])
+	{
+		free(map[i]);
+		i++;
+	}
+	free(map);
 }
 
-static int  alloc_map(t_game *game)
+static int	push_line(char ***arr, int *n, char *line)
 {
-    game->map = (char **)malloc(sizeof(char *) * (size_t)(game->map_h + 1));
-    if (!game->map)
-        return (ft_error("Malloc failed\n"));
-    game->map[game->map_h] = NULL;
-    return (0);
+	char	**new_arr;
+	int		i;
+
+	new_arr = (char **)malloc(sizeof(char *) * (size_t)(*n + 2));
+	if (!new_arr)
+		return (ft_error("Malloc failed\n"));
+	i = 0;
+	while (i < *n)
+	{
+		new_arr[i] = (*arr)[i];
+		i++;
+	}
+	new_arr[*n] = line;
+	new_arr[*n + 1] = NULL;
+	free(*arr);
+	*arr = new_arr;
+	*n += 1;
+	return (0);
 }
 
-int read_map(int fd, t_game *game)
+static int	build_grid(t_game *game, char **lines)
 {
-    char    *line;
-    int     y;
+	int		y;
+	char	*row;
 
-    game->map_h = 0;
-    game->map_w = 0;
-    line = get_line(fd);
-    while (line)
-    {
-        if (row_len(line) > game->map_w)
-            game->map_w = row_len(line);
-        game->map_h++;
-        free(line);
-        line = get_line(fd);
-    }
-    if (game->map_h == 0)
-        return (ft_error(EMPTY_MSG));
-    if (alloc_map(game))
-        return (1);
-    close(fd);
-    fd = -1;
-    return (0);
+	game->map = (char **)malloc(sizeof(char *) * (size_t)(game->map_h + 1));
+	if (!game->map)
+		return (ft_error("Malloc failed\n"));
+	game->map[game->map_h] = NULL;
+	y = 0;
+	while (y < game->map_h)
+	{
+		row = (char *)malloc((size_t)game->map_w + 1);
+		if (!row)
+			return (ft_error("Malloc failed\n"));
+		ft_memset(row, ' ', (size_t)game->map_w);
+		row[game->map_w] = '\0';
+		ft_memcpy(row, lines[y], (size_t)row_len(lines[y]));
+		game->map[y] = row;
+		y++;
+	}
+	return (0);
+}
+
+int read_map(int fd, t_game *game, char *first_line)
+{
+	char 	**lines;
+	char    *line;
+	int     i;
+
+	lines = NULL;
+	game->map = NULL;
+	game->map_h = 0;
+	game->map_w = row_len(first_line);
+	if (push_line(&lines, &game->map_h, first_line))
+		return (1);
+	line = get_line(fd);
+	while (line)
+	{
+		i = row_line(line);
+		if (i > game->map_w)
+			game->map_w = i;
+		if (push_line(&lines, &game->map_h, line))
+			return (free_map(lines), 1);
+		line = get_line(fd);
+	}
+	if (build_grid(game, lines))
+		return (free_map(lines), 1);
+	free_map(lines);
+	return (0);
 }
