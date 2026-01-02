@@ -1,9 +1,5 @@
 #include "../includes/game.h"
 
-void	draw_border(t_game *game);
-void draw_ray_minimap(t_game *g);
-void	drawMap2d_map(t_game *game);
-
 // Draw the map
 void drawMap2D(void *param)
 {
@@ -73,7 +69,6 @@ void	drawMap2d_map(t_game *game)
 // 		mlx_put_pixel(game->img_map, game->map2d.end_x - 1, py, border_color);
 // 	}
 // }
-
 
 void draw_ray_minimap(t_game *game)
 {

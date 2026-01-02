@@ -39,30 +39,39 @@ void	init_map(t_game *game)
 
 int	init_mlx(t_game *game)
 {
-	if (!(game->mlx = mlx_init(WIN_W, WIN_H, "MLX42", true))) {
+	game->mlx = mlx_init(WIN_W, WIN_H, "MLX42", true);
+	// game->mlx = NULL;
+	if(!game->mlx) 
+	{
 		puts(mlx_strerror(mlx_errno));
 		return EXIT_FAILURE;
 	}
 	mlx_set_window_title(game->mlx, "title");
-	if(!(game->img_3d  = mlx_new_image(game->mlx, WIN_W, WIN_H)))
+	game->img_3d = mlx_new_image(game->mlx, WIN_W, WIN_H);
+	// game->img_3d = NULL;
+	if(!game->img_3d)
 	{
 		mlx_close_window(game->mlx);
 		puts(mlx_strerror(mlx_errno));
 		return EXIT_FAILURE;
 	}
-	if(!(game->img_map = mlx_new_image(game->mlx, MINIMAP_SIZE, MINIMAP_SIZE)))
+	game->img_map = mlx_new_image(game->mlx, MINIMAP_SIZE, MINIMAP_SIZE);
+	// game->img_map = NULL;
+	if(!game->img_map)
 	{
 		mlx_close_window(game->mlx);
 		puts(mlx_strerror(mlx_errno));
 		return EXIT_FAILURE;
 	}
 	if(mlx_image_to_window(game->mlx, game->img_3d, 0, 0) == -1)
+	// if(1)
 	{
 		mlx_close_window(game->mlx);
 		puts(mlx_strerror(mlx_errno));
 		return EXIT_FAILURE;
 	}
 	if(mlx_image_to_window(game->mlx, game->img_map, 0, 0) == -1)
+	// if(1)
 	{
 		mlx_close_window(game->mlx);
 		puts(mlx_strerror(mlx_errno));
@@ -79,8 +88,11 @@ int32_t main(void)
 
 	init_player(&game);
 	init_map(&game);
-	init_mlx(&game);
-
+	if(init_mlx(&game) == 1)
+	{
+		printf("error\n");
+		return EXIT_FAILURE;
+	}
 	mlx_key_hook(game.mlx, key_hook, &game);
 	mlx_resize_hook(game.mlx, resize_callback, &game);
 	mlx_loop_hook(game.mlx, update, &game);

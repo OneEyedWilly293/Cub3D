@@ -1,37 +1,37 @@
 #include "../includes/game.h"
 
-double cast_ray(double ray_angle, t_game *g)
+double cast_ray(double ray_angle, t_game *game)
 {
 	int hit = 0;
 	int side;
 
-	init_ray_struct(ray_angle, g);
+	init_ray_struct(ray_angle, game);
 	while (!hit)
 	{
-		if (g->ray.side_dist_x < g->ray.side_dist_y)
+		if (game->ray.side_dist_x < game->ray.side_dist_y)
 		{
-			g->ray.side_dist_x += g->ray.delta_dist_x;
-			g->ray.map_x += g->ray.step_x;
+			game->ray.side_dist_x += game->ray.delta_dist_x;
+			game->ray.map_x += game->ray.step_x;
 			side = 0;
 		}
 		else
 		{
-			g->ray.side_dist_y += g->ray.delta_dist_y;
-			g->ray.map_y += g->ray.step_y;
+			game->ray.side_dist_y += game->ray.delta_dist_y;
+			game->ray.map_y += game->ray.step_y;
 			side = 1;
 		}
 
-		if (g->ray.map_y < 0 || g->ray.map_y >= MAPY || g->ray.map_x < 0 || g->ray.map_x >= MAPX)
+		if (game->ray.map_y < 0 || game->ray.map_y >= MAPY || game->ray.map_x < 0 || game->ray.map_x >= MAPX)
 			return 1000; // far away to prevent crash
 
-		if (g->map[g->ray.map_y * MAPX + g->ray.map_x] == 1)
+		if (game->map[game->ray.map_y * MAPX + game->ray.map_x] == 1)
 			hit = 1;
 	}
 
 	if (side == 0)
-		return (g->ray.map_x - g->player.x + (1 - g->ray.step_x) / 2) / g->ray.ray_dir_x;
+		return (game->ray.map_x - game->player.x + (1 - game->ray.step_x) / 2) / game->ray.ray_dir_x;
 	else
-		return (g->ray.map_y - g->player.y + (1 - g->ray.step_y) / 2) / g->ray.ray_dir_y;
+		return (game->ray.map_y - game->player.y + (1 - game->ray.step_y) / 2) / game->ray.ray_dir_y;
 }
 
 void	init_ray_struct(double ray_angle, t_game *g)

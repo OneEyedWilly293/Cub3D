@@ -108,6 +108,9 @@ void		resize_callback(int32_t new_width, int32_t new_height, void *param);
 double		cast_ray(double ray_angle, t_game *g);
 void		init_ray_struct(double ray_angle, t_game *g);
 void		key_hook(mlx_key_data_t keydata, void *param);
+void		draw_ray_minimap(t_game *g);
+void		drawMap2d_map(t_game *game);
+void		draw_border(t_game *game);
 
 void		up_down(t_game *game);
 void		left_right(t_game *game);

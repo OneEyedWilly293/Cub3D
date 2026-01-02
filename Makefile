@@ -78,4 +78,4 @@ run: all
 
 .SECONDARY: $(OBJ)
 .SECONDARY: $(OBJ_BONUS)
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re bonus run
