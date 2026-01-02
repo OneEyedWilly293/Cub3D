@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 01:22:11 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/03 01:36:16 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/03 01:56:37 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,28 +26,40 @@ static int	is_valid_map_char(char c)
 	return (0);
 }
 
-static int check_player_and_chars(t_game *game)
+static int	store_player(t_game *g, int y, int x, char c)
 {
-	int	y;
-	int	x;
-	int	players;
+	if (g->player_found)
+		return (ft_error(PLAYER_COUNT_MSG));
+	g->player_found = 1;
+	g->player_dir = c;
+	g->player_x = x;
+	g->player_y = y;
+	return (0);
+}
 
+static int check_player_and_chars(t_game *g)
+{
+	int		y;
+	int		x;
+	char 	c;
+
+	g->player_found = 0;
 	y = 0;
-	players = 0;
-	while (y < game->map_h)
+	while (y < g->map_h)
 	{
 		x = 0;
-		while (x < game->map_w)
+		while (x < g->map_w)
 		{
-			if (!is_valid_map_char(game->map[y][x]))
+			c = g->map[y][x];
+			if (!is_valid_map_char(c))
 				return (ft_error(INVALID_MAP_CHAR_MSG));
-			if (is_player(game->map[y][x]))
-				players++;
+			if (is_player(c) && store_player(g, y, x, c))
+				return (1);;
 			x++;
 		}
 		y++;
 	}
-	if (players != 1)
+	if (!g->player_found)
 		return (ft_error(PLAYER_COUNT_MSG));
 	return (0);
 }

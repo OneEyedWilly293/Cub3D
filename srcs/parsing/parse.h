@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 18:35:20 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/03 01:21:23 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/03 01:48:32 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,15 @@ typedef struct	s_game
 	t_color	floor;
 	t_color	ceiling;
 	t_textures	tex;
+
+	char	**map;	/* padded grid with spaces*/
+	int		map_w;
+	int		map_h;
+
+	int		player_found; /* 0 = not found, 1 = found */
+	char	player_dir; /* 'N', 'S', 'E', 'W' */
+	int		player_x;	/* cell x index in grid */
+	int		player_y;	/* cell y index in grid */
 }	t_game;
 
 void	ft_putstr_err(const char *s);
