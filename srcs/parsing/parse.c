@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 18:19:14 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/22 18:32:52 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/04 19:06:56 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,11 @@ static int	check_extension(const char *file)
 
 int check_args(int argc, char **argv)
 {
-	int fd;
-
 	if (argc < 2)
 		return(ft_error(NO_MAP));
 	if (argc > 2)
 		return(ft_error(MANY_ARG_MSG));
 	if (!check_extension(argv[1]))
 		return (ft_error(FILE_EXT_MSG));
-	fd = open(argv[1], O_RDONLY);
-	if (fd < 0)
-		return (ft_error(CANT_OPEN_MAP));
-	close(fd);
 	return (0);
 }
