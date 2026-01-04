@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 18:35:20 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/03 01:48:32 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/04 15:47:41 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,5 +109,9 @@ int	parse_identifiers_until_map(int fd, t_game *game, char **first_line);
 int	read_map(int fd, t_game *game, char *first_line);
 void	free_map(char **map);
 int	validate_map(t_game *game);
+/* handoff functions to fill t_player spawn into Eduardoo's flattened int *map.*/
+int	*map_to_int(const t_game *g);
+int	setup_partner_spawn(const t_game *src, void *dst_game);
+
 
 #endif
