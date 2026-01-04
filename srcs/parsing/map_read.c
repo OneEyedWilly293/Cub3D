@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 20:24:31 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/02 20:45:14 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/04 18:41:30 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,16 @@ static int	push_line(char ***arr, int *n, char *line)
 	return (0);
 }
 
+static void	free_partial_grid(char **grid, int y)
+{
+	while (y > 0)
+	{
+		y--;
+		free(grid[y]);
+	}
+	free(grid);
+}
+
 static int	build_grid(t_game *game, char **lines)
 {
 	int		y;
@@ -73,7 +83,8 @@ static int	build_grid(t_game *game, char **lines)
 	{
 		row = (char *)malloc((size_t)game->map_w + 1);
 		if (!row)
-			return (ft_error("Malloc failed\n"));
+			return (free_partial_grid(game->map, y), game->map = NULL,
+				ft_error("Malloc failed\n"));
 		ft_memset(row, ' ', (size_t)game->map_w);
 		row[game->map_w] = '\0';
 		ft_memcpy(row, lines[y], (size_t)row_len(lines[y]));
@@ -98,7 +109,7 @@ int read_map(int fd, t_game *game, char *first_line)
 	line = get_line(fd);
 	while (line)
 	{
-		i = row_line(line);
+		i = row_len(line);
 		if (i > game->map_w)
 			game->map_w = i;
 		if (push_line(&lines, &game->map_h, line))
