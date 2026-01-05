@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 13:40:25 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/02 22:11:37 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/05 19:57:53 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,6 @@ static void	init_meta_defaults(t_game *game)
 */
 static int	handle_one_meta_line(t_game *game, char *trim)
 {
-	// int	tmp[3];
-
 	if (handle_texture_line(game, trim) != 0)
 		return (1);
 	if (trim[0] == 'F' || trim[0] == 'C')
@@ -116,29 +114,33 @@ static int	check_meta_complete(t_game *game)
 
 /*
 ** Helper function to trim a few lines for parse_identifiers_until_map().
+** COMMENTED OUT 05.01 for dead code in parse_identifiers_until_map().
+** DELETE LATER AFTER TESTING
 */
-static int	check_map_mode(char *line)
-{
-	if (is_empty_line(line))
-		return (ft_error(EMPTY_LINE_IN_MAP_MSG));
-	if (!is_map_line(line))
-		return (ft_error(META_AFTER_MAP_MSG));
-	return (0);
-}
+// static int	check_map_mode(char *line)
+// {
+// 	if (is_empty_line(line))
+// 		return (ft_error(EMPTY_LINE_IN_MAP_MSG));
+// 	if (!is_map_line(line))
+// 		return (ft_error(META_AFTER_MAP_MSG));
+// 	return (0);
+// }
 
 /*
 ** Helper function to check map and free
+** ** COMMENTED OUT 05.01 for dead code in parse_identifiers_until_map().
+** DELETE LATER AFTER TESTING
 */
-static int	check_map_and_free(char *line)
-{
-	int	ret;
+// static int	check_map_and_free(char *line)
+// {
+// 	int	ret;
 
-	ret = check_map_mode(line);
-	free(line);
-	if (ret != 0)
-		return (1);
-	return (0);
-}
+// 	ret = check_map_mode(line);
+// 	free(line);
+// 	if (ret != 0)
+// 		return (1);
+// 	return (0);
+// }
 
 /*
 ** Reads line by line until it finds the FIRST map line.
@@ -159,8 +161,6 @@ int	parse_identifiers_until_map(int fd, t_game *game, char **first_line)
 	line = get_line(fd);
 	while (line)
 	{
-		if (*first_line && check_map_and_free(line))
-			return (1);
 		if (!*first_line && is_map_line(line))
 		{
 			if (check_meta_complete(game))
