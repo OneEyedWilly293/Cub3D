@@ -21,8 +21,6 @@ void ft_hook(void* param)
 	up_down(game);
 	left_right(game);
 	horizontal_rotation(game);
-	vertical_rotation(game);
-	jump(game);
 }
 
 void clear_image(mlx_image_t *img, uint32_t color)

@@ -20,7 +20,7 @@
 
 #define MAP_W (WIN_W / 2)
 #define MAP_H (WIN_H / 2)
-#define MAPX  32	//map width
+#define MAPX  32	//map width-- change to gridx
 #define MAPY  16	//map height
 				// #define TILE_SIZE (MAP_W / MAPX)   // Size of each tile (in pixels)
 #define PLAYER_SIZE 10   // Size of player (in pixels)
@@ -80,6 +80,19 @@ typedef	struct s_map2d {
 	int		p_py;
 } t_map2d;
 
+typedef struct s_miniray {
+	double	start_angle;
+	double	angle_step;
+	double	ray_angle;
+	double	ray_dist;
+	double	x;
+	double	y;
+	double	rx;
+	double	ry;
+	double	px;
+	double	py;
+} t_miniray;
+
 typedef struct s_game {
 	bool		show_map;
 	mlx_t		*mlx;
@@ -93,6 +106,7 @@ typedef struct s_game {
 	int         map_height;
 	int			tile_size;
 	t_raycast	ray;
+	t_miniray	m_ray;
 	t_map2d		map2d;
 } t_game;
 

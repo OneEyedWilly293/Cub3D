@@ -20,14 +20,11 @@ double cast_ray(double ray_angle, t_game *game)
 			game->ray.map_y += game->ray.step_y;
 			side = 1;
 		}
-
 		if (game->ray.map_y < 0 || game->ray.map_y >= MAPY || game->ray.map_x < 0 || game->ray.map_x >= MAPX)
 			return 1000; // far away to prevent crash
-
 		if (game->map[game->ray.map_y * MAPX + game->ray.map_x] == 1)
 			hit = 1;
 	}
-
 	if (side == 0)
 		return (game->ray.map_x - game->player.x + (1 - game->ray.step_x) / 2) / game->ray.ray_dir_x;
 	else

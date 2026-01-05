@@ -1,5 +1,14 @@
 #include "../includes/game.h"
 
+static	void	update_map2d(int x, int y, t_game *game)
+{
+		game->map2d.tile = game->map[y * MAPX + x];
+		game->map2d.start_x = (int)(x * game->map2d.scale_x);
+		game->map2d.start_y = (int)(y * game->map2d.scale_y);
+		game->map2d.end_x = (int)((x + 1) * game->map2d.scale_x);
+		game->map2d.end_y = (int)((y + 1) * game->map2d.scale_y);
+}
+
 // Draw the map
 void drawMap2D(void *param)
 {
@@ -16,13 +25,8 @@ void drawMap2D(void *param)
 		x = 0;
 		while(x < MAPX)
 		{
-			game->map2d.tile = game->map[y * MAPX + x];
-			game->map2d.start_x = (int)(x * game->map2d.scale_x);
-			game->map2d.start_y = (int)(y * game->map2d.scale_y);
-			game->map2d.end_x = (int)((x + 1) * game->map2d.scale_x);
-			game->map2d.end_y = (int)((y + 1) * game->map2d.scale_y);
+			update_map2d(x, y, game);
 			drawMap2d_map(game);
-			// draw_border(game);
 			++x;
 		}
 		++y;
@@ -54,59 +58,30 @@ void	drawMap2d_map(t_game *game)
 	}
 }
 
-// void	draw_border(t_game *game)
-// {
-// 	int border_color = (game->map2d.tile == 1) ? ft_pixel(BLACK) : ft_pixel(WHITE);
-//
-// 	for (int px = game->map2d.start_x; px < game->map2d.end_x; ++px)
-// 	{
-// 		mlx_put_pixel(game->img_map, px, game->map2d.start_y, border_color);
-// 		mlx_put_pixel(game->img_map, px, game->map2d.end_y - 1, border_color);
-// 	}
-// 	for (int py = game->map2d.start_y; py < game->map2d.end_y; ++py)
-// 	{
-// 		mlx_put_pixel(game->img_map, game->map2d.start_x, py, border_color);
-// 		mlx_put_pixel(game->img_map, game->map2d.end_x - 1, py, border_color);
-// 	}
-// }
-
 void draw_ray_minimap(t_game *game)
 {
-	double	start_angle;
-	double	angle_step;
-	double	ray_angle;
-	double	ray_dist;
-	double	x;
-	double	y;
-	double	rx;
-	double	ry;
-	double	px;
-	double	py;
 	double	i;
 	int		r;
 
-	start_angle = game->player.da - (double)FOV / 2 * (FOV / game->map_width) - (FOV / 2);
-	angle_step = FOV / NUM_RAYS;
+	game->m_ray.start_angle = game->player.da - (double)FOV / 2 * (FOV / game->map_width) - (FOV / 2);
+	game->m_ray.angle_step = FOV / NUM_RAYS;
 	r = 0;
-
 	while(r < NUM_RAYS)
 	{
-		ray_angle = start_angle + r * angle_step;
-		ray_dist = cast_ray(ray_angle, game);
-
-		x = game->player.x;
-		y = game->player.y;
+		game->m_ray.ray_angle = game->m_ray.start_angle + r * game->m_ray.angle_step;
+		game->m_ray.ray_dist = cast_ray(game->m_ray.ray_angle, game);
+		game->m_ray.x = game->player.x;
+		game->m_ray.y = game->player.y;
+		// update_map2d(0, 0, game, true);
 		i = 0;
-		while(i < ray_dist)
+		while(i < game->m_ray.ray_dist)
 		{
-			rx = x + cos(ray_angle) * i;
-			ry = y + sin(ray_angle) * i;
-
-			px = (int)(rx * game->map2d.scale_x);
-			py = (int)(ry * game->map2d.scale_y);
-
-			if (px >= 0 && px < MINIMAP_SIZE && py >= 0 && py < MINIMAP_SIZE)
-				mlx_put_pixel(game->img_map, px, py, ft_pixel(RED));
+			game->m_ray.rx = game->m_ray.x + cos(game->m_ray.ray_angle) * i;
+			game->m_ray.ry = game->m_ray.y + sin(game->m_ray.ray_angle) * i;
+			game->m_ray.px = (int)(game->m_ray.rx * game->map2d.scale_x);
+			game->m_ray.py = (int)(game->m_ray.ry * game->map2d.scale_y);
+			if (game->m_ray.px >= 0 && game->m_ray.px < MINIMAP_SIZE && game->m_ray.py >= 0 && game->m_ray.py < MINIMAP_SIZE)
+				mlx_put_pixel(game->img_map, game->m_ray.px, game->m_ray.py, ft_pixel(RED));
 			i += 0.02;
 		}
 		r++;
