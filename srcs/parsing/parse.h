@@ -6,10 +6,12 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 18:35:20 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/04 18:55:26 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/05 16:18:53 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
+/* CHECK MAP PLAYER START DIRECTION/ FACE DIRECTION  */
 #ifndef PARSE_H
 # define PARSE_H
 

@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 20:24:31 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/04 18:41:30 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/05 16:59:24 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int read_map(int fd, t_game *game, char *first_line)
 	game->map_h = 0;
 	game->map_w = row_len(first_line);
 	if (push_line(&lines, &game->map_h, first_line))
-		return (1);
+		return (free(first_line), 1);
 	line = get_line(fd);
 	while (line)
 	{
@@ -113,7 +113,7 @@ int read_map(int fd, t_game *game, char *first_line)
 		if (i > game->map_w)
 			game->map_w = i;
 		if (push_line(&lines, &game->map_h, line))
-			return (free_map(lines), 1);
+			return (free(line), free_map(lines), 1);
 		line = get_line(fd);
 	}
 	if (build_grid(game, lines))
