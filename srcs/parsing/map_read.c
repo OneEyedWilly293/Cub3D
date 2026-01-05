@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 20:24:31 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/05 16:59:24 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/05 17:08:28 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int	push_line(char ***arr, int *n, char *line)
 
 	new_arr = (char **)malloc(sizeof(char *) * (size_t)(*n + 2));
 	if (!new_arr)
-		return (ft_error("Malloc failed\n"));
+		return (1);
 	i = 0;
 	while (i < *n)
 	{
@@ -105,7 +105,7 @@ int read_map(int fd, t_game *game, char *first_line)
 	game->map_h = 0;
 	game->map_w = row_len(first_line);
 	if (push_line(&lines, &game->map_h, first_line))
-		return (free(first_line), 1);
+		return (free(first_line), ft_error("Malloc failed\n"));
 	line = get_line(fd);
 	while (line)
 	{
@@ -113,7 +113,7 @@ int read_map(int fd, t_game *game, char *first_line)
 		if (i > game->map_w)
 			game->map_w = i;
 		if (push_line(&lines, &game->map_h, line))
-			return (free(line), free_map(lines), 1);
+			return (free(line), free_map(lines), ft_error("Malloc failed\n"));
 		line = get_line(fd);
 	}
 	if (build_grid(game, lines))
