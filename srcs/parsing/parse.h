@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 18:35:20 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/05 16:18:53 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/05 20:08:31 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ int	validate_map(t_game *game);
 int	parse_scene(const char *path, t_game *game);
 void	init_parser_game(t_game *g);
 void	free_parser_game(t_game *game);
-
+int		validate_map_closed(t_game *g);
 
 
 #endif
