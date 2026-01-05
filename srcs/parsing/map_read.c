@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 20:24:31 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/05 17:08:28 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/05 17:47:00 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 #include "libft.h"
 
 // strlen but with a NULL check(and int instead of size_t)
-static int  row_len(char *s)
+static int	row_len(char *s)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (s && s[i])
@@ -24,9 +24,9 @@ static int  row_len(char *s)
 	return (i);
 }
 
-void    free_map(char **map)
+void	free_map(char **map)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (map && map[i])
@@ -76,15 +76,18 @@ static int	build_grid(t_game *game, char **lines)
 
 	game->map = (char **)malloc(sizeof(char *) * (size_t)(game->map_h + 1));
 	if (!game->map)
-		return (ft_error("Malloc failed\n"));
+		return (1);
 	game->map[game->map_h] = NULL;
 	y = 0;
 	while (y < game->map_h)
 	{
 		row = (char *)malloc((size_t)game->map_w + 1);
 		if (!row)
-			return (free_partial_grid(game->map, y), game->map = NULL,
-				ft_error("Malloc failed\n"));
+		{
+			free_partial_grid(game->map, y);
+			game->map = NULL;
+			return (1);
+		}
 		ft_memset(row, ' ', (size_t)game->map_w);
 		row[game->map_w] = '\0';
 		ft_memcpy(row, lines[y], (size_t)row_len(lines[y]));
@@ -94,11 +97,11 @@ static int	build_grid(t_game *game, char **lines)
 	return (0);
 }
 
-int read_map(int fd, t_game *game, char *first_line)
+int	read_map(int fd, t_game *game, char *first_line)
 {
-	char 	**lines;
-	char    *line;
-	int     i;
+	char	**lines;
+	char	*line;
+	int		i;
 
 	lines = NULL;
 	game->map = NULL;
@@ -117,7 +120,7 @@ int read_map(int fd, t_game *game, char *first_line)
 		line = get_line(fd);
 	}
 	if (build_grid(game, lines))
-		return (free_map(lines), 1);
+		return (free_map(lines), ft_error("Malloc failed\n"));
 	free_map(lines);
 	return (0);
 }
