@@ -64,14 +64,15 @@ int	init_mlx(t_game *game)
 		return EXIT_FAILURE;
 	}
 	if(mlx_image_to_window(game->mlx, game->img_3d, 0, 0) == -1)
-	// if(1)
+		// if(1)
 	{
 		mlx_close_window(game->mlx);
 		puts(mlx_strerror(mlx_errno));
 		return EXIT_FAILURE;
 	}
+	// printf("img_3d instance count: %zu\n", game->img_3d->count);
 	if(mlx_image_to_window(game->mlx, game->img_map, 0, 0) == -1)
-	// if(1)
+		// if(1)
 	{
 		mlx_close_window(game->mlx);
 		puts(mlx_strerror(mlx_errno));
@@ -86,6 +87,8 @@ int32_t main(void)
 	t_game game;
 	ft_memset(&game, 0, sizeof(t_game));
 
+	game.map_width = MAPX;
+	game.map_height = MAPY;
 	init_player(&game);
 	init_map(&game);
 	if(init_mlx(&game) == 1)

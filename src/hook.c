@@ -25,23 +25,22 @@ void ft_hook(void* param)
 	jump(game);
 }
 
-void clear_image(mlx_image_t *img, uint32_t color, int width, int height)
+void clear_image(mlx_image_t *img, uint32_t color)
 {
-	int	y;
-	int x;
+	uint32_t *p;
+	int count;
+	int i;
 
-	y = 0;
-	while(y < height)
+	p = (uint32_t *)img->pixels;
+	count = img->width * img->height;
+	i = 0;
+	while(i < count)
 	{
-		x = 0;
-		while(x < width)
-		{
-			mlx_put_pixel(img, x, y, color);
-			x++;
-		}
-		y++;
+		p[i] = color;
+		i++;
 	}
 }
+
 
 // Update the game state
 void update(void* param)
@@ -50,8 +49,8 @@ void update(void* param)
 
 	game = (t_game *)param;
 
-	clear_image(game->img_3d, 0x000000FF, game->map_width, game->map_height);
-	clear_image(game->img_map, 0x000000FF, MINIMAP_SIZE, MINIMAP_SIZE);
+	clear_image(game->img_3d, 0x000000FF);
+	clear_image(game->img_map, 0x000000FF);
 	ft_hook(game);
 	drawMap3D(game);       
 	if(game->show_map == true)

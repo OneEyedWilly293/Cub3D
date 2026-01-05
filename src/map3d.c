@@ -14,35 +14,37 @@ void draw_column(mlx_image_t *img, int x, int top, int bottom, uint32_t color)
 
 void drawMap3D(void *param)
 {
-	t_game	*game;
-	double	dist;
-	int		wall_height;
-	int		wall_top;
-	int		wall_bottom;
-	int		x;
-	double	ray_angle;
-
-	game = (t_game *)param;
+	t_game *game = param;
+	int screen_w;
+	int screen_h;
+	int x;
+	double ray_angle;
+	double dist;
+	int	wall_height;
+	int	wall_top;
+	int	wall_bottom;
 
 	x = 0;
-	while(x < game->map_width)
+	screen_w = game->img_3d->width;
+	screen_h = game->img_3d->height;
+	while(x < screen_w)
 	{
-		ray_angle = game->player.da - (double)FOV / 2 + x * (FOV / game->map_width);
-		dist = cast_ray(ray_angle, game);
-		// fisheye correction
-		dist *= cos(ray_angle - game->player.da);
+		ray_angle = game->player.da
+			- (double)FOV / 2
+			+ ((double)x / screen_w) * FOV;
 
-		// prevent extreme wall heights
+		dist = cast_ray(ray_angle, game);
+		dist *= cos(ray_angle - game->player.da);
 		if (dist < 0.01)
 			dist = 0.01;
 
-		wall_height = ((double)game->map_height / dist);
-		wall_top = (game->map_height / 2) - (wall_height / 2) + game->player.camera;
-		wall_bottom = (game->map_height / 2) + (wall_height / 2) + game->player.camera;
+		wall_height = (int)((double)screen_h / dist);
 
-		// clamp to screen
+		wall_top = (screen_h / 2) - (wall_height / 2) + game->player.camera;
+		wall_bottom = wall_top + wall_height;
+
 		if (wall_top < 0) wall_top = 0;
-		if (wall_bottom >= game->map_height) wall_bottom = game->map_height - 1;
+		if (wall_bottom >= screen_h) wall_bottom = screen_h - 1;
 
 		draw_column(game->img_3d, x, wall_top, wall_bottom, 0x0000FFFF);
 		x++;
