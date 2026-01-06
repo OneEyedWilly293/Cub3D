@@ -31,7 +31,7 @@ void	init_map(t_game *game)
 	size_t map_size = sizeof(map) / sizeof(map[0]);
 
 	game->map = malloc(sizeof(int) * map_size);
-	game->tile_size = MAP_W / MAPX;
+	game->tile_size = MAP_W / GRIDX;
 	if (!game->map)
 		exit(EXIT_FAILURE);
 	ft_memcpy(game->map, map, sizeof(map));
@@ -81,8 +81,8 @@ int32_t main(void)
 	t_game game;
 
 	ft_memset(&game, 0, sizeof(t_game));
-	game.map_width = MAPX;
-	game.map_height = MAPY;
+	game.map_width = GRIDX;
+	game.map_height = GRIDY;
 	init_player(&game);
 	init_map(&game);
 	if(init_mlx(&game) == 1)
@@ -90,6 +90,7 @@ int32_t main(void)
 		printf("error\n");
 		return EXIT_FAILURE;
 	}
+	init_mouse(&game);
 	mlx_key_hook(game.mlx, key_hook, &game);
 	mlx_resize_hook(game.mlx, resize_callback, &game);
 	mlx_loop_hook(game.mlx, update, &game);

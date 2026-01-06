@@ -10,7 +10,7 @@ void	up_down(t_game *game)
 		move_x = cos(game->player.da) * PLAYER_SPEED;
 		move_y = sin(game->player.da) * PLAYER_SPEED;
 
-		if (game->map[(int)(game->player.y + move_y) * MAPX
+		if (game->map[(int)(game->player.y + move_y) * GRIDX
 				+ (int)(game->player.x + move_x)] == 0)
 		{
 			game->player.x += move_x;
@@ -22,7 +22,7 @@ void	up_down(t_game *game)
 		move_x = cos(game->player.da) * PLAYER_SPEED;
 		move_y = sin(game->player.da) * PLAYER_SPEED;
 
-		if (game->map[(int)(game->player.y - move_y) * MAPX
+		if (game->map[(int)(game->player.y - move_y) * GRIDX
 				+ (int)(game->player.x - move_x)] == 0)
 		{
 			game->player.x -= move_x;
@@ -41,7 +41,7 @@ void	left_right(t_game *game)
 		move_x = cos(game->player.da - M_PI_2) * PLAYER_SPEED;
 		move_y = sin(game->player.da - M_PI_2) * PLAYER_SPEED;
 
-		if (game->map[(int)(game->player.y + move_y) * MAPX
+		if (game->map[(int)(game->player.y + move_y) * GRIDX
 				+ (int)(game->player.x + move_x)] == 0)
 		{
 			game->player.x += move_x;
@@ -53,7 +53,7 @@ void	left_right(t_game *game)
 		move_x = cos(game->player.da + M_PI_2) * PLAYER_SPEED;
 		move_y = sin(game->player.da + M_PI_2) * PLAYER_SPEED;
 
-		if (game->map[(int)(game->player.y + move_y) * MAPX
+		if (game->map[(int)(game->player.y + move_y) * GRIDX
 				+ (int)(game->player.x + move_x)] == 0)
 		{
 			game->player.x += move_x;
@@ -72,4 +72,10 @@ void	horizontal_rotation(t_game *game)
 	{
 		game->player.da += 0.05f;
 	}
+}
+
+void	init_mouse(t_game *game)
+{
+	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_DISABLED);
+	mlx_cursor_hook(game->mlx, mouse_hook, game);
 }

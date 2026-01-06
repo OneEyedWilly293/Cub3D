@@ -20,9 +20,9 @@
 
 #define MAP_W (WIN_W / 2)
 #define MAP_H (WIN_H / 2)
-#define MAPX  32	//map width-- change to gridx
-#define MAPY  16	//map height
-				// #define TILE_SIZE (MAP_W / MAPX)   // Size of each tile (in pixels)
+#define GRIDX  32	//map width-- change to gridx
+#define GRIDY  16	//map height
+					// #define TILE_SIZE (MAP_W / MAPX)   // Size of each tile (in pixels)
 #define PLAYER_SIZE 10   // Size of player (in pixels)
 #define PLAYER_SPEED 0.1  // Size of player (in pixels)
 #define CAMERA_SPEED 5
@@ -30,6 +30,7 @@
 #define JUMP_SPEED 0.1      // initial upward speed
 #define GRAVITY    0.005    // downward acceleration
 #define MAX_JUMP   0.3      // maximum camera height during jump
+#define MOUSE_SENSITIVITY 0.0009
 
 
 #define MAX_DOF 8 
@@ -108,6 +109,7 @@ typedef struct s_game {
 	t_raycast	ray;
 	t_miniray	m_ray;
 	t_map2d		map2d;
+	double delta_time;
 } t_game;
 
 int32_t		ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
@@ -125,6 +127,8 @@ void		key_hook(mlx_key_data_t keydata, void *param);
 void		draw_ray_minimap(t_game *g);
 void		drawMap2d_map(t_game *game);
 void		draw_border(t_game *game);
+void		init_mouse(t_game *game);
+void		mouse_hook(double xpos, double ypos, void *param);
 
 void		up_down(t_game *game);
 void		left_right(t_game *game);

@@ -2,7 +2,7 @@
 
 static	void	update_map2d(int x, int y, t_game *game)
 {
-		game->map2d.tile = game->map[y * MAPX + x];
+		game->map2d.tile = game->map[y * GRIDX + x];
 		game->map2d.start_x = (int)(x * game->map2d.scale_x);
 		game->map2d.start_y = (int)(y * game->map2d.scale_y);
 		game->map2d.end_x = (int)((x + 1) * game->map2d.scale_x);
@@ -17,13 +17,13 @@ void drawMap2D(void *param)
 	int	x;
 
 	game = (t_game *)param;
-	game->map2d.scale_x = (double)MINIMAP_SIZE / (double)MAPX;
-	game->map2d.scale_y = (double)MINIMAP_SIZE / (double)MAPY;
+	game->map2d.scale_x = (double)MINIMAP_SIZE / (double)GRIDX;
+	game->map2d.scale_y = (double)MINIMAP_SIZE / (double)GRIDY;
 	y = 0;
-	while(y < MAPY)
+	while(y < GRIDY)
 	{
 		x = 0;
-		while(x < MAPX)
+		while(x < GRIDX)
 		{
 			update_map2d(x, y, game);
 			drawMap2d_map(game);

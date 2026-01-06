@@ -58,7 +58,7 @@ void resize_callback(int32_t new_width, int32_t new_height, void *param)
 	game->window_height = new_height;
 	game->map_width = new_width / 2;
 	game->map_height = new_height / 2;
-	game->tile_size = (float)game->map_width / MAPX;
+	game->tile_size = (float)game->map_width / GRIDX;
 	if (game->img_3d)
 		mlx_delete_image(game->mlx, game->img_3d);
 	if (game->img_map)
