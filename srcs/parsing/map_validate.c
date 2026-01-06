@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 01:22:11 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/06 23:10:59 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/06 23:16:01 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,17 +61,6 @@ static int check_player_and_chars(t_game *g)
 	}
 	if (!g->player_found)
 		return (ft_error(PLAYER_COUNT_MSG));
-	return (0);
-}
-
-static int	tile_open(t_game *g, int y, int x)
-{
-	if (y == 0 || x == 0 || y == g->map_h - 1 || x == g->map_w - 1)
-		return (1);
-	if (g->map[y - 1][x] == ' ' || g->map[y + 1][x] == ' ')
-		return (1);
-	if (g->map[y][x - 1] == ' ' || g->map[y][x + 1] == ' ')
-		return (1);
 	return (0);
 }
 
