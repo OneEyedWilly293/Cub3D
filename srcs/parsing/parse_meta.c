@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 13:40:25 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/05 19:57:53 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/07 00:34:42 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,34 +35,41 @@ static int	is_map_charset(char c)
 static int	is_map_line(char *line)
 {
 	int	i;
+	int	has_tile;
 
-	if (!line || line[0] == '\0')
+	if (!line || !*line)
 		return (0);
 	i = 0;
+	has_tile = 0;
 	while (line[i])
 	{
 		if (!is_map_charset(line[i]))
 			return (0);
+		if (line[i] == '0' || line[i] == '1' || line[i] == 'N'
+			|| line[i] == 'S' || line[i] == 'E'
+			|| line[i] == 'W')
+			has_tile = 1;
 		i++;
 	}
-	return (1);
+	return (has_tile);
 }
 
 /*
 ** get_line() returns lines without '\n, so empty line =="".
 ** But also treat lines of only spaces
 */
-static int	is_empty_line(char *line)
-{
-	char	*trim;
+// DELETE LATER. 6.01 no longer needed after check added in map_read.c
+// static int	is_empty_line(char *line)
+// {
+// 	char	*trim;
 
-	if (!line)
-		return (1);
-	trim = skip_spaces(line);
-	if (*trim == '\0')
-		return (1);
-	return (0);
-}
+// 	if (!line)
+// 		return (1);
+// 	trim = skip_spaces(line);
+// 	if (*trim == '\0')
+// 		return (1);
+// 	return (0);
+// }
 
 /*
 ** A function to set default values for metadatas
@@ -111,36 +118,6 @@ static int	check_meta_complete(t_game *game)
 		return (ft_error(BOTH_IDEN_MISSING));
 	return (0);
 }
-
-/*
-** Helper function to trim a few lines for parse_identifiers_until_map().
-** COMMENTED OUT 05.01 for dead code in parse_identifiers_until_map().
-** DELETE LATER AFTER TESTING
-*/
-// static int	check_map_mode(char *line)
-// {
-// 	if (is_empty_line(line))
-// 		return (ft_error(EMPTY_LINE_IN_MAP_MSG));
-// 	if (!is_map_line(line))
-// 		return (ft_error(META_AFTER_MAP_MSG));
-// 	return (0);
-// }
-
-/*
-** Helper function to check map and free
-** ** COMMENTED OUT 05.01 for dead code in parse_identifiers_until_map().
-** DELETE LATER AFTER TESTING
-*/
-// static int	check_map_and_free(char *line)
-// {
-// 	int	ret;
-
-// 	ret = check_map_mode(line);
-// 	free(line);
-// 	if (ret != 0)
-// 		return (1);
-// 	return (0);
-// }
 
 /*
 ** Reads line by line until it finds the FIRST map line.

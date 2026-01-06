@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 20:08:41 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/05 20:24:37 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/06 23:22:35 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 /*
 ** Dupicate the padded grid so we can mark visited cells.
+** Important: set cpy[g->map_h] = NULL early so free_map() is always safe.
 */
 static char	**dup_grid(t_game *g)
 {
@@ -53,6 +54,7 @@ static int	is_walkable(char c)
 /*
 ** Recursive flood fill.
 ** Returns 1 if map is OPEN (invalid), 0 if OK.
+** We mark visited cells as 'V' so we don't loop forever.
 */
 static int	flood(char **m, t_game *g, int y, int x)
 {
