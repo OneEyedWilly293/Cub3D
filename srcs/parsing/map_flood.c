@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 20:08:41 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/07 01:01:38 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/07 01:09:30 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static int	is_void_neighbor(char **m, t_game *g, int y, int x)
 {
 	if (y == 0 || x == 0 || y == g->map_h - 1 || x == g->map_w - 1)
 		return (1);
-	if (m[y - 1][x] == ' ' || m[y + 1] == ' ' || m[y][x - 1] == ' '
+	if (m[y - 1][x] == ' ' || m[y + 1][x] == ' ' || m[y][x - 1] == ' '
 		|| m[y][x + 1] == ' ')
 		return (1);
 	return (0);
