@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 01:22:11 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/05 20:00:14 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/06 23:10:59 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,26 +77,11 @@ static int	tile_open(t_game *g, int y, int x)
 
 int	validate_map(t_game *game)
 {
-	int		y;
-	int		x;
-	char	c;
-
 	if (!game->map || game->map_h <= 0 || game->map_w <= 0)
 		return (ft_error(EMPTY_MSG));
 	if (check_player_and_chars(game))
 		return (1);
-	y = 0;
-	while (y < game->map_h)
-	{
-		x = 0;
-		while (x < game->map_w)
-		{
-			c = game->map[y][x];
-			if ((c == '0' || is_player(c)) && tile_open(game, y, x))
-				return (ft_error(MAP_OPEN_MSG));
-			x++;
-		}
-		y++;
-	}
+	if (validate_map_closed(game))
+		return (1);
 	return (0);
 }
