@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 20:08:41 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/06 23:22:35 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/07 01:01:38 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,15 @@ static int	is_walkable(char c)
 	return (0);
 }
 
+static int	is_void_neighbor(char **m, t_game *g, int y, int x)
+{
+	if (y == 0 || x == 0 || y == g->map_h - 1 || x == g->map_w - 1)
+		return (1);
+	if (m[y - 1][x] == ' ' || m[y + 1] == ' ' || m[y][x - 1] == ' '
+		|| m[y][x + 1] == ' ')
+		return (1);
+	return (0);
+}
 /*
 ** Recursive flood fill.
 ** Returns 1 if map is OPEN (invalid), 0 if OK.
@@ -62,6 +71,8 @@ static int	flood(char **m, t_game *g, int y, int x)
 		return (1);
 	if (!is_walkable(m[y][x]))
 		return (0);
+	if (is_void_neighbor(m, g, y, x))
+		return (1);
 	m[y][x] = 'V';
 	if (flood(m, g, y - 1, x))
 		return (1);
