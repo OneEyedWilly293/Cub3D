@@ -25,13 +25,7 @@
 					// #define TILE_SIZE (MAP_W / MAPX)   // Size of each tile (in pixels)
 #define PLAYER_SIZE 10   // Size of player (in pixels)
 #define PLAYER_SPEED 0.1  // Size of player (in pixels)
-#define CAMERA_SPEED 5
-#define MAX_CAMERA 200
-#define JUMP_SPEED 0.1      // initial upward speed
-#define GRAVITY    0.005    // downward acceleration
-#define MAX_JUMP   0.3      // maximum camera height during jump
 #define MOUSE_SENSITIVITY 0.0009
-
 
 #define MAX_DOF 8 
 #define NUM_RAYS  30
@@ -51,9 +45,8 @@ typedef struct s_player {
 	float	dx;
 	float	dy;
 	float	da;
-	double	camera;
-	int		is_jumping;       // 0 = not jumping, 1 = jumping
-	double	jump_velocity; // current vertical speedfloat	camera;
+	float	move_x;
+	float	move_y;
 } t_player;
 
 typedef struct s_raycast{
@@ -96,6 +89,7 @@ typedef struct s_miniray {
 
 typedef struct s_game {
 	bool		show_map;
+	bool		mouse;
 	mlx_t		*mlx;
 	t_player	player;
 	mlx_image_t	*img_map;
@@ -109,7 +103,6 @@ typedef struct s_game {
 	t_raycast	ray;
 	t_miniray	m_ray;
 	t_map2d		map2d;
-	double delta_time;
 } t_game;
 
 int32_t		ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
@@ -119,7 +112,7 @@ void		drawMap2D(void *param);
 void		drawMap3D(void *param);
 void		draw_player(t_game *game);
 void		ft_hook(void* param);
-void		update(void* param);
+void		game_loop(void* param);
 void		resize_callback(int32_t new_width, int32_t new_height, void *param);
 double		cast_ray(double ray_angle, t_game *g);
 void		init_ray_struct(double ray_angle, t_game *g);

@@ -37,14 +37,13 @@ void drawMap3D(void *param)
 			dist = 0.01;
 
 		wall_height = (int)((double)screen_h / dist);
-		wall_top = (screen_h / 2) - (wall_height / 2) + game->player.camera;
+		wall_top = (screen_h / 2) - (wall_height / 2);
 		wall_bottom = wall_top + wall_height;
 
 		if (wall_top < 0)
 			wall_top = 0;
 		if (wall_bottom >= screen_h)
 			wall_bottom = screen_h - 1;
-
 		draw_column(game->img_3d, x, wall_top, wall_bottom, 0x0000FFFF);
 		x++;
 	}

@@ -6,6 +6,8 @@ void key_hook(mlx_key_data_t keydata, void *param)
 
 	if (keydata.key == MLX_KEY_M && keydata.action == MLX_PRESS)
 		g->show_map = !g->show_map;
+	if (keydata.key == MLX_KEY_TAB && keydata.action == MLX_PRESS)
+		g->mouse= !g->mouse;
 }
 
 // Handle key events
@@ -39,24 +41,20 @@ void clear_image(mlx_image_t *img, uint32_t color)
 	}
 }
 
-
 // Update the game state
-void update(void* param)
+void game_loop(void* param)
 {
 	t_game *game;
 
 	game = (t_game *)param;
-	static double last_time = 0;
-	double now = mlx_get_time();
-	game->delta_time = now - last_time;
-	last_time = now;
-
 	clear_image(game->img_3d, 0x000000FF);
 	clear_image(game->img_map, 0x000000FF);
 	ft_hook(game);
 	drawMap3D(game);       
 	if(game->show_map == true)
 		drawMap2D(game);       
+	if(game->mouse == true)
+		init_mouse(game);
 }
 
 void mouse_hook(double xpos, double ypos, void *param)
