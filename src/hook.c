@@ -6,6 +6,7 @@ void key_hook(mlx_key_data_t keydata, void *param)
 
 	if (keydata.key == MLX_KEY_M && keydata.action == MLX_PRESS)
 		g->show_map = !g->show_map;
+	printf("map: %d\n", g->show_map);
 	if (keydata.key == MLX_KEY_TAB && keydata.action == MLX_PRESS)
 		g->mouse= !g->mouse;
 }
@@ -47,8 +48,14 @@ void game_loop(void* param)
 	t_game *game;
 
 	game = (t_game *)param;
-	clear_image(game->img_3d, 0x000000FF);
-	clear_image(game->img_map, 0x000000FF);
+	if (game->img_3d)
+		clear_image(game->img_3d, 0x000000FF);
+
+	if (game->show_map == false && game->img_map)
+		clear_image(game->img_map, 0x000000FF);
+
+	render_background(game, game->window_width, game->window_height);
+
 	ft_hook(game);
 	drawMap3D(game);       
 	if(game->show_map == true)
@@ -60,21 +67,21 @@ void game_loop(void* param)
 void mouse_hook(double xpos, double ypos, void *param)
 {
 	(void)		ypos;
-    t_game		*game;
-    double		delta_x;
-    int			center_x;
-    int			center_y;
+	t_game		*game;
+	double		delta_x;
+	int			center_x;
+	int			center_y;
 
-    game = (t_game *)param;
-    center_x = game->window_width / 2;
-    center_y = game->window_height / 2;
-    delta_x = xpos - center_x;
-    game->player.da += delta_x * MOUSE_SENSITIVITY;
-    if (game->player.da < 0)
-        game->player.da += 2 * M_PI;
-    else if (game->player.da > 2 * M_PI)
-        game->player.da -= 2 * M_PI;
-    game->player.dx = cos(game->player.da);
-    game->player.dy = sin(game->player.da);
-    mlx_set_mouse_pos(game->mlx, center_x, center_y);
+	game = (t_game *)param;
+	center_x = game->window_width / 2;
+	center_y = game->window_height / 2;
+	delta_x = xpos - center_x;
+	game->player.da += delta_x * MOUSE_SENSITIVITY;
+	if (game->player.da < 0)
+		game->player.da += 2 * M_PI;
+	else if (game->player.da > 2 * M_PI)
+		game->player.da -= 2 * M_PI;
+	game->player.dx = cos(game->player.da);
+	game->player.dy = sin(game->player.da);
+	mlx_set_mouse_pos(game->mlx, center_x, center_y);
 }

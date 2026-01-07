@@ -43,6 +43,7 @@ void	drawMap2d_map(t_game *game)
 
 	if(game->map2d.tile == 1)
 		color = ft_pixel(WHITE);
+		// color = WHITE;
 	else
 		color = ft_pixel(BLACK);
 	py = game->map2d.start_y;

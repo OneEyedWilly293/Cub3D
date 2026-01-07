@@ -25,6 +25,7 @@ SRC      := $(SRC_DIR)/main.c \
 			$(SRC_DIR)/map3d.c \
 			$(SRC_DIR)/map2d.c \
 			$(SRC_DIR)/movements.c \
+			$(SRC_DIR)/textures.c \
 
 
 OBJ      := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
@@ -58,10 +59,19 @@ $(OBJ_DIR):
 $(OBJ_DIR):
 	@mkdir -p $@
 
-gdb: $(LIBFT_A) $(MLX_A) $(OBJ)
-	@$(CC) $(OBJ) $(LIBFT_A) $(MLX_A) $(GDBFLAGS) $(INCLUDES) $(LDFLAGS) -o $@
-	@clear
-	@echo "✅ Build $(NAME) successfully! 🎉"
+OBJ_GDB := $(OBJ:$(OBJ_DIR)/%.o=$(OBJ_DIR)/gdb_%.o)
+
+$(OBJ_DIR)/gdb_%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+	$(CC) $(GDBFLAGS) $(INCLUDES) -c $< -o $@
+
+gdb: $(LIBFT_A) $(MLX_A) $(OBJ_GDB)
+	$(CC) $(OBJ_GDB) $(LIBFT_A) $(MLX_A) $(LDFLAGS) -o $(NAME)
+	@echo "✅ Debug build ready: ./$(NAME)"
+
+# gdb: $(LIBFT_A) $(MLX_A) $(OBJ)
+# 	@$(CC) $(OBJ) $(LIBFT_A) $(MLX_A) $(GDBFLAGS) $(INCLUDES) $(LDFLAGS) -o $@
+# 	@clear
+# 	@echo "✅ Build $(NAME) successfully! 🎉"
 
 clean:
 	rm -rf $(OBJ_DIR) $(BUILD_DIR)/src

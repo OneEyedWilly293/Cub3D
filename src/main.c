@@ -64,14 +64,15 @@ int	init_mlx(t_game *game)
 		puts(mlx_strerror(mlx_errno));
 		return EXIT_FAILURE;
 	}
-	game->img_map = mlx_new_image(game->mlx, MINIMAP_SIZE, MINIMAP_SIZE);
-	if(!game->img_map)
+	if(mlx_image_to_window(game->mlx, game->img_3d, 0, 0) == -1)
 	{
 		mlx_close_window(game->mlx);
 		puts(mlx_strerror(mlx_errno));
 		return EXIT_FAILURE;
 	}
-	if(mlx_image_to_window(game->mlx, game->img_3d, 0, 0) == -1)
+	// mlx_set_instance_depth(&game->img_3d->instances[0], 0);
+	game->img_map = mlx_new_image(game->mlx, MINIMAP_SIZE, MINIMAP_SIZE);
+	if(!game->img_map)
 	{
 		mlx_close_window(game->mlx);
 		puts(mlx_strerror(mlx_errno));
@@ -83,6 +84,7 @@ int	init_mlx(t_game *game)
 		puts(mlx_strerror(mlx_errno));
 		return EXIT_FAILURE;
 	}
+	// mlx_set_instance_depth(&game->img_map->instances[0], 10);
 	return(0);
 }
 
@@ -94,6 +96,8 @@ int32_t main(void)
 	ft_memset(&game, 0, sizeof(t_game));
 	game.map_width = GRIDX;
 	game.map_height = GRIDY;
+	game.window_width = WIN_W;
+	game.window_height = WIN_H;
 	init_player(&game);
 	init_map(&game);
 	if(init_mlx(&game) == 1)

@@ -36,6 +36,10 @@
 #define BLUE	  0,   0, 255, 255
 #define BLACK	  0,   0,   0, 255
 #define WHITE	255, 255, 255, 255
+#define SKY_BLUE  0x87CEEBFF
+#define DARK_SKY  0x4682B4FF
+#define GRASS     0x228B22FF
+#define DIRT      0x8B4513FF
 
 typedef struct s_player {
 	float	x;
@@ -122,11 +126,14 @@ void		drawMap2d_map(t_game *game);
 void		draw_border(t_game *game);
 void		init_mouse(t_game *game);
 void		mouse_hook(double xpos, double ypos, void *param);
+void		clear_image(mlx_image_t *img, uint32_t color);
 
 void		up_down(t_game *game);
 void		left_right(t_game *game);
 void		horizontal_rotation(t_game *game);
 void		vertical_rotation(t_game *game);
 void		jump(t_game *game);
+// void		render_background(t_game *game);
+void		render_background(t_game *game, int32_t new_width, int32_t new_height);
 
 #endif

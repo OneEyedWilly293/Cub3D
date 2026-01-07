@@ -53,6 +53,8 @@ void resize_callback(int32_t new_width, int32_t new_height, void *param)
 {
 	t_game *game = (t_game *)param;
 
+	if (new_width <= 0 || new_height <= 0)
+		return;
 	game->window_width = new_width;
 	game->window_height = new_height;
 	game->map_width = new_width / 2;
@@ -60,16 +62,15 @@ void resize_callback(int32_t new_width, int32_t new_height, void *param)
 	game->tile_size = (float)game->map_width / GRIDX;
 	if (game->img_3d)
 		mlx_delete_image(game->mlx, game->img_3d);
+	game->img_3d = mlx_new_image(game->mlx, new_width, new_height);
+	drawMap3D(game);       
 	if (game->img_map)
 		mlx_delete_image(game->mlx, game->img_map);
-	game->img_3d = mlx_new_image(game->mlx, new_width, new_height);
+	mlx_image_to_window(game->mlx, game->img_3d, 0, 0);
 	if(game->show_map == true)
 	{
 		game->img_map = mlx_new_image(game->mlx, MINIMAP_SIZE, MINIMAP_SIZE);
 		mlx_image_to_window(game->mlx, game->img_map, 10, 10);
-		// game->img_map->instances[0].z = 10;
 		drawMap2D(game);       
 	}
-	mlx_image_to_window(game->mlx, game->img_3d, 0, 0);
-	drawMap3D(game);       
 }
