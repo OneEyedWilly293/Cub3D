@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 20:24:31 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/07 20:19:55 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/07 20:41:27 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,11 @@ static int	check_map_mode_line(char *line)
 	i = 0;
 	while (line[i])
 	{
+		if (line[i] == '\r')
+		{
+			i++;
+			continue;
+		}
 		if (!is_map_charset(line[i]))
 			return (ft_error(META_AFTER_MAP_MSG));
 		i++;
