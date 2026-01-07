@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 18:35:20 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/05 20:08:31 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/07 16:13:30 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ int	find_color_lines(int fd, t_game *game);
 int	handle_color_line(t_game *game, char *trim);
 int	find_texture_lines(int fd, t_game *game);
 int	handle_texture_line(t_game *game, char *trim);
+int	is_map_charset(char c);
 int	parse_identifiers_until_map(int fd, t_game *game, char **first_line);
 int	read_map(int fd, t_game *game, char *first_line);
 void	free_map(char **map);

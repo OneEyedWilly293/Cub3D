@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 20:24:31 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/07 00:49:00 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/07 18:36:19 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,27 @@ static int	build_grid(t_game *game, char **lines)
 }
 
 /*
+** Helper function to validate a map line under "map mode rules"
+** - spaces-only line => EMPTY_LINE_IN_MAP_MSG
+** - contains non-map charset => META_AFTER_MAP_MSG
+*/
+static int	check_map_mode_line(char *line)
+{
+	int	i;
+
+	if (*skip_spaces(line) == '\0')
+		return (ft_error(EMPTY_LINE_IN_MAP_MSG));
+	i = 0;
+	while (line(i))
+	{
+		if (!is_map_charset(line[i]))
+			return (ft_error(META_AFTER_MAP_MSG));
+		i++;
+	}
+	return (0);
+}
+
+/*
 ** Helper function to read map lines for read_map() for Norm compliance.
 **
 */
@@ -109,10 +130,9 @@ static int read_map_lines(int fd, t_game *game, char ***lines)
 	line = get_line(fd);
 	while (line)
 	{
-		if (*skip_spaces(line) == '\0')
-			return (free(line), free_map(*lines),
-				ft_error(EMPTY_LINE_IN_MAP_MSG));
-		i = row_len(line);
+		if (check_map_mode_line(line))
+			return (free(line), free_map(*lines), 1);
+		i = row_line(line);
 		if (i > game->map_w)
 			game->map_w = i;
 		if (push_line(lines, &game->map_h, line))
@@ -130,8 +150,8 @@ int	read_map(int fd, t_game *game, char *first_line)
 	game->map = NULL;
 	game->map_h = 0;
 	game->map_w = row_len(first_line);
-	if (*skip_spaces(first_line) == '\0')
-		return (free(first_line), ft_error(EMPTY_LINE_IN_MAP_MSG));
+	if (check_map_mode_line(first_line))
+		return (free(first_line), 1);
 	if (push_line(&lines, &game->map_h, first_line))
 		return (free(first_line), ft_error("Malloc failed\n"));
 	if (read_map_lines(fd, game, &lines))

@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 13:40:25 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/07 00:34:42 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/07 16:13:15 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 ** Checks if a character is allowed in the map.
 ** Allowed: '0', '1', 'N', 'S', 'E', 'W', space.
 */
-static int	is_map_charset(char c)
+int	is_map_charset(char c)
 {
 	if (c == '0' || c == '1')
 		return (1);
