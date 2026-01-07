@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 22:08:33 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/31 21:03:25 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/07 20:20:20 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -326,7 +326,6 @@ int	find_color_lines(int fd, t_game *game)
 {
 	char	*line;
 	char	*trim;
-	int		tmp[3];
 
 	game->floor.r = game->floor.g = game->floor.b = -1;
 	game->ceiling.r = game->ceiling.g = game->ceiling.b = -1;

@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 20:24:31 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/07 18:36:19 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/07 20:19:55 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ static int	check_map_mode_line(char *line)
 	if (*skip_spaces(line) == '\0')
 		return (ft_error(EMPTY_LINE_IN_MAP_MSG));
 	i = 0;
-	while (line(i))
+	while (line[i])
 	{
 		if (!is_map_charset(line[i]))
 			return (ft_error(META_AFTER_MAP_MSG));
@@ -132,7 +132,7 @@ static int read_map_lines(int fd, t_game *game, char ***lines)
 	{
 		if (check_map_mode_line(line))
 			return (free(line), free_map(*lines), 1);
-		i = row_line(line);
+		i = row_len(line);
 		if (i > game->map_w)
 			game->map_w = i;
 		if (push_line(lines, &game->map_h, line))
