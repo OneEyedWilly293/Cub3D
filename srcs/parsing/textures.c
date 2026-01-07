@@ -6,12 +6,17 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 17:47:47 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/31 19:31:43 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/08 01:50:47 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 #include "libft.h"
+
+static int	is_ws(char c)
+{
+	return (c == ' ' || c == '\t' || c == '\r' || c == '\v' || c == '\f');
+}
 
 /*
 ** Checks if the trimmed line starts with "NO ", "SO ", "WE ", or "EA ".
@@ -23,7 +28,7 @@ static int	is_id(char *s, char *id)
 		return (0);
 	if (s[0] != id[0] || s[1] != id[1])
 		return (0);
-	if (s[2] != ' ' && s[2] != '\t')
+	if (!is_ws(s[2]))
 		return (0);
 	return (1);
 }
@@ -79,8 +84,8 @@ static int	store_texture(char **dst, char *path)
 int	handle_texture_line(t_game *game, char *trim)
 {
 	char	*path;
+	int		ret;
 
-	path = NULL;
 	if (is_id(trim, N))
 		path = skip_spaces(trim + 2);
 	else if (is_id(trim, S))
@@ -92,14 +97,16 @@ int	handle_texture_line(t_game *game, char *trim)
 	else
 		return (0);
 	if (is_id(trim, N))
-		return (store_texture(&game->tex.no, path));
-	if (is_id(trim, S))
-		return (store_texture(&game->tex.so, path));
-	if (is_id(trim, W))
-		return (store_texture(&game->tex.we, path));
-	if (is_id(trim, E))
-		return (store_texture(&game->tex.ea, path));
-	return (0);
+		ret = store_texture(&game->tex.no, path);
+	else if (is_id(trim, S))
+		ret = store_texture(&game->tex.so, path);
+	else if (is_id(trim, W))
+		ret = store_texture(&game->tex.we, path);
+	else
+		ret = store_texture(&game->tex.ea, path);
+	if (ret != 0)
+		return (-1);
+	return (1);
 }
 
 

@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 22:08:33 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/07 20:42:27 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/07 23:14:20 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,21 +220,6 @@ int	parse_rgb_line(char identifier, char *line, int *rgb)
 ** parse_rgb_values(colors, rgb);
 ** free_split(colors);
 */
-
-
-/*
-** Small helper: skip leading spaces/tabs.
-** This allows us to accept lines like "   F 0,0,255" etc.
-**   - Windows CRLF leaves a '\r' at end of lines (before '\n').
-**  - Treating '\r' as whitespace avoids hidden "Invalid components" issues.
-*/
-//|| *s == '\v' || *s == '\f
-char	*skip_spaces(char *s)
-{
-	while (*s == ' ' || *s == '\t'|| *s == '\r')
-		s++;
-	return (s);
-}
 
 /*
 ** Helper: verifies there is something after the identifier.

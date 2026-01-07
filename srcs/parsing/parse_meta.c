@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 13:40:25 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/07 16:13:15 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/08 01:51:30 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,19 +74,19 @@ static int	is_map_line(char *line)
 /*
 ** A function to set default values for metadatas
 */
-static void	init_meta_defaults(t_game *game)
-{
-	game->floor.r = -1;
-	game->floor.g = -1;
-	game->floor.b = -1;
-	game->ceiling.r = -1;
-	game->ceiling.g = -1;
-	game->ceiling.b = -1;
-	game->tex.no = NULL;
-	game->tex.so = NULL;
-	game->tex.we = NULL;
-	game->tex.ea = NULL;
-}
+// static void	init_meta_defaults(t_game *game)
+// {
+// 	game->floor.r = -1;
+// 	game->floor.g = -1;
+// 	game->floor.b = -1;
+// 	game->ceiling.r = -1;
+// 	game->ceiling.g = -1;
+// 	game->ceiling.b = -1;
+// 	game->tex.no = NULL;
+// 	game->tex.so = NULL;
+// 	game->tex.we = NULL;
+// 	game->tex.ea = NULL;
+// }
 
 /*
 ** - Try textures(handle_texture_line) first then try colors(handle_color_line)
@@ -94,14 +94,15 @@ static void	init_meta_defaults(t_game *game)
 */
 static int	handle_one_meta_line(t_game *game, char *trim)
 {
-	if (handle_texture_line(game, trim) != 0)
+	int	ret;
+
+	ret = handle_texture_line(game, trim);
+	if (ret == -1)
 		return (1);
-	if (trim[0] == 'F' || trim[0] == 'C')
-	{
-		if (handle_color_line(game, trim))
-			return (1);
+	if (ret == 1)
 		return (0);
-	}
+	if (trim[0] == 'F' || trim[0] == 'C')
+		return (handle_color_line(game, trim));
 	if (*trim == '\0')
 		return (0);
 	return (ft_error(WRONG_MSG));
@@ -134,7 +135,7 @@ int	parse_identifiers_until_map(int fd, t_game *game, char **first_line)
 	char	*trim;
 
 	*first_line = NULL;
-	init_meta_defaults(game);
+	// init_meta_defaults(game);
 	line = get_line(fd);
 	while (line)
 	{
