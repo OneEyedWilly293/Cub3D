@@ -69,6 +69,7 @@ void resize_callback(int32_t new_width, int32_t new_height, void *param)
 	mlx_image_to_window(game->mlx, game->img_3d, 0, 0);
 	if(game->show_map == true)
 	{
+		clear_image(game->img_map, 0x000000FF);
 		game->img_map = mlx_new_image(game->mlx, MINIMAP_SIZE, MINIMAP_SIZE);
 		mlx_image_to_window(game->mlx, game->img_map, 10, 10);
 		drawMap2D(game);       
