@@ -4,12 +4,14 @@ void	render_background(t_game *game, int32_t new_width, int32_t new_height)
 {
 	size_t	x;
 	size_t	y;
-	size_t width = new_width;
-    size_t height = new_height;
+	size_t	width;
+	size_t	height;
 
 	x = 0;
+	width = new_width;
+	height = new_height;
 	if (!game->img_3d)
-		return;
+		return ;
 	while (x < width)
 	{
 		y = 0;
@@ -26,6 +28,7 @@ void	render_background(t_game *game, int32_t new_width, int32_t new_height)
 }
 
 #if 0
+
 static uint32_t	texture_to_rgb(mlx_texture_t *texture, int x, int y)
 {
 	uint8_t	*rgb;
@@ -51,4 +54,5 @@ static mlx_texture_t	*get_wall(t_game *game, t_raycast *raycast)
 			return (game->we_text);
 	}
 }
+
 #endif
