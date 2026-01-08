@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 18:06:36 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/07 23:14:47 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/08 19:20:34 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,9 @@
 **   - Windows CRLF leaves a '\r' at end of lines (before '\n').
 **  - Treating '\r' as whitespace avoids hidden "Invalid components" issues.
 */
-//|| *s == '\v' || *s == '\f
 char	*skip_spaces(char *s)
 {
-	while (*s == ' ' || *s == '\t'|| *s == '\r')
+	while (*s == ' ' || *s == '\t'|| *s == '\r' || *s == '\v' || *s == '\f')
 		s++;
 	return (s);
 }
