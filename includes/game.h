@@ -31,11 +31,12 @@
 #define NUM_RAYS  30
 #define FOV        (M_PI / 3)
 
-#define RED		255,   0,   0, 255
-#define GREEN	  0, 255,   0, 255
-#define BLUE	  0,   0, 255, 255
-#define BLACK	  0,   0,   0, 255
-#define WHITE	255, 255, 255, 255
+#define RED		0xFF0000FF
+#define GREEN	0x00FF00FF
+#define BLUE	0x0000FFFF
+#define BLACK	0x000000FF
+#define WHITE	0xFFFFFFFF
+
 #define SKY_BLUE  0x87CEEBFF
 #define DARK_SKY  0x4682B4FF
 #define GRASS     0x228B22FF
@@ -112,18 +113,18 @@ typedef struct s_game {
 int32_t		ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
 void		draw_line(mlx_image_t *img, int x0, int y0, int x1, int y1, uint32_t color);
 void		drawray(void *param);
-void		drawMap2D(void *param);
-void		drawMap3D(void *param);
+void		draw_map2d(void *param);
+void		draw_map3d(void *param);
 void		draw_player(t_game *game);
+void		draw_map2d_map(t_game *game);
+void		draw_ray_minimap(t_game *g);
+void		draw_border(t_game *game);
 void		ft_hook(void* param);
 void		game_loop(void* param);
 void		resize_callback(int32_t new_width, int32_t new_height, void *param);
 double		cast_ray(double ray_angle, t_game *g);
 void		init_ray_struct(double ray_angle, t_game *g);
 void		key_hook(mlx_key_data_t keydata, void *param);
-void		draw_ray_minimap(t_game *g);
-void		drawMap2d_map(t_game *game);
-void		draw_border(t_game *game);
 void		init_mouse(t_game *game);
 void		mouse_hook(double xpos, double ypos, void *param);
 void		clear_image(mlx_image_t *img, uint32_t color);
