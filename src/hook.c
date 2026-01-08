@@ -56,9 +56,10 @@ void game_loop(void* param)
 	drawMap3D(game);       
 	if(game->show_map == true)
 	{
-		clear_image(game->img_map, 0x000000FF);
-		game->img_map = mlx_new_image(game->mlx, MINIMAP_SIZE, MINIMAP_SIZE);
-		mlx_image_to_window(game->mlx, game->img_map, 10, 10);
+		// create_img(game, &game->img_map);
+		// clear_image(game->img_map, 0x000000FF);
+		// game->img_map = mlx_new_image(game->mlx, MINIMAP_SIZE, MINIMAP_SIZE);
+		// mlx_image_to_window(game->mlx, game->img_map, 10, 10);
 		drawMap2D(game);       
 	}
 	if(game->mouse == true)

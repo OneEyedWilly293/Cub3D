@@ -57,35 +57,64 @@ int	init_mlx(t_game *game)
 		return EXIT_FAILURE;
 	}
 	mlx_set_window_title(game->mlx, "title");
-	game->img_3d = mlx_new_image(game->mlx, WIN_W, WIN_H);
-	if(!game->img_3d)
-	{
-		mlx_close_window(game->mlx);
-		puts(mlx_strerror(mlx_errno));
-		return EXIT_FAILURE;
-	}
-	if(mlx_image_to_window(game->mlx, game->img_3d, 0, 0) == -1)
-	{
-		mlx_close_window(game->mlx);
-		puts(mlx_strerror(mlx_errno));
-		return EXIT_FAILURE;
-	}
+
+	create_img(game, &game->img_3d);
+	create_img(game, &game->img_map);
+
+	// game->img_3d = mlx_new_image(game->mlx, WIN_W, WIN_H);
+	// if(!game->img_3d)
+	// {
+	// 	mlx_close_window(game->mlx);
+	// 	puts(mlx_strerror(mlx_errno));
+	// 	return EXIT_FAILURE;
+	// }
+	// if(mlx_image_to_window(game->mlx, game->img_3d, 0, 0) == -1)
+	// {
+	// 	mlx_close_window(game->mlx);
+	// 	puts(mlx_strerror(mlx_errno));
+	// 	return EXIT_FAILURE;
+	// }
 	// mlx_set_instance_depth(&game->img_3d->instances[0], 0);
-	game->img_map = mlx_new_image(game->mlx, MINIMAP_SIZE, MINIMAP_SIZE);
-	if(!game->img_map)
-	{
-		mlx_close_window(game->mlx);
-		puts(mlx_strerror(mlx_errno));
-		return EXIT_FAILURE;
-	}
-	if(mlx_image_to_window(game->mlx, game->img_map, 10, 10) == -1)
-	{
-		mlx_close_window(game->mlx);
-		puts(mlx_strerror(mlx_errno));
-		return EXIT_FAILURE;
-	}
+	// game->img_map = mlx_new_image(game->mlx, MINIMAP_SIZE, MINIMAP_SIZE);
+	// if(!game->img_map)
+	// {
+	// 	mlx_close_window(game->mlx);
+	// 	puts(mlx_strerror(mlx_errno));
+	// 	return EXIT_FAILURE;
+	// }
+	// if(mlx_image_to_window(game->mlx, game->img_map, 10, 10) == -1)
+	// {
+	// 	mlx_close_window(game->mlx);
+	// 	puts(mlx_strerror(mlx_errno));
+	// 	return EXIT_FAILURE;
+	// }
 	// mlx_set_instance_depth(&game->img_map->instances[0], 10);
 	return(0);
+}
+
+int create_img(t_game *game, mlx_image_t **image)
+{
+	if (*image)
+	{
+		mlx_delete_image(game->mlx, *image);
+		game->img_3d = NULL;
+	}
+	*image = mlx_new_image(game->mlx, game->window_width, game->window_height);
+	if (!*image)
+	{
+		mlx_close_window(game->mlx);
+		puts(mlx_strerror(mlx_errno));
+		return (EXIT_FAILURE);
+	}
+	if (mlx_image_to_window(game->mlx, *image, 0, 0) == -1)
+	{
+		mlx_delete_image(game->mlx, *image);
+		*image = NULL;
+		mlx_close_window(game->mlx);
+		puts(mlx_strerror(mlx_errno));
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
 }
 
 // Main function

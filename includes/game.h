@@ -136,4 +136,5 @@ void		jump(t_game *game);
 // void		render_background(t_game *game);
 void		render_background(t_game *game, int32_t new_width, int32_t new_height);
 
+int create_img(t_game *game, mlx_image_t **image);
 #endif
