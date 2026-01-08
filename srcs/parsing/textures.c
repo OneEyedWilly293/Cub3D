@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 17:47:47 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/08 01:50:47 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/08 15:03:40 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,25 +115,25 @@ int	handle_texture_line(t_game *game, char *trim)
 ** - This function is the same "scan all lines" approach like find_color_lines().
 ** TO DO: MERGE THEM INTO ONE PASS LATER
 */
-int find_texture_lines(int fd, t_game *game)
-{
-	char	*line;
-	char	*trim;
+// int find_texture_lines(int fd, t_game *game)
+// {
+// 	char	*line;
+// 	char	*trim;
 
-	game->tex.no = NULL;
-	game->tex.so = NULL;
-	game->tex.we = NULL;
-	game->tex.ea = NULL;
-	line = get_line(fd);
-	while (line)
-	{
-		trim = skip_spaces(line);
-		if (handle_texture_line(game, trim))
-			return (free(line), 1);
-		free(line);
-		line = get_line(fd);
-	}
-	if (!game->tex.no || !game->tex.so || !game->tex.we || !game->tex.ea)
-		return (ft_error(INVALID_MISSING_TEX));
-	return (0);
-}
+// 	game->tex.no = NULL;
+// 	game->tex.so = NULL;
+// 	game->tex.we = NULL;
+// 	game->tex.ea = NULL;
+// 	line = get_line(fd);
+// 	while (line)
+// 	{
+// 		trim = skip_spaces(line);
+// 		if (handle_texture_line(game, trim))
+// 			return (free(line), 1);
+// 		free(line);
+// 		line = get_line(fd);
+// 	}
+// 	if (!game->tex.no || !game->tex.so || !game->tex.we || !game->tex.ea)
+// 		return (ft_error(INVALID_MISSING_TEX));
+// 	return (0);
+// }

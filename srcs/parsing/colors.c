@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 22:08:33 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/07 23:14:20 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/08 19:19:26 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -284,48 +284,49 @@ static int	check_missing_colors(t_game *game)
 int	handle_color_line(t_game *game, char *trim)
 {
 	int	tmp[3];
+
 	if (trim[0] == 'F' && !is_color_line(trim))
-		return (ft_error("Invalid floor color format\n"), 1);
+		return (ft_error("Invalid floor color format\n"), -1);
 	if (trim[0] == 'C' && !is_color_line(trim))
-		return (ft_error("Invalid ceiling color format\n"), 1);
+		return (ft_error("Invalid ceiling color format\n"), -1);
 	if (trim[0] == 'F' && is_color_line(trim))
 	{
 		if (is_color_set(game->floor))
-			return (ft_error(INVALID_DUP_FLOOR));
+			return (ft_error(INVALID_DUP_FLOOR), -1);
 		if (parse_rgb_line('F', trim, tmp))
-			return (1);
+			return (-1);
 		store_color(game, 'F', tmp);
 	}
 	else if (trim[0] == 'C' && is_color_line(trim))
 	{
 		if (is_color_set(game->ceiling))
-			return (ft_error(INVALID_DUP_CEIL));
+			return (ft_error(INVALID_DUP_CEIL), -1);
 		if (parse_rgb_line('C', trim, tmp))
-			return (1);
+			return (-1);
 		store_color(game, 'C', tmp);
 	}
-	return (0);
+	return (1);
 }
 
 /*
 ** Reads the file and apply the helpers.
 */
-int	find_color_lines(int fd, t_game *game)
-{
-	char	*line;
-	char	*trim;
+// int	find_color_lines(int fd, t_game *game)
+// {
+// 	char	*line;
+// 	char	*trim;
 
-	game->floor.r = game->floor.g = game->floor.b = -1;
-	game->ceiling.r = game->ceiling.g = game->ceiling.b = -1;
-	line = get_line(fd);
-	while (line)
-	{
-		trim = skip_spaces(line);
-		if (handle_color_line(game, trim))
-			return (free(line), 1);
-		free(line);
-		line = get_line(fd);
-	}
-	return (check_missing_colors(game));
-}
+// 	game->floor.r = game->floor.g = game->floor.b = -1;
+// 	game->ceiling.r = game->ceiling.g = game->ceiling.b = -1;
+// 	line = get_line(fd);
+// 	while (line)
+// 	{
+// 		trim = skip_spaces(line);
+// 		if (handle_color_line(game, trim))
+// 			return (free(line), 1);
+// 		free(line);
+// 		line = get_line(fd);
+// 	}
+// 	return (check_missing_colors(game));
+// }
 
