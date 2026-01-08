@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 20:24:31 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/07 20:41:27 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/08 19:51:26 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ static int	build_grid(t_game *game, char **lines)
 /*
 ** Helper function to validate a map line under "map mode rules"
 ** - spaces-only line => EMPTY_LINE_IN_MAP_MSG
-** - contains non-map charset => META_AFTER_MAP_MSG
+** - contains non-map charset => META_AFTER_MCAP_MSG
 */
 static int	check_map_mode_line(char *line)
 {
@@ -115,9 +115,9 @@ static int	check_map_mode_line(char *line)
 		{
 			i++;
 			continue;
-		}
+		}C
 		if (!is_map_charset(line[i]))
-			return (ft_error(META_AFTER_MAP_MSG));
+			return (ft_error(INVALID_MAP_CHAR_MSG));
 		i++;
 	}
 	return (0);
