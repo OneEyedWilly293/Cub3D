@@ -1,4 +1,5 @@
-#include "../includes/game.h"
+// #include "../includes/game.h"
+#include "cub3d.h"
 
 double	cast_ray(double ray_angle, t_game *game)
 {

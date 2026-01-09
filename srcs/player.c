@@ -1,4 +1,5 @@
-#include "../includes/game.h"
+// #include "../includes/game.h"
+#include "cub3d.h"
 
 // Convert RGB to 32-bit integer
 int	ft_pixel(int r, int g, int b, int a) // use uint8_t

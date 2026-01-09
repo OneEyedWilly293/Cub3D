@@ -1,4 +1,5 @@
-#include "../includes/game.h"
+// #include "../includes/game.h"
+#include "cub3d.h"
 
 void	up_down(t_game *game)
 {

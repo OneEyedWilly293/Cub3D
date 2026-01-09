@@ -4,11 +4,11 @@ GDBFLAGS := -g -O0 -Wall -Wextra -Werror
 
 LDFLAGS  := -ldl -lglfw -lm -lz
 
-NAME     	:= game 
+NAME     	:= cub3d 
 
 SRC_DIR     := src
 BUILD_DIR   := build
-OBJ_DIR     := $(BUILD_DIR)/src
+OBJ_DIR     := $(BUILD_DIR)/srcs
 INCLUDES    := -I include -I lib/MLX42/include -I lib/libft/include
 
 LIBFT_DIR   := lib/libft
@@ -17,16 +17,26 @@ MLX_REPO	:= https://github.com/codam-coding-college/MLX42.git
 MLX_DIR     := lib/MLX42
 MLX_A       := $(BUILD_DIR)/mlx42/libmlx42.a
 
-SRC      := $(SRC_DIR)/main.c \
-			$(SRC_DIR)/player.c \
+SRC      := $(SRC_DIR)/colors.c \
 			$(SRC_DIR)/dda_draw.c \
-			$(SRC_DIR)/raycast.c \
+			$(SRC_DIR)/get_line.c \
 			$(SRC_DIR)/hook.c \
-			$(SRC_DIR)/map3d.c \
+			$(SRC_DIR)/main.c \
 			$(SRC_DIR)/map2d.c \
+			$(SRC_DIR)/map3d.c \
+			$(SRC_DIR)/map_flood.c \
+			$(SRC_DIR)/map_read.c \
+			$(SRC_DIR)/map_validate.c \
 			$(SRC_DIR)/movements.c \
+			$(SRC_DIR)/parse.c \
+			$(SRC_DIR)/parse_meta.c \
+			$(SRC_DIR)/parse_meta_utils.c \
+			$(SRC_DIR)/parse_scene.c \
+			$(SRC_DIR)/player.c \
+			$(SRC_DIR)/raycast.c \
 			$(SRC_DIR)/textures.c \
-
+			$(SRC_DIR)/textures_utils.c \
+			$(SRC_DIR)/utils.c \
 
 OBJ      := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 DEPS 	 := $(OBJ:.o=.d)
@@ -54,7 +64,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 
 $(OBJ_DIR):
 	@mkdir -p $@
--include $(DEPS)
+	-include $(DEPS)
 
 $(OBJ_DIR):
 	@mkdir -p $@

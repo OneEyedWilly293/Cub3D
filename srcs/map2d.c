@@ -1,4 +1,5 @@
-#include "../includes/game.h"
+// #include "../includes/game.h"
+#include "cub3d.h"
 
 static	void	update_map2d(int x, int y, t_game *game)
 {

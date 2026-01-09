@@ -1,4 +1,5 @@
-#include "../includes/game.h"
+// #include "../includes/game.h"
+#include "cub3d.h"
 
 void	draw_column(mlx_image_t *img, int x, int top, int bottom, int color)
 {

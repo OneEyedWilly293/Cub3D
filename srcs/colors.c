@@ -6,11 +6,12 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 22:08:33 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/28 20:07:00 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/08 19:19:26 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse.h"
+// #include "parse.h"
+#include "cub3d.h"
 #include "libft.h"
 
 //MOVE TO utils later OR DELETE IF NOT USED
@@ -152,7 +153,7 @@ static int	trim_tokens(char **colors)
 	{
 		trimmed = ft_strtrim(colors[i], " \t"); // TO CHECK: \n
 		if (!trimmed)
-		return (1);
+			return (1);
 		free(colors[i]);
 		colors[i] = trimmed;
 		i++;
@@ -221,18 +222,6 @@ int	parse_rgb_line(char identifier, char *line, int *rgb)
 ** free_split(colors);
 */
 
-
-/*
-** Small helper: skip leading spaces/tabs.
-** This allows us to accept lines like "   F 0,0,255" etc.
-*/
-char	*skip_spaces(char *s)
-{
-	while (*s == ' ' || *s == '\t')
-		s++;
-	return (s);
-}
-
 /*
 ** Helper: verifies there is something after the identifier.
 ** Example valid: "F 0,0,255"
@@ -293,51 +282,52 @@ static int	check_missing_colors(t_game *game)
 ** - parse_rgb_line validation
 ** - Store into game
 */
-static int	handle_color_line(t_game *game, char *trim, int *tmp)
+int	handle_color_line(t_game *game, char *trim)
 {
+	int	tmp[3];
+
 	if (trim[0] == 'F' && !is_color_line(trim))
-		return (ft_error("Invalid floor color format\n"), 1);
+		return (ft_error("Invalid floor color format\n"), -1);
 	if (trim[0] == 'C' && !is_color_line(trim))
-		return (ft_error("Invalid ceiling color format\n"), 1);
+		return (ft_error("Invalid ceiling color format\n"), -1);
 	if (trim[0] == 'F' && is_color_line(trim))
 	{
 		if (is_color_set(game->floor))
-			return (ft_error(INVALID_DUP_FLOOR));
+			return (ft_error(INVALID_DUP_FLOOR), -1);
 		if (parse_rgb_line('F', trim, tmp))
-			return (1);
+			return (-1);
 		store_color(game, 'F', tmp);
 	}
 	else if (trim[0] == 'C' && is_color_line(trim))
 	{
 		if (is_color_set(game->ceiling))
-			return (ft_error(INVALID_DUP_CEIL));
+			return (ft_error(INVALID_DUP_CEIL), -1);
 		if (parse_rgb_line('C', trim, tmp))
-			return (1);
+			return (-1);
 		store_color(game, 'C', tmp);
 	}
-	return (0);
+	return (1);
 }
 
 /*
 ** Reads the file and apply the helpers.
 */
-int	find_color_lines(int fd, t_game *game)
-{
-	char	*line;
-	char	*trim;
-	int		tmp[3];
+// int	find_color_lines(int fd, t_game *game)
+// {
+// 	char	*line;
+// 	char	*trim;
 
-	game->floor.r = game->floor.g = game->floor.b = -1;
-	game->ceiling.r = game->ceiling.g = game->ceiling.b = -1;
-	line = get_line(fd);
-	while (line)
-	{
-		trim = skip_spaces(line);
-		if (handle_color_line(game, trim, tmp))
-			return (free(line), 1);
-		free(line);
-		line = get_line(fd);
-	}
-	return (check_missing_colors(game));
-}
+// 	game->floor.r = game->floor.g = game->floor.b = -1;
+// 	game->ceiling.r = game->ceiling.g = game->ceiling.b = -1;
+// 	line = get_line(fd);
+// 	while (line)
+// 	{
+// 		trim = skip_spaces(line);
+// 		if (handle_color_line(game, trim))
+// 			return (free(line), 1);
+// 		free(line);
+// 		line = get_line(fd);
+// 	}
+// 	return (check_missing_colors(game));
+// }
 

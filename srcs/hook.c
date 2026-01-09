@@ -1,4 +1,5 @@
-#include "../includes/game.h"
+// #include "../includes/game.h"
+#include "cub3d.h"
 
 void	key_hook(mlx_key_data_t keydata, void *param)
 {
