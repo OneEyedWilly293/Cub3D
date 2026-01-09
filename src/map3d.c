@@ -49,30 +49,14 @@ void	draw_map3d(void *param)
 
 void	resize_callback(int32_t new_width, int32_t new_height, void *param)
 {
-	t_game	*game;
+	t_game *game = param;
 
-	game = (t_game *)param;
 	if (new_width <= 0 || new_height <= 0)
 		return ;
+
 	game->window_width = new_width;
 	game->window_height = new_height;
-	game->map_width = new_width / 2;
-	game->map_height = new_height / 2;
-	game->tile_size = (float)game->map_width / GRIDX;
 
-	// create_img(game, &game->img_3d);
-	if (game->img_3d)
-		mlx_delete_image(game->mlx, game->img_3d);
-	game->img_3d = mlx_new_image(game->mlx, new_width, new_height);
-	draw_map3d(game);
-	if (game->img_map)
-		mlx_delete_image(game->mlx, game->img_map);
-	mlx_image_to_window(game->mlx, game->img_3d, 0, 0);
-	if (game->show_map == true)
-	{
-		clear_image(game->img_map, 0x000000FF);
-		game->img_map = mlx_new_image(game->mlx, MINIMAP_SIZE, MINIMAP_SIZE);
-		mlx_image_to_window(game->mlx, game->img_map, 10, 10);
-		draw_map2d(game);
-	}
+	create_img(game, &game->img_3d, game->window_width, game->window_height);
+	create_img(game, &game->img_map, MINIMAP_SIZE, MINIMAP_SIZE);
 }

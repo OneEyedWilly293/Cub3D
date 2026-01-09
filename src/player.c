@@ -10,7 +10,9 @@ void	draw_player(t_game *game)
 {
 	int	py;
 	int	px;
+	int	color;
 
+	color = set_color(game, RED, TRANSPARENT);
 	game->map2d.p_px = (int)(game->player.x * game->map2d.scale_x);
 	game->map2d.p_py = (int)(game->player.y * game->map2d.scale_y);
 	py = game->map2d.p_py - 2;
@@ -19,9 +21,22 @@ void	draw_player(t_game *game)
 		px = game->map2d.p_px - 2;
 		while (px <= game->map2d.p_px + 2)
 		{
-			mlx_put_pixel(game->img_map, px, py, RED);
+			mlx_put_pixel(game->img_map, px, py, color);
 			++px;
 		}
 		++py;
 	}
+}
+
+int	set_color(t_game *game, int visible, int invisible)
+{
+	int	color;
+
+	if(game->show_map == true)
+	{
+		color = visible;
+	}
+	else
+		color = invisible;
+	return (color);
 }

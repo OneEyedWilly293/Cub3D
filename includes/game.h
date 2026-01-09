@@ -31,16 +31,16 @@
 #define NUM_RAYS  30
 #define FOV        (M_PI / 3)
 
-#define RED		0xFF0000FF
-#define GREEN	0x00FF00FF
-#define BLUE	0x0000FFFF
-#define BLACK	0x000000FF
-#define WHITE	0xFFFFFFFF
-
-#define SKY_BLUE  0x87CEEBFF
-#define DARK_SKY  0x4682B4FF
-#define GRASS     0x228B22FF
-#define DIRT      0x8B4513FF
+#define RED			0xFF0000FF
+#define GREEN		0x00FF00FF
+#define BLUE		0x0000FFFF
+#define BLACK		0x000000FF
+#define WHITE		0xFFFFFFFF
+#define TRANSPARENT 0x00000000
+#define SKY_BLUE	0x87CEEBFF
+#define DARK_SKY  	0x4682B4FF
+#define GRASS     	0x228B22FF
+#define DIRT      	0x8B4513FF
 
 typedef struct s_player {
 	float	x;
@@ -137,5 +137,7 @@ void		jump(t_game *game);
 // void		render_background(t_game *game);
 void		render_background(t_game *game, int32_t new_width, int32_t new_height);
 
-int create_img(t_game *game, mlx_image_t **image);
+// int create_img(t_game *game, mlx_image_t **image);
+int create_img(t_game *game, mlx_image_t **image, int width, int height);
+int	set_color(t_game *game, int visible, int invisible);
 #endif

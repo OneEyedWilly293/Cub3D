@@ -11,7 +11,6 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 		game->mouse = !game->mouse;
 }
 
-// Handle key events
 void	ft_hook(void *param)
 {
 	t_game	*game;
@@ -40,22 +39,19 @@ void	clear_image(mlx_image_t *img, uint32_t color)
 	}
 }
 
-// Update the game state
 void	game_loop(void *param)
 {
 	t_game	*game;
 
 	game = param;
-	clear_image(game->img_3d, 0x000000FF);
-	clear_image(game->img_map, 0x000000FF);
+	if (game->img_3d)
+		clear_image(game->img_3d, 0x000000FF);
+	if (game->img_map)
+		clear_image(game->img_map, 0x000000FF);
 	render_background(game, game->window_width, game->window_height);
 	ft_hook(game);
 	draw_map3d(game);
-	if (game->show_map == true)
-	{
-		clear_image(game->img_map, 0x000000FF);
-		draw_map2d(game);
-	}
+	draw_map2d(game);
 	if (game->mouse == true)
 		init_mouse(game);
 }
