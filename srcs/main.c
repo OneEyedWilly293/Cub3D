@@ -114,7 +114,7 @@ int	main(int argc, char **argv)
 	game.window_width = WIN_W;
 	game.window_height = WIN_H;
 	init_player(&game);
-	init_map(&game);
+	// init_map(&game);
 	if (init_mlx(&game) == 1)
 	{
 		printf("error\n");
@@ -154,6 +154,7 @@ int	main(int argc, char **argv)
 ** - On success, we must call free_parser_game() ourselves to avoid leaks.
 */
 
+#if 0
 static void	print_textures(t_game *g)
 {
 	ft_putstr_fd("== Textures ==\n", 1);
@@ -222,6 +223,7 @@ static void	print_map(t_game *g)
 	ft_putstr_fd("\n", 1);
 }
 
+#endif
 // int	main(int argc, char **argv)
 // {
 // 	t_game	game;

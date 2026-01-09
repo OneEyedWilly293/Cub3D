@@ -12,7 +12,7 @@
 
 // #include "parse.h"
 #include "cub3d.h"
-#include "libft.h"
+// #include "libft.h"
 
 //MOVE TO utils later OR DELETE IF NOT USED
 int	is_digit(char c)
@@ -265,16 +265,16 @@ static void store_color(t_game *game, char id, int *tmp)
 /*
 ** Called after EOF: both identifiers must exist
 */
-static int	check_missing_colors(t_game *game)
-{
-	if (!is_color_set(game->floor) && !is_color_set(game->ceiling))
-		return (ft_error(BOTH_IDEN_MISSING));
-	if (!is_color_set(game->floor))
-		return (ft_error(INVALID_MISSING_FLOOR));
-	if (!is_color_set(game->ceiling))
-		return (ft_error(INVALID_MISSING_CEIL));
-	return (0);
-}
+// static int	check_missing_colors(t_game *game)
+// {
+// 	if (!is_color_set(game->floor) && !is_color_set(game->ceiling))
+// 		return (ft_error(BOTH_IDEN_MISSING));
+// 	if (!is_color_set(game->floor))
+// 		return (ft_error(INVALID_MISSING_FLOOR));
+// 	if (!is_color_set(game->ceiling))
+// 		return (ft_error(INVALID_MISSING_CEIL));
+// 	return (0);
+// }
 
 /*
 ** Handle ONE trimmed line if it is an F or C identifier.

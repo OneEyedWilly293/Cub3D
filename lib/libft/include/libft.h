@@ -494,9 +494,9 @@ char	ft_whichifs(int c);
 
 /* GNL*********************************************************************** */
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 10 
-# endif
+// # ifndef BUFFER_SIZE
+// #  define BUFFER_SIZE 10 
+// # endif
 
 char	*ft_strtrim(char const *s1, char const *set);
 

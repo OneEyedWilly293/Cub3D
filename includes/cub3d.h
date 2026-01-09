@@ -16,7 +16,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 # include <stdint.h>
-# include "../../lib/libft/include/libft.h"
+// # include "../../lib/libft/include/libft.h"
 
 #define WIN_W  1024 
 #define WIN_H  1024 

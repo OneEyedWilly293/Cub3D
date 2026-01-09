@@ -3,7 +3,8 @@
 
 static	void	update_map2d(int x, int y, t_game *game)
 {
-	game->map2d.tile = game->map[y * GRIDX + x];
+	// game->map2d.tile = (int)game->map[y * GRIDX + x];
+	game->map2d.tile = (int)game->map[y][x];
 	game->map2d.start_x = (int)(x * game->map2d.scale_x);
 	game->map2d.start_y = (int)(y * game->map2d.scale_y);
 	game->map2d.end_x = (int)((x + 1) * game->map2d.scale_x);
@@ -44,10 +45,10 @@ void	draw_map2d_map(t_game *game)
 
 	if(game->show_map == true)
 	{
-	if (game->map2d.tile == 1)
-		color = WHITE;
-	else
-		color = BLACK;
+		if (game->map2d.tile == 1)
+			color = WHITE;
+		else
+			color = BLACK;
 	}
 	else
 		color = TRANSPARENT;

@@ -24,7 +24,8 @@ double	cast_ray(double ray_angle, t_game *game)
 		}
 		if (game->ray.map_y < 0 || game->ray.map_y >= GRIDY || game->ray.map_x < 0 || game->ray.map_x >= GRIDX)
 			return (1000);
-		if (game->map[game->ray.map_y * GRIDX + game->ray.map_x] == 1)
+		// if (game->map[game->ray.map_y * GRIDX + game->ray.map_x] == 1)
+		if (game->map[game->ray.map_y][game->ray.map_x] == '1')
 			hit = 1;
 	}
 	game->ray.side = side;

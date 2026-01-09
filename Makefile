@@ -6,10 +6,10 @@ LDFLAGS  := -ldl -lglfw -lm -lz
 
 NAME     	:= cub3d 
 
-SRC_DIR     := src
+SRC_DIR     := srcs
 BUILD_DIR   := build
 OBJ_DIR     := $(BUILD_DIR)/srcs
-INCLUDES    := -I include -I lib/MLX42/include -I lib/libft/include
+INCLUDES 	:= -I includes -I lib/MLX42/include -I lib/libft/include
 
 LIBFT_DIR   := lib/libft
 LIBFT_A     := $(LIBFT_DIR)/libft.a

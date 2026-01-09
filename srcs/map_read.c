@@ -116,7 +116,7 @@ static int	check_map_mode_line(char *line)
 		{
 			i++;
 			continue;
-		}C
+		}
 		if (!is_map_charset(line[i]))
 			return (ft_error(INVALID_MAP_CHAR_MSG));
 		i++;
