@@ -1,6 +1,6 @@
 #include "../includes/game.h"
 
-void	draw_column(mlx_image_t *img, int x, int top, int bottom, uint32_t color)
+void	draw_column(mlx_image_t *img, int x, int top, int bottom, int color)
 {
 	int	y;
 
@@ -11,6 +11,7 @@ void	draw_column(mlx_image_t *img, int x, int top, int bottom, uint32_t color)
 		y++;
 	}
 }
+
 
 void	draw_map3d(void *param)
 {
@@ -42,12 +43,13 @@ void	draw_map3d(void *param)
 			wall_top = 0;
 		if (wall_bottom >= screen_h)
 			wall_bottom = screen_h - 1;
-		draw_column(game->img_3d, x, wall_top, wall_bottom, 0x0000FFFF);
+		int texture = get_texture(game);
+		draw_column(game->img_3d, x, wall_top, wall_bottom, texture);
 		x++;
 	}
 }
 
-void	resize_callback(int32_t new_width, int32_t new_height, void *param)
+void	resize_callback(int new_width, int new_height, void *param)
 {
 	t_game *game = param;
 

@@ -1,7 +1,7 @@
 #include "../includes/game.h"
 
 // Convert RGB to 32-bit integer
-int32_t	ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a) // use uint8_t
+int	ft_pixel(int r, int g, int b, int a) // use uint8_t
 {
 	return (r << 24 | g << 16 | b << 8 | a);
 }

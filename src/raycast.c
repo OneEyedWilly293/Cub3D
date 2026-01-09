@@ -26,6 +26,7 @@ double	cast_ray(double ray_angle, t_game *game)
 		if (game->map[game->ray.map_y * GRIDX + game->ray.map_x] == 1)
 			hit = 1;
 	}
+	game->ray.side = side;
 	if (side == 0)
 		return ((game->ray.map_x - game->player.x + (1 - game->ray.step_x) / 2) / game->ray.ray_dir_x);
 	else

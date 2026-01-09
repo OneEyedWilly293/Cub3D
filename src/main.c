@@ -31,10 +31,18 @@ void	init_player(t_game *game)
 		.yPos = 0,
 		.dx = cosf(0.0f),
 		.dy = sinf(0.0f),
-		.da = 0.0f,
 		.move_x = 0.0f,
 		.move_y = 0.0f,
+		.face = 'E',	
 	};
+	if (game->player.face == 'N')
+		game->player.da = 3 * M_PI_2;
+	else if (game->player.face == 'S')
+		game->player.da = M_PI_2;
+	else if (game->player.face == 'E')
+		game->player.da = 0;
+	else if (game->player.face == 'W')
+		game->player.da = M_PI;
 }
 
 void	init_map(t_game *game)
@@ -89,7 +97,7 @@ int create_img(t_game *game, mlx_image_t **image, int width, int height)
 }
 
 // Main function
-int32_t	main(void)
+int	main(void)
 {
 	t_game	game;
 

@@ -52,6 +52,7 @@ typedef struct s_player {
 	float	da;
 	float	move_x;
 	float	move_y;
+	char	face;
 } t_player;
 
 typedef struct s_raycast{
@@ -65,6 +66,7 @@ typedef struct s_raycast{
 	int		step_y;
 	double	side_dist_x;
 	double	side_dist_y;
+	int		side;
 } t_raycast;
 
 typedef	struct s_map2d {
@@ -140,4 +142,5 @@ void		render_background(t_game *game, int32_t new_width, int32_t new_height);
 // int create_img(t_game *game, mlx_image_t **image);
 int create_img(t_game *game, mlx_image_t **image, int width, int height);
 int	set_color(t_game *game, int visible, int invisible);
+int get_texture(t_game *game);
 #endif

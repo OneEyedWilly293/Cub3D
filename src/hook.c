@@ -25,11 +25,11 @@ void	ft_hook(void *param)
 
 void	clear_image(mlx_image_t *img, uint32_t color)
 {
-	uint32_t	*p;
-	int			count;
-	int			i;
+	int	*p;
+	int	count;
+	int	i;
 
-	p = (uint32_t *)img->pixels;
+	p = (int *)img->pixels;
 	count = img->width * img->height;
 	i = 0;
 	while (i < count)
