@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 18:35:20 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/08 17:55:28 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/10 03:20:33 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ typedef struct	s_game
 void	ft_putstr_err(const char *s);
 int		ft_error(const char *msg);
 int		check_args(int argc, char **argv);
+void	get_line_reset(void);
 char	*get_line(int fd);
 int	parse_rgb_line(char identifier, char *line, int *rgb);
 char	*skip_spaces(char *s);
@@ -116,6 +117,5 @@ int	parse_scene(const char *path, t_game *game);
 void	init_parser_game(t_game *g);
 void	free_parser_game(t_game *game);
 int		validate_map_closed(t_game *g);
-
 
 #endif

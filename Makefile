@@ -1,58 +1,82 @@
 NAME		= cub3D
+PARSER		= parser_test
 
 CC			= cc
-CFLAGS		= -Wall -Wextra -Wextra
+CFLAGS		= -Wall -Wextra -Werror
 RM			= rm -rf
 
-SRCS_DIR		= ./srcs
-OBJS_DIR		= ./objects
-INC_DIR		= ./includes
-LDFLAG		= .ldl -lglfw -pthread -lm
+# --- PATHS ------ #
+SRCS_DIR	= srcs
+OBJS_DIR	= objects
 
-LIBFT_DIR	= # TO ADD: library directory for libft#
-LIBFT_LIB	= # TO ADD: path to libft.a
+LIBFT_DIR	= lib/libft
+LIBFT_LIB	= $(LIBFT_DIR)/libft.a
 
-MLX_DIR		= ./MLX42
-MLX_LIB		= $(MLX_BUILD)/libmlx42.a
-MLX_BUILD	= $(MLX_DIR)/build
+# MLX_DIR		= ./MLX42
+# MLX_LIB		= $(MLX_BUILD)/libmlx42.a
+# MLX_BUILD	= $(MLX_DIR)/build
 
-SRCS		= # TO ADD
+# --- Includes / Link ------ #
+INCLUDES	= -I$(SRCS_DIR)/parsing -I$(LIBFT_DIR)/include
+#-I$(MLX_DIR)/includes \#
 
-OBJS		= $(SRCS: %.c .c%.o)
-INCLUDES	= -I$(INC_DIR) \
-					-I$(MLX_DIR)/includes \
-					# libft path-I$( ) \
+#LDFLAG		= .ldl -lglfw -pthread -lm
 
-%.o: %.c
-		$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+# --- Sources (parsing module)-------------- #
+PARSING_SRCS = \
+	$(SRCS_DIR)/parsing/colors.c \
+	$(SRCS_DIR)/parsing/get_line.c \
+	$(SRCS_DIR)/parsing/map_flood.c \
+	$(SRCS_DIR)/parsing/map_read.c \
+	$(SRCS_DIR)/parsing/map_validate.c \
+	$(SRCS_DIR)/parsing/parse.c \
+	$(SRCS_DIR)/parsing/parse_meta.c \
+	$(SRCS_DIR)/parsing/parse_scene.c \
+	$(SRCS_DIR)/parsing/textures.c \
+	$(SRCS_DIR)/parsing/utils.c
 
+# Parser tester main (only for parser_test)
+PARSER_MAIN = $(SRCS_DIR)/parsing/main.c
 
+# For now cub3D uses the same main, until you add the real game main later.
+CUB_MAIN    = $(PARSER_MAIN)
+
+CUB_SRCS    = $(PARSING_SRCS) $(CUB_MAIN)
+PARSER_SRCS = $(PARSING_SRCS) $(PARSER_MAIN)
+
+CUB_OBJS    = $(CUB_SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
+PARSER_OBJS = $(PARSER_SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
+# --- RULES ---- #
 all: $(NAME)
 
-$(NAME): $(OBJS) $(MLX_LIB) $(LIBFT_DIR)/libft.a
-	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_LIB) $(MLX_LIB) $(LDFLAGS) -o $(NAME)
-	@echo "✅ Build $(GREEN)$(NAME) $(NC)successfully! 🎉"
+$(NAME): $(CUB_OBJS) $(LIBFT_LIB)
+	$(CC) $(CFLAGS) $(CUB_OBJS) $(LIBFT_LIB) -o $(NAME)
+#$(MLX_LIB) $(LDFLAGS)
 
-# Look into script to install mlx library from git repo
-$(MLX_LIB):
-		cmake $(MLX_DIR) -B $(MLX_BUILD) && make -C $(MLX_BUILD) -j4
+$(PARSER): $(PARSER_OBJS) $(LIBFT_LIB)
+	$(CC) $(CFLAGS) $(PARSER_OBJS) $(LIBFT_LIB) -o $(PARSER)
+
+# Create needed folders before compiling each .o
+$(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
+	mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(LIBFT_LIB):
-		$(MAKE) -C $(LIBFT_DIR)
+	$(MAKE) -C $(LIBFT_DIR)
+
+#$(MLX_LIB):
+# 	cmake -S $(MLX_DIR) -B $(MLX_BUILD)
+# 	$(MAKE) -C $(MLX_BUILD) -j4
 
 clean:
-	@$(RM) $(OBJS)
-	@$(MAKE) -C $(LIBFT_DIR) clean
-	@$(MAKE) -C $(MLX_DIR) clean
-	@echo "🧹 Objects of $(NAME) are removed! -> 🗑️"
+	$(RM) $(OBJS_DIR)
+	$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean
-		$(RM) $(OBjS)
-		$(MAKE) -C $(LIBFT_DIR) fclean
-		$(MAKE) -C $(MLX_DIR) fclean
-		@echo "🧹 \033[0;31mFull clean complete.\033[0m 🗑️"
+	$(RM) $(NAME) $(PARSER)
+	$(MAKE) -C $(LIBFT_DIR) fclean
 
 re: fclean all
 
-.PHONY : all clean fclean re
-.SECONDARY : $(OBJS)
+.PHONY: all clean fclean re $(PARSER)
+.SECONDARY: $(CUB_OBJS) $(PARSER_OBJS)

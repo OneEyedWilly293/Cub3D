@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 22:08:33 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/08 19:19:26 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/10 01:31:45 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,16 +264,16 @@ static void store_color(t_game *game, char id, int *tmp)
 /*
 ** Called after EOF: both identifiers must exist
 */
-static int	check_missing_colors(t_game *game)
-{
-	if (!is_color_set(game->floor) && !is_color_set(game->ceiling))
-		return (ft_error(BOTH_IDEN_MISSING));
-	if (!is_color_set(game->floor))
-		return (ft_error(INVALID_MISSING_FLOOR));
-	if (!is_color_set(game->ceiling))
-		return (ft_error(INVALID_MISSING_CEIL));
-	return (0);
-}
+// static int	check_missing_colors(t_game *game)
+// {
+// 	if (!is_color_set(game->floor) && !is_color_set(game->ceiling))
+// 		return (ft_error(BOTH_IDEN_MISSING));
+// 	if (!is_color_set(game->floor))
+// 		return (ft_error(INVALID_MISSING_FLOOR));
+// 	if (!is_color_set(game->ceiling))
+// 		return (ft_error(INVALID_MISSING_CEIL));
+// 	return (0);
+// }
 
 /*
 ** Handle ONE trimmed line if it is an F or C identifier.

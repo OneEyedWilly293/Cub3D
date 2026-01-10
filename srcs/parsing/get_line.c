@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 18:36:47 by jgueon            #+#    #+#             */
-/*   Updated: 2025/12/22 18:31:41 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/10 03:32:22 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,44 +38,59 @@ static char	*append_buf(char *line, char *buf)
 	return (new_line);
 }
 
-static char	*extract_line(char **stash)
+static char	*extract_line(char *content, char *buf)
 {
 	int		i;
 	char	*line;
-	char	*rest;
 
+	if (!content || content[0] == '\0')
+		return (free(content), NULL);
 	i = 0;
-	while ((*stash)[i] && (*stash)[i] != '\n')
+	while (content[i] && content[i] != '\n')
 		i++;
-	line = ft_substr(*stash, 0, i);
-	if ((*stash)[i] == '\n')
+	line = ft_substr(content, 0, i);
+	if (!line)
+		return (free(content), NULL);
+	if (content[i] == '\n')
 		i++;
-	rest = ft_strdup(*stash + i);
-	free(*stash);
-	*stash = rest;
+	ft_strlcpy(buf, content + i, BUFFER_SIZE + 1);
+	free(content);
 	return (line);
 }
+
+void	get_line_reset(void)
+{
+	char	*buf;
+
+	buf = get_line(-1);
+	(void)buf;
+}
+
 
 char	*get_line(int fd)
 {
 	static char	buf[BUFFER_SIZE + 1];
-	static char	*stash;
-	int			r;
+	char		*content;
+	char		tmp[BUFFER_SIZE + 1];
+	ssize_t		r;
 
-	r = 1;
-	while (!stash || !has_nl(stash))
+	if (fd < 0)
 	{
-		r = read(fd, buf, BUFFER_SIZE);
+		buf[0] = '\0';
+		return (NULL);
+	}
+	content = ft_strdup(buf);
+	if (!content)
+		return (NULL);
+	while (!has_nl(content))
+	{
+		r = read(fd, tmp, BUFFER_SIZE);
 		if (r <= 0)
 			break;
-		buf[r] = '\0';
-		stash = append_buf(stash, buf);
-		if (!stash)
+		tmp[r] = '\0';
+		content = append_buf(content, tmp);
+		if (!content)
 			return (NULL);
 	}
-	if (!stash || stash[0] == '\0')
-		return (free(stash), stash = NULL, NULL);
-	if (r == 0 || has_nl(stash))
-		return (extract_line(&stash));
-	return (NULL);
+	return (extract_line(content, buf));
 }

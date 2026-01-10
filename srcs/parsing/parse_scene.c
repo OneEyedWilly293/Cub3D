@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 17:24:02 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/04 18:59:54 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/10 04:13:45 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int	parse_scene(const char *path, t_game *game)
 	char	*first_line;
 
 	init_parser_game(game);
+	get_line_reset();
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
 		return (ft_error(CANT_OPEN_MAP));
