@@ -1,6 +1,5 @@
 NO ./textures/matrix.png
 SO ./textures/matrix.png
-
 WE ./textures/matrix.png
 EA ./textures/matrix.png
 
@@ -31,9 +30,4 @@ C 225,30,0
 
 
 
-
-
-
-
-
-STEALTH
+x

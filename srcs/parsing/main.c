@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/28 18:40:38 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/10 04:13:30 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/10 17:35:13 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,8 @@ int	main(int argc, char **argv)
 {
 	t_game	game;
 
-	if (argc != 2)
-		return (ft_error("Usage: ./parser_tester <map.cub>\n"));
+	if (check_args(argc, argv))
+		return (1);
 	if (parse_scene(argv[1], &game) != 0)
 		return (1);
 	ft_putstr_fd("Parsing: OK\n\n", 1);

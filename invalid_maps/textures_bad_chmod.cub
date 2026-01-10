@@ -1,4 +1,4 @@
-NO ./textures/matrix.png
+NO ./textures/matrix_bad_chmod.png
 SO ./textures/matrix.png
 WE ./textures/matrix.png
 EA ./textures/matrix.png
@@ -20,6 +20,3 @@ C 225,30,0
 11000001110101011111011110N0111
 11110111 1110101 101111010001
 11111111 1111111 111111111111
-
-
-(change file permission before testing with this file)

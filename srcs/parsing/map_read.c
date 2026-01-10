@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 20:24:31 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/10 01:32:07 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/10 16:57:43 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ static int	check_map_mode_line(char *line)
 	int	i;
 
 	if (*skip_spaces(line) == '\0')
-		return (ft_error(EMPTY_LINE_IN_MAP_MSG));
+		return (ft_error(EMPTY_LINE_IN_MAP));
 	i = 0;
 	while (line[i])
 	{

@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 13:40:25 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/10 04:12:24 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/10 16:35:35 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,12 @@ static int	check_meta_complete(t_game *game)
 {
 	if (!game->tex.no || !game->tex.so || !game->tex.we || !game->tex.ea)
 		return (ft_error(INVALID_MISSING_TEX));
-	if (game->floor.r == -1 || game->ceiling.r == -1)
+	if (game->floor.r == -1 && game->ceiling.r == -1)
 		return (ft_error(BOTH_IDEN_MISSING));
+	if (game->floor.r == -1)
+		return (ft_error(INVALID_MISSING_FLOOR));
+	if (game->ceiling.r == -1)
+		return (ft_error(INVALID_MISSING_CEIL));
 	return (0);
 }
 

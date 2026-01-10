@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 22:08:33 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/10 01:31:45 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/10 16:25:39 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,7 +286,7 @@ int	handle_color_line(t_game *game, char *trim)
 	int	tmp[3];
 
 	if (trim[0] == 'F' && !is_color_line(trim))
-		return (ft_error("Invalid floor color format\n"), -1);
+		return (ft_error(INVALID_RGB_VALUE_MSG), -1);
 	if (trim[0] == 'C' && !is_color_line(trim))
 		return (ft_error("Invalid ceiling color format\n"), -1);
 	if (trim[0] == 'F' && is_color_line(trim))
