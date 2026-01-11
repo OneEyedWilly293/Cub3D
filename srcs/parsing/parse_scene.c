@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 17:24:02 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/10 04:13:45 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/11 19:33:57 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,3 @@ int	parse_scene(const char *path, t_game *game)
 	close (fd);
 	return (0);
 }
-
-

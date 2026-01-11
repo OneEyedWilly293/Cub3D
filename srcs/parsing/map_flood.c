@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 20:08:41 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/10 18:09:08 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/11 19:32:05 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,4 +123,3 @@ int	validate_map_closed(t_game *g)
 		return (ft_error(MAP_OPEN_MSG));
 	return (0);
 }
-

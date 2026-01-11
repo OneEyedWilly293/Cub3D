@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 01:22:11 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/06 23:16:01 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/11 19:33:18 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@ static int	store_player(t_game *g, int y, int x, char c)
 	return (0);
 }
 
-static int check_player_and_chars(t_game *g)
+static int	check_player_and_chars(t_game *g)
 {
 	int		y;
 	int		x;
-	char 	c;
+	char	c;
 
 	g->player_found = 0;
 	y = 0;
