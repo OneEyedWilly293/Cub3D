@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "parse.h"
+#include "cub3d.h"
 #include "libft.h"
 
 static int	is_ws(char c)
@@ -19,9 +20,9 @@ static int	is_ws(char c)
 }
 
 /*
-** Checks if the trimmed line starts with "NO ", "SO ", "WE ", or "EA ".
-** RULE: strict space/tab after 2 letters to prevent false matches like 'NOO'.
-*/
+ ** Checks if the trimmed line starts with "NO ", "SO ", "WE ", or "EA ".
+ ** RULE: strict space/tab after 2 letters to prevent false matches like 'NOO'.
+ */
 static int	is_id(char *s, char *id)
 {
 	if (!s || !id)
@@ -51,11 +52,11 @@ static int	has_png_ext(char *path)
 
 
 /*
-** Validate and store one texture path.
-** - Duplicate protection: if *dst already set => error
-** - path must exist/openable
-** - Extension must be "*.png".
-** - Stores a duplicated copy(ft_strdup) so it survives after the line is freed.
+ ** Validate and store one texture path.
+ ** - Duplicate protection: if *dst already set => error
+ ** - path must exist/openable
+ ** - Extension must be "*.png".
+ ** - Stores a duplicated copy(ft_strdup) so it survives after the line is freed.
  */
 static int	store_texture(char **dst, char *path)
 {
@@ -78,9 +79,9 @@ static int	store_texture(char **dst, char *path)
 }
 
 /*
-** - If line is a texture identifier line, parse and store the path.
-** - If not a texture line, return 0 (no error).
-*/
+ ** - If line is a texture identifier line, parse and store the path.
+ ** - If not a texture line, return 0 (no error).
+ */
 int	handle_texture_line(t_game *game, char *trim)
 {
 	char	*path;
@@ -111,10 +112,10 @@ int	handle_texture_line(t_game *game, char *trim)
 
 
 /*
-** - Scans the whole .cub file and store NO/SO/WE/EA.
-** - This function is the same "scan all lines" approach like find_color_lines().
-** TO DO: MERGE THEM INTO ONE PASS LATER
-*/
+ ** - Scans the whole .cub file and store NO/SO/WE/EA.
+ ** - This function is the same "scan all lines" approach like find_color_lines().
+ ** TO DO: MERGE THEM INTO ONE PASS LATER
+ */
 // int find_texture_lines(int fd, t_game *game)
 // {
 // 	char	*line;

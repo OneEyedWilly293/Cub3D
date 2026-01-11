@@ -1,4 +1,3 @@
-// #include "../includes/game.h"
 #include "cub3d.h"
 
 void	up_down(t_game *game)
@@ -7,8 +6,7 @@ void	up_down(t_game *game)
 	{
 		game->player.move_x = cos(game->player.da) * PLAYER_SPEED;
 		game->player.move_y = sin(game->player.da) * PLAYER_SPEED;
-		if (game->map[(int)(game->player.y + game->player.move_y) * GRIDX
-			+ (int)(game->player.x + game->player.move_x)] == 0)
+		if (game->map[(int)(game->player.y + game->player.move_y)][(int)(game->player.x + game->player.move_x)] == 0)
 		{
 			game->player.x += game->player.move_x;
 			game->player.y += game->player.move_y;
@@ -18,8 +16,7 @@ void	up_down(t_game *game)
 	{
 		game->player.move_x = cos(game->player.da) * PLAYER_SPEED;
 		game->player.move_y = sin(game->player.da) * PLAYER_SPEED;
-		if (game->map[(int)(game->player.y - game->player.move_y) * GRIDX
-			+ (int)(game->player.x - game->player.move_x)] == 0)
+		if (game->map[(int)(game->player.y - game->player.move_y)][(int)(game->player.x - game->player.move_x)] == 0)
 		{
 			game->player.x -= game->player.move_x;
 			game->player.y -= game->player.move_y;
@@ -33,8 +30,7 @@ void	left_right(t_game *game)
 	{
 		game->player.move_x = cos(game->player.da - M_PI_2) * PLAYER_SPEED;
 		game->player.move_y = sin(game->player.da - M_PI_2) * PLAYER_SPEED;
-		if (game->map[(int)(game->player.y + game->player.move_y) * GRIDX
-			+ (int)(game->player.x + game->player.move_x)] == 0)
+		if (game->map[(int)(game->player.y + game->player.move_y)][(int)(game->player.x + game->player.move_x)] == 0)
 		{
 			game->player.x += game->player.move_x;
 			game->player.y += game->player.move_y;
@@ -44,8 +40,7 @@ void	left_right(t_game *game)
 	{
 		game->player.move_x = cos(game->player.da + M_PI_2) * PLAYER_SPEED;
 		game->player.move_y = sin(game->player.da + M_PI_2) * PLAYER_SPEED;
-		if (game->map[(int)(game->player.y + game->player.move_y) * GRIDX
-			+ (int)(game->player.x + game->player.move_x)] == 0)
+		if (game->map[(int)(game->player.y + game->player.move_y)][(int)(game->player.x + game->player.move_x)] == 0)
 		{
 			game->player.x += game->player.move_x;
 			game->player.y += game->player.move_y;

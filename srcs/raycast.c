@@ -1,4 +1,3 @@
-// #include "../includes/game.h"
 #include "cub3d.h"
 
 double	cast_ray(double ray_angle, t_game *game)
@@ -22,10 +21,10 @@ double	cast_ray(double ray_angle, t_game *game)
 			game->ray.map_y += game->ray.step_y;
 			side = 1;
 		}
-		if (game->ray.map_y < 0 || game->ray.map_y >= GRIDY || game->ray.map_x < 0 || game->ray.map_x >= GRIDX)
+		if (game->ray.map_y < 0 || game->ray.map_y >= game->map_h || game->ray.map_x < 0 || game->ray.map_x >= game->map_w)
 			return (1000);
-		// if (game->map[game->ray.map_y * GRIDX + game->ray.map_x] == 1)
-		if (game->map[game->ray.map_y][game->ray.map_x] == '1')
+		// if (game->map[game->ray.map_y * game->map_w + game->ray.map_x] == 1)
+		if (game->map[game->ray.map_y][game->ray.map_x] == 1)
 			hit = 1;
 	}
 	game->ray.side = side;

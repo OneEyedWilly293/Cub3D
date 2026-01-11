@@ -1,4 +1,3 @@
-// #include "../includes/game.h"
 #include "cub3d.h"
 
 // Convert RGB to 32-bit integer

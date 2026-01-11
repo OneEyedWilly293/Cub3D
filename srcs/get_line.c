@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse.h"
 #include "libft.h"
+#include "cub3d.h"
 
 static int	has_nl(const char *s)
 {

@@ -10,7 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse.h"
+// #include "parse.h"
+#include "cub3d.h"
 
 /*
 ** Dupicate the padded grid so we can mark visited cells.

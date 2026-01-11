@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse.h"
+#include "cub3d.h"
 
 /*
 **  Ensure missing identifiers are detectable ('-1') and free_parse_game()

@@ -1,10 +1,9 @@
-// #include "../includes/game.h"
 #include "cub3d.h"
 
 static	void	update_map2d(int x, int y, t_game *game)
 {
-	// game->map2d.tile = (int)game->map[y * GRIDX + x];
-	game->map2d.tile = (int)game->map[y][x];
+	// game->map2d.tile = game->map[y * game->map_w + x];
+	game->map2d.tile = game->map[y][x];
 	game->map2d.start_x = (int)(x * game->map2d.scale_x);
 	game->map2d.start_y = (int)(y * game->map2d.scale_y);
 	game->map2d.end_x = (int)((x + 1) * game->map2d.scale_x);
@@ -19,13 +18,13 @@ void	draw_map2d(void *param)
 	int		x;
 
 	game = (t_game *)param;
-	game->map2d.scale_x = (double)MINIMAP_SIZE / (double)GRIDX;
-	game->map2d.scale_y = (double)MINIMAP_SIZE / (double)GRIDY;
+	game->map2d.scale_x = (double)MINIMAP_SIZE / (double)game->map_w;
+	game->map2d.scale_y = (double)MINIMAP_SIZE / (double)game->map_h;
 	y = 0;
-	while (y < GRIDY)
+	while (y < game->map_h)
 	{
 		x = 0;
-		while (x < GRIDX)
+		while (x < game->map_w)
 		{
 			update_map2d(x, y, game);
 			draw_map2d_map(game);
@@ -45,10 +44,10 @@ void	draw_map2d_map(t_game *game)
 
 	if(game->show_map == true)
 	{
-		if (game->map2d.tile == 1)
-			color = WHITE;
-		else
-			color = BLACK;
+	if (game->map2d.tile == 1)
+		color = WHITE;
+	else
+		color = BLACK;
 	}
 	else
 		color = TRANSPARENT;

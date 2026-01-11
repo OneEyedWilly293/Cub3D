@@ -10,7 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse.h"
+// #include "parse.h"
+#include "cub3d.h"
 
 static int	is_player(char c)
 {
