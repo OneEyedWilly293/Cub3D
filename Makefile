@@ -1,82 +1,101 @@
-NAME		= cub3D
-PARSER		= parser_test
+CC       := cc
+CFLAGS 	 := -Wall -Wextra -Werror -O3 -MMD -MP
+GDBFLAGS := -g -O0 -Wall -Wextra -Werror
 
-CC			= cc
-CFLAGS		= -Wall -Wextra -Werror
-RM			= rm -rf
+LDFLAGS  := -ldl -lglfw -lm -lz
 
-# --- PATHS ------ #
-SRCS_DIR	= srcs
-OBJS_DIR	= objects
+NAME     	:= cub3d 
 
-LIBFT_DIR	= lib/libft
-LIBFT_LIB	= $(LIBFT_DIR)/libft.a
+SRC_DIR     := srcs
+BUILD_DIR   := build
+OBJ_DIR     := $(BUILD_DIR)/srcs
+INCLUDES 	:= -I includes -I lib/MLX42/include -I lib/libft/include
 
-# MLX_DIR		= ./MLX42
-# MLX_LIB		= $(MLX_BUILD)/libmlx42.a
-# MLX_BUILD	= $(MLX_DIR)/build
+LIBFT_DIR   := lib/libft
+LIBFT_A     := $(LIBFT_DIR)/libft.a
+MLX_REPO	:= https://github.com/codam-coding-college/MLX42.git
+MLX_DIR     := lib/MLX42
+MLX_A       := $(BUILD_DIR)/mlx42/libmlx42.a
 
-# --- Includes / Link ------ #
-INCLUDES	= -I$(SRCS_DIR)/parsing -I$(LIBFT_DIR)/include
-#-I$(MLX_DIR)/includes \#
+SRC      := $(SRC_DIR)/colors.c \
+			$(SRC_DIR)/dda_draw.c \
+			$(SRC_DIR)/get_line.c \
+			$(SRC_DIR)/hook.c \
+			$(SRC_DIR)/main.c \
+			$(SRC_DIR)/map2d.c \
+			$(SRC_DIR)/map3d.c \
+			$(SRC_DIR)/map_flood.c \
+			$(SRC_DIR)/map_read.c \
+			$(SRC_DIR)/map_validate.c \
+			$(SRC_DIR)/movements.c \
+			$(SRC_DIR)/parse.c \
+			$(SRC_DIR)/parse_meta.c \
+			$(SRC_DIR)/parse_meta_utils.c \
+			$(SRC_DIR)/parse_scene.c \
+			$(SRC_DIR)/player.c \
+			$(SRC_DIR)/raycast.c \
+			$(SRC_DIR)/textures.c \
+			$(SRC_DIR)/textures_utils.c \
+			$(SRC_DIR)/utils.c \
 
-#LDFLAG		= .ldl -lglfw -pthread -lm
+OBJ      := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+DEPS 	 := $(OBJ:.o=.d)
 
-# --- Sources (parsing module)-------------- #
-PARSING_SRCS = \
-	$(SRCS_DIR)/parsing/colors.c \
-	$(SRCS_DIR)/parsing/get_line.c \
-	$(SRCS_DIR)/parsing/map_flood.c \
-	$(SRCS_DIR)/parsing/map_read.c \
-	$(SRCS_DIR)/parsing/map_validate.c \
-	$(SRCS_DIR)/parsing/parse.c \
-	$(SRCS_DIR)/parsing/parse_meta.c \
-	$(SRCS_DIR)/parsing/parse_scene.c \
-	$(SRCS_DIR)/parsing/textures.c \
-	$(SRCS_DIR)/parsing/utils.c
+all: $(LIBFT_A) $(MLX_A) $(NAME)
 
-# Parser tester main (only for parser_test)
-PARSER_MAIN = $(SRCS_DIR)/parsing/main.c
+$(LIBFT_A):
+	@make --no-print-directory -C $(LIBFT_DIR)
 
-# For now cub3D uses the same main, until you add the real game main later.
-CUB_MAIN    = $(PARSER_MAIN)
+$(MLX_A):
+	@if [ ! -d "$(MLX_DIR)" ]; then \
+		echo "Cloning MLX42 repository..."; \
+		git clone $(MLX_REPO) $(MLX_DIR); \
+		cmake -S $(MLX_DIR) -B $(BUILD_DIR)/mlx42; \
+		make --no-print-directory -C $(BUILD_DIR)/mlx42 -j4; \
+		fi;
 
-CUB_SRCS    = $(PARSING_SRCS) $(CUB_MAIN)
-PARSER_SRCS = $(PARSING_SRCS) $(PARSER_MAIN)
+$(NAME): $(LIBFT_A) $(MLX_A) $(OBJ)
+	@$(CC) $(OBJ) $(LIBFT_A) $(MLX_A) $(LDFLAGS) -o $@
+	@clear
+	@echo "✅ Build $(NAME) successfully! 🎉"
 
-CUB_OBJS    = $(CUB_SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
-PARSER_OBJS = $(PARSER_SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
-# --- RULES ---- #
-all: $(NAME)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-$(NAME): $(CUB_OBJS) $(LIBFT_LIB)
-	$(CC) $(CFLAGS) $(CUB_OBJS) $(LIBFT_LIB) -o $(NAME)
-#$(MLX_LIB) $(LDFLAGS)
+$(OBJ_DIR):
+	@mkdir -p $@
+	-include $(DEPS)
 
-$(PARSER): $(PARSER_OBJS) $(LIBFT_LIB)
-	$(CC) $(CFLAGS) $(PARSER_OBJS) $(LIBFT_LIB) -o $(PARSER)
+$(OBJ_DIR):
+	@mkdir -p $@
 
-# Create needed folders before compiling each .o
-$(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
-	mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+OBJ_GDB := $(OBJ:$(OBJ_DIR)/%.o=$(OBJ_DIR)/gdb_%.o)
 
-$(LIBFT_LIB):
-	$(MAKE) -C $(LIBFT_DIR)
+$(OBJ_DIR)/gdb_%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+	$(CC) $(GDBFLAGS) $(INCLUDES) -c $< -o $@
 
-#$(MLX_LIB):
-# 	cmake -S $(MLX_DIR) -B $(MLX_BUILD)
-# 	$(MAKE) -C $(MLX_BUILD) -j4
+gdb: $(LIBFT_A) $(MLX_A) $(OBJ_GDB)
+	$(CC) $(OBJ_GDB) $(LIBFT_A) $(MLX_A) $(LDFLAGS) -o $(NAME)
+	@echo "✅ Debug build ready: ./$(NAME)"
+
+# gdb: $(LIBFT_A) $(MLX_A) $(OBJ)
+# 	@$(CC) $(OBJ) $(LIBFT_A) $(MLX_A) $(GDBFLAGS) $(INCLUDES) $(LDFLAGS) -o $@
+# 	@clear
+# 	@echo "✅ Build $(NAME) successfully! 🎉"
 
 clean:
-	$(RM) $(OBJS_DIR)
-	$(MAKE) -C $(LIBFT_DIR) clean
+	rm -rf $(OBJ_DIR) $(BUILD_DIR)/src
+	@make --no-print-directory -C $(LIBFT_DIR) clean
 
 fclean: clean
-	$(RM) $(NAME) $(PARSER)
-	$(MAKE) -C $(LIBFT_DIR) fclean
+	rm -rf $(NAME) $(NAME_BONUS) $(BUILD_DIR) $(MLX_DIR)
+	@make --no-print-directory fclean -C $(LIBFT_DIR)
 
 re: fclean all
 
-.PHONY: all clean fclean re $(PARSER)
-.SECONDARY: $(CUB_OBJS) $(PARSER_OBJS)
+run: all 
+	./$(NAME)
+
+.SECONDARY: $(OBJ)
+.SECONDARY: $(OBJ_BONUS)
+.PHONY: all clean fclean re bonus run
