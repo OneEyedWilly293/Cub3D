@@ -220,6 +220,9 @@ int			is_signed_number(char *s);
 int			arrlen(char **arr);
 void		free_map(char **map);
 
+//utils2.c
+int			is_map_charset(char c);
+
 // utils_color.c
 int			get_nb_comma(char *line);
 int			check_rgb_range(int i);
@@ -230,5 +233,7 @@ void		store_color(t_game *game, char id, int *tmp);
 int			row_len(char *s);
 void		free_partial_grid(char **grid, int y);
 
+// utils_parse_meta.c
+int			is_map_line(char *line);
 
 #endif

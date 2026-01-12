@@ -6,86 +6,11 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 13:40:25 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/10 16:35:35 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/12 22:02:37 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-/*
-** Checks if a character is allowed in the map.
-** Allowed: '0', '1', 'N', 'S', 'E', 'W', space.
-*/
-int	is_map_charset(char c)
-{
-	if (c == '0' || c == '1')
-		return (1);
-	if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
-		return (1);
-	if (c == ' ')
-		return (1);
-	return (0);
-}
-
-/*
-** A "map line" is any non-empty line that contains ONLY map characters
-** (ignoring the trailing '\n', which get_line() removes anyway).
-*/
-static int	is_map_line(char *line)
-{
-	int	i;
-	int	has_tile;
-
-	if (!line || !*line)
-		return (0);
-	i = 0;
-	has_tile = 0;
-	while (line[i])
-	{
-		if (!is_map_charset(line[i]))
-			return (0);
-		if (line[i] == '0' || line[i] == '1' || line[i] == 'N'
-			|| line[i] == 'S' || line[i] == 'E'
-			|| line[i] == 'W')
-			has_tile = 1;
-		i++;
-	}
-	return (has_tile);
-}
-
-/*
-** get_line() returns lines without '\n, so empty line =="".
-** But also treat lines of only spaces
-*/
-// DELETE LATER. 6.01 no longer needed after check added in map_read.c
-// static int	is_empty_line(char *line)
-// {
-// 	char	*trim;
-
-// 	if (!line)
-// 		return (1);
-// 	trim = skip_spaces(line);
-// 	if (*trim == '\0')
-// 		return (1);
-// 	return (0);
-// }
-
-/*
-** A function to set default values for metadatas
-*/
-// static void	init_meta_defaults(t_game *game)
-// {
-// 	game->floor.r = -1;
-// 	game->floor.g = -1;
-// 	game->floor.b = -1;
-// 	game->ceiling.r = -1;
-// 	game->ceiling.g = -1;
-// 	game->ceiling.b = -1;
-// 	game->tex.no = NULL;
-// 	game->tex.so = NULL;
-// 	game->tex.we = NULL;
-// 	game->tex.ea = NULL;
-// }
 
 /*
 ** - Try textures(handle_texture_line) first then try colors(handle_color_line)
@@ -157,7 +82,6 @@ static int	meta_ready(t_game *game)
 		return (0);
 	return (1);
 }
-
 
 /*
 ** Reads line by line until it finds the FIRST map line.
