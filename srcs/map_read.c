@@ -6,35 +6,11 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 20:24:31 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/10 16:57:43 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/12 21:53:18 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-// strlen but with a NULL check(and int instead of size_t)
-static int	row_len(char *s)
-{
-	int	i;
-
-	i = 0;
-	while (s && s[i] && s[i] != '\n')
-		i++;
-	return (i);
-}
-
-void	free_map(char **map)
-{
-	int	i;
-
-	i = 0;
-	while (map && map[i])
-	{
-		free(map[i]);
-		i++;
-	}
-	free(map);
-}
 
 static int	push_line(char ***arr, int *n, char *line)
 {
@@ -56,16 +32,6 @@ static int	push_line(char ***arr, int *n, char *line)
 	*arr = new_arr;
 	*n += 1;
 	return (0);
-}
-
-static void	free_partial_grid(char **grid, int y)
-{
-	while (y > 0)
-	{
-		y--;
-		free(grid[y]);
-	}
-	free(grid);
 }
 
 static int	build_grid(t_game *game, char **lines)
@@ -113,7 +79,7 @@ static int	check_map_mode_line(char *line)
 		if (line[i] == '\r')
 		{
 			i++;
-			continue;
+			continue ;
 		}
 		if (!is_map_charset(line[i]))
 			return (ft_error(INVALID_MAP_CHAR_MSG));
@@ -126,7 +92,7 @@ static int	check_map_mode_line(char *line)
 ** Helper function to read map lines for read_map() for Norm compliance.
 **
 */
-static int read_map_lines(int fd, t_game *game, char ***lines)
+static int	read_map_lines(int fd, t_game *game, char ***lines)
 {
 	char	*line;
 	int		i;

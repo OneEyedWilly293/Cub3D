@@ -218,6 +218,7 @@ void		free_split(char **colors);
 char		*skip_spaces(char *s);
 int			is_signed_number(char *s);
 int			arrlen(char **arr);
+void		free_map(char **map);
 
 // utils_color.c
 int			get_nb_comma(char *line);
@@ -225,6 +226,9 @@ int			check_rgb_range(int i);
 int			is_color_set(t_color c);
 void		store_color(t_game *game, char id, int *tmp);
 
+// utils_map_read.c
+int			row_len(char *s);
+void		free_partial_grid(char **grid, int y);
 
 
 #endif

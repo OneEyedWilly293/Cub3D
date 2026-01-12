@@ -36,6 +36,7 @@ SRC      := $(SRC_DIR)/main.c \
 			$(SRC_DIR)/textures.c \
 			$(SRC_DIR)/utils.c \
 			$(SRC_DIR)/utils_color.c \
+			$(SRC_DIR)/utils_map_read.c \
 
 OBJ      := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 DEPS 	 := $(OBJ:.o=.d)

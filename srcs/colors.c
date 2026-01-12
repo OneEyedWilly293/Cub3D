@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 22:08:33 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/12 21:36:05 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/12 21:54:10 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int	trim_tokens(char **colors)
 		i++;
 	}
 	return (0);
-}$(SRC_DIR)/utils.c \
+}
 
 // Function to parse a full line like
 // "F 220, 100, 0"

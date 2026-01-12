@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 18:06:36 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/12 21:25:25 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/12 21:51:48 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,17 @@ int	arrlen(char **arr)
 	while (arr[len])
 		len++;
 	return (len);
+}
+
+void	free_map(char **map)
+{
+	int	i;
+
+	i = 0;
+	while (map && map[i])
+	{
+		free(map[i]);
+		i++;
+	}
+	free(map);
 }
