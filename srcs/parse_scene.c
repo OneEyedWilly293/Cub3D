@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 17:24:02 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/10 04:13:45 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/12 22:07:25 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	init_parser_game(t_game *g)
 	g->ceiling.b = -1;
 	g->player_found = 0;
 	g->player_dir = '\0';
-
+	// CHECK WITH EDUARDO BEFORE COMPLETING NROM CHECK FOR THIS!!!!!
 	// execution
 	g->window_width = WIN_W;
 	g->window_height = WIN_H;
@@ -77,5 +77,3 @@ int	parse_scene(const char *path, t_game *game)
 	close (fd);
 	return (0);
 }
-
-
