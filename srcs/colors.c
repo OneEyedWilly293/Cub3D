@@ -6,111 +6,11 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 22:08:33 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/10 16:25:39 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/12 21:36:05 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-//MOVE TO utils later OR DELETE IF NOT USED
-int	is_digit(char c)
-{
-	return (c >= '0' && c <= '9');
-}
-
-/**
- * This function converts the initial portion of the string pointed to by str
- * to an integer representation. It skips all white-space characters at the
- * beginning, takes an optional plus or minus sign followed by as many digits
- * as possible, and interprets them as a numerical value.
- * ft_atoi - Converts a string to an integer
- *
- * @param str: The string to be converted
- * @return The converted integer value
- */
-int	ft_dan_atoi(const char *str)
-{
-	int		sign;
-	int		result;
-
-	sign = 1;
-	result = 0;
-	while (*str == ' ' || (*str >= 9 && *str <= 13))
-		str++;
-	if (*str == '-' || *str == '+')
-	{
-		if (*str == '-')
-			sign = -1;
-		str++;
-	}
-	while (*str >= '0' && *str <= '9')
-	{
-		result = result * 10 + (*str - '0');
-		str++;
-	}
-	return (result * sign);
-}
-
-static int	is_signed_number(char *s)
-{
-	int	i;
-
-	i = 0;
-	if (!s || s[0] == '\0')
-		return (0);
-	if (s[i] == '+' || s[i] == '-')
-		i++;
-	while (s[i])
-	{
-		if (s[i] < '0' || s[i] > '9')
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-int get_nb_comma(char *line)
-{
-	int	n;
-
-	n = 0;
-	if (!line || !*line)
-		return(n);
-	while (*line)
-	{
-		if (*line == ',')
-			n++;
-		line++;
-	}
-	return (n);
-}
-
-int check_rgb_range(int i)
-{
-	return ((i >= 0) && (i <= 255));
-}
-
-/*
-** Returns 1 if a t_color is already assigned (not -1,-1,-1 anymore)
-*/
-static int	is_color_set(t_color c)
-{
-	return (c.r != -1 && c.g != -1 && c.b != -1);
-}
-
-// Helper function: to count elements in a NULL-terminated char **.
-// MOVE TO utils later
-int	arrlen(char **arr)
-{
-	int	len;
-
-	len = 0;
-	if (!arr)
-		return (0);
-	while (arr[len])
-		len++;
-	return (len);
-}
 
 // FUNCTION TO CHECK RGB VALUES 0~255 and if there is 3 values
 // color: char ** from ft_split(..., ',')
@@ -129,7 +29,7 @@ static int	parse_rgb_values(char **color, int *rgb)
 	{
 		if (!is_signed_number(color[i]))
 			return (ft_error(INVALID_RGB_CHAR_MSG));
-		n = ft_dan_atoi(color[i]);
+		n = ft_atoi(color[i]);
 		if (!check_rgb_range(n))
 			return (ft_error(INVALID_RGB_RANGE_MSG));
 		rgb[i] = n;
@@ -149,7 +49,7 @@ static int	trim_tokens(char **colors)
 	i = 0;
 	while (colors[i])
 	{
-		trimmed = ft_strtrim(colors[i], " \t"); // TO CHECK: \n
+		trimmed = ft_strtrim(colors[i], " \t\n\r");
 		if (!trimmed)
 			return (1);
 		free(colors[i]);
@@ -157,23 +57,7 @@ static int	trim_tokens(char **colors)
 		i++;
 	}
 	return (0);
-}
-
-// move to utils later
-static void free_split(char **colors)
-{
-	int	i;
-
-	if (!colors)
-		return ;
-	i = 0;
-	while (colors[i])
-	{
-		free(colors[i]);
-		i++;
-	}
-	free(colors);
-}
+}$(SRC_DIR)/utils.c \
 
 // Function to parse a full line like
 // "F 220, 100, 0"
@@ -187,13 +71,13 @@ static void free_split(char **colors)
 int	parse_rgb_line(char identifier, char *line, int *rgb)
 {
 	char	*meta;
-	char 	**colors;
+	char	**colors;
 	int		i;
 
 	if (!line || !rgb)
 		return (ft_error("RGB: NULL input\n"));
 	if (line[0] != identifier)
-		return (ft_error("RGB: wrong identifier\n"));;
+		return (ft_error("RGB: wrong identifier\n"));
 	meta = line + 1;
 	while (*meta == ' ' || *meta == '\t')
 		meta++;
@@ -239,41 +123,6 @@ static int	is_color_line(char *trim)
 	return (1);
 }
 
-
-/*
-** Store parsed RGB into game struct.
-** This MUST be called, otherwise game stays at -1,-1,-1.
-*/
-static void store_color(t_game *game, char id, int *tmp)
-{
-	if (id == 'F')
-	{
-		game->floor.r = tmp[0];
-		game->floor.g = tmp[1];
-		game->floor.b = tmp[2];
-	}
-	else
-	{
-		game->ceiling.r = tmp[0];
-		game->ceiling.g = tmp[1];
-		game->ceiling.b = tmp[2];
-	}
-}
-
-/*
-** Called after EOF: both identifiers must exist
-*/
-// static int	check_missing_colors(t_game *game)
-// {
-// 	if (!is_color_set(game->floor) && !is_color_set(game->ceiling))
-// 		return (ft_error(BOTH_IDEN_MISSING));
-// 	if (!is_color_set(game->floor))
-// 		return (ft_error(INVALID_MISSING_FLOOR));
-// 	if (!is_color_set(game->ceiling))
-// 		return (ft_error(INVALID_MISSING_CEIL));
-// 	return (0);
-// }
-
 /*
 ** Handle ONE trimmed line if it is an F or C identifier.
 ** - Duplicated detection
@@ -306,26 +155,3 @@ int	handle_color_line(t_game *game, char *trim)
 	}
 	return (1);
 }
-
-/*
-** Reads the file and apply the helpers.
-*/
-// int	find_color_lines(int fd, t_game *game)
-// {
-// 	char	*line;
-// 	char	*trim;
-
-// 	game->floor.r = game->floor.g = game->floor.b = -1;
-// 	game->ceiling.r = game->ceiling.g = game->ceiling.b = -1;
-// 	line = get_line(fd);
-// 	while (line)
-// 	{
-// 		trim = skip_spaces(line);
-// 		if (handle_color_line(game, trim))
-// 			return (free(line), 1);
-// 		free(line);
-// 		line = get_line(fd);
-// 	}
-// 	return (check_missing_colors(game));
-// }
-

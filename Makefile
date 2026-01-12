@@ -4,7 +4,7 @@ GDBFLAGS := -g -O0 -Wall -Wextra -Werror
 
 LDFLAGS  := -ldl -lglfw -lm -lz
 
-NAME     	:= cub3d 
+NAME     	:= cub3d
 
 SRC_DIR     := srcs
 BUILD_DIR   := build
@@ -35,6 +35,7 @@ SRC      := $(SRC_DIR)/main.c \
 			$(SRC_DIR)/parse_scene.c \
 			$(SRC_DIR)/textures.c \
 			$(SRC_DIR)/utils.c \
+			$(SRC_DIR)/utils_color.c \
 
 OBJ      := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 DEPS 	 := $(OBJ:.o=.d)
@@ -91,7 +92,7 @@ fclean: clean
 
 re: fclean all
 
-run: all 
+run: all
 	./$(NAME) maps/cheese_maze.cub
 
 .SECONDARY: $(OBJ)

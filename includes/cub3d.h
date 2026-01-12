@@ -8,8 +8,8 @@
 # include <stdint.h>
 #include <stdio.h>
 
-#define WIN_W  1024 
-#define WIN_H  1024 
+#define WIN_W  1024
+#define WIN_H  1024
 #define MINIMAP_SIZE 200
 
 #define MAP_W (WIN_W / 2)
@@ -17,7 +17,7 @@
 #define PLAYER_SIZE 10   // Size of player (in pixels)
 #define PLAYER_SPEED 0.1  // Size of player (in pixels)
 #define MOUSE_SENSITIVITY 0.0009
-#define MAX_DOF 8 
+#define MAX_DOF 8
 #define NUM_RAYS  30
 #define FOV        (M_PI / 3)
 
@@ -196,7 +196,6 @@ void		up_down(t_game *game);
 void		vertical_rotation(t_game *game);
 
 char		*get_line(int fd);
-char		*skip_spaces(char *s);
 int			check_args(int argc, char **argv);
 int			ft_error(const char *msg);
 int			validate_map_closed(t_game *g);
@@ -213,4 +212,19 @@ void		free_parser_game(t_game *game);
 void		ft_putstr_err(const char *s);
 void		get_line_reset(void);
 void		init_parser_game(t_game *g);
+
+// utils.c
+void		free_split(char **colors);
+char		*skip_spaces(char *s);
+int			is_signed_number(char *s);
+int			arrlen(char **arr);
+
+// utils_color.c
+int			get_nb_comma(char *line);
+int			check_rgb_range(int i);
+int			is_color_set(t_color c);
+void		store_color(t_game *game, char id, int *tmp);
+
+
+
 #endif
