@@ -4,16 +4,9 @@
 # include "../lib/libft/include/libft.h"
 # include "../lib/MLX42/include/MLX42/MLX42.h"
 # include <math.h>
-// # include "parse.h"
-# include <limits.h>
-// -----------------------------------------------------------------------------
-// Codam Coding College, Amsterdam @ 2022-2023 by W2Wizard.
-// See README in the root project for more information.
-// -----------------------------------------------------------------------------
-
+# include <fcntl.h>
+# include <stdint.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
 
 #define WIN_W  1024 
 #define WIN_H  1024 
@@ -21,13 +14,9 @@
 
 #define MAP_W (WIN_W / 2)
 #define MAP_H (WIN_H / 2)
-// #define GRIDX  32	//map width-- change to gridx
-// #define GRIDY  16	//map height
-					// #define TILE_SIZE (MAP_W / MAPX)   // Size of each tile (in pixels)
 #define PLAYER_SIZE 10   // Size of player (in pixels)
 #define PLAYER_SPEED 0.1  // Size of player (in pixels)
 #define MOUSE_SENSITIVITY 0.0009
-
 #define MAX_DOF 8 
 #define NUM_RAYS  30
 #define FOV        (M_PI / 3)
@@ -60,7 +49,6 @@ typedef struct s_player {
 	float	da;
 	float	move_x;
 	float	move_y;
-	char	face;
 } t_player;
 
 typedef struct s_raycast{
@@ -127,11 +115,8 @@ typedef struct s_game {
 	t_player	player;
 	mlx_image_t	*img_map;
 	mlx_image_t	*img_3d;
-	// int			*map;
 	int         window_width;
 	int         window_height;
-	int         map_width;
-	int         map_height;
 	int			tile_size;
 	t_raycast	ray;
 	t_miniray	m_ray;
@@ -157,31 +142,23 @@ void		drawray(void *param);
 void		draw_map2d(void *param);
 void		draw_map3d(void *param);
 void		draw_player(t_game *game);
-void		draw_map2d_map(t_game *game);
-void		draw_ray_minimap(t_game *g);
-void		draw_border(t_game *game);
 void		ft_hook(void* param);
 void		game_loop(void* param);
 void		resize_callback(int32_t new_width, int32_t new_height, void *param);
 double		cast_ray(double ray_angle, t_game *g);
-void		init_ray_struct(double ray_angle, t_game *g);
 void		key_hook(mlx_key_data_t keydata, void *param);
 void		init_mouse(t_game *game);
 void		mouse_hook(double xpos, double ypos, void *param);
 void		clear_image(mlx_image_t *img, uint32_t color);
-
 void		up_down(t_game *game);
 void		left_right(t_game *game);
 void		horizontal_rotation(t_game *game);
 void		vertical_rotation(t_game *game);
 void		jump(t_game *game);
-// void		render_background(t_game *game);
 void		render_background(t_game *game, int32_t new_width, int32_t new_height);
-
-// int create_img(t_game *game, mlx_image_t **image);
-int create_img(t_game *game, mlx_image_t **image, int width, int height);
-int	set_color(t_game *game, int visible, int invisible);
-int get_texture(t_game *game);
+int			create_img(t_game *game, mlx_image_t **image, int width, int height);
+int			set_color(t_game *game, int visible, int invisible);
+int			get_texture(t_game *game);
 
 # include <unistd.h>
 # include <fcntl.h>

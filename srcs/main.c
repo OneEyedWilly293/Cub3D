@@ -1,61 +1,28 @@
 #include "cub3d.h"
 
-// Define the map
-// int map[] =
-// {
-// 	1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-// 	1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-// 	1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-// 	1,0,0,1,1,0,1,1,1,1,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,
-// 	1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-// 	1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-// 	1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,1,
-// 	1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-// 	1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,1,
-// 	1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,1,1,1,1,1,0,0,0,0,0,0,0,1,
-// 	1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-// 	1,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-// 	1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-// 	1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-// 	1,1,0,0,1,0,1,1,1,1,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1,1,
-// 	1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
-// };
-
 void	init_player(t_game *game)
 {
 	game->player = (t_player)
 	{
-		.x = 4.5f,
-		.y = 5.5f,
+		// positions of player
+		.x = game->player_x,
+		.y = game->player_y,
 		.xPos = 0,
 		.yPos = 0,
 		.dx = cosf(0.0f),
 		.dy = sinf(0.0f),
 		.move_x = 0.0f,
 		.move_y = 0.0f,
-		.face = 'E',	
 	};
-	if (game->player.face == 'N')
+	if (game->player_dir == 'N')
 		game->player.da = 3 * M_PI_2;
-	else if (game->player.face == 'S')
+	else if (game->player_dir== 'S')
 		game->player.da = M_PI_2;
-	else if (game->player.face == 'E')
+	else if (game->player_dir== 'E')
 		game->player.da = 0;
-	else if (game->player.face == 'W')
+	else if (game->player_dir == 'W')
 		game->player.da = M_PI;
 }
-
-// void	init_map(t_game *game)
-// {
-// 	size_t	map_size;
-//
-// 	map_size = sizeof(map) / sizeof(map[0]);
-// 	game->map = malloc(sizeof(int) * map_size);
-// 	game->tile_size = MAP_W / GRIDX;
-// 	if (!game->map)
-// 		exit(EXIT_FAILURE);
-// 	ft_memcpy(game->map, map, sizeof(map));
-// }
 
 int	init_mlx(t_game *game)
 {
@@ -105,11 +72,11 @@ int	main(int argc, char **argv)
 		return (1);
 	if (parse_scene(argv[1], &game) != 0)
 		return (1);
-	// ft_memset(&game, 0, sizeof(t_game));
-	game.map_width = game.map_w;
-	game.map_height = game.map_h;
-	game.window_width = WIN_W;
-	game.window_height = WIN_H;
+	// game.map_width = game.map_w;
+	// game.map_height = game.map_h;
+	// game.window_width = WIN_W;
+	// game.window_height = WIN_H;
+	game.tile_size = game.map_w/ game.map_h;
 	init_player(&game);
 	// init_map(&game);
 	if (init_mlx(&game) == 1)

@@ -10,9 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse.h"
 #include "cub3d.h"
-#include "libft.h"
 
 static int	is_ws(char c)
 {

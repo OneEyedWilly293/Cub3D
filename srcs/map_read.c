@@ -10,9 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "parse.h"
 #include "cub3d.h"
-#include "libft.h"
 
 // strlen but with a NULL check(and int instead of size_t)
 static int	row_len(char *s)

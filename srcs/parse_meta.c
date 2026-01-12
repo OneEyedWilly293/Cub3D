@@ -10,9 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "parse.h"
 #include "cub3d.h"
-#include "libft.h"
 
 /*
 ** Checks if a character is allowed in the map.

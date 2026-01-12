@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-void	draw_column(mlx_image_t *img, int x, int top, int bottom, int color)
+static void	draw_column(mlx_image_t *img, int x, int top, int bottom, int color)
 {
 	int	y;
 

@@ -10,9 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "parse.h"
 #include "cub3d.h"
-#include "libft.h"
 
 //MOVE TO utils later OR DELETE IF NOT USED
 int	is_digit(char c)

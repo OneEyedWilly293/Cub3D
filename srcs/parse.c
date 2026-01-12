@@ -10,9 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "parse.h"
 #include "cub3d.h"
-#include "libft.h"
 
 void	ft_putstr_err(const char *s)
 {

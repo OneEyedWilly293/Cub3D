@@ -29,6 +29,10 @@ void	init_parser_game(t_game *g)
 	g->ceiling.b = -1;
 	g->player_found = 0;
 	g->player_dir = '\0';
+
+	// execution
+	g->window_width = WIN_W;
+	g->window_height = WIN_H;
 }
 
 void	free_parser_game(t_game *game)
