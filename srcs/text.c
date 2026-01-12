@@ -27,22 +27,30 @@ void	render_background(t_game *game, int32_t new_width, int32_t new_height)
 	}
 }
 
-int get_texture(t_game *game)
+// mlx_image_t *get_texture(t_game *game)
+int	get_texture(t_game *game)
 {
 	if (game->ray.side == 0)
 	{
 		if (game->ray.step_x > 0)
-			return (BLUE);
+		{
+			// mlx_texture_t *blue = mlx_load_png(game->tex.ea);
+			// mlx_image_t *ret = mlx_texture_to_image(game->mlx, blue);
+			// return (ret); // east
+			return (BLUE); // east
+						   // return (game->tex.ea); // east
+		}
 		else
-			return (GREEN);
+			return (GREEN); // west
 	}
 	else
 	{
 		if (game->ray.step_y > 0)
-			return (RED);
+			return (RED); //south
 		else
-			return (WHITE);
+			return (WHITE); // north
 	}
+	// return(NULL);
 }
 
 #if 0

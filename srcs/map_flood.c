@@ -13,9 +13,9 @@
 #include "cub3d.h"
 
 /*
-** Dupicate the padded grid so we can mark visited cells.
-** Important: set cpy[g->map_h] = NULL early so free_map() is always safe.
-*/
+ ** Dupicate the padded grid so we can mark visited cells.
+ ** Important: set cpy[g->map_h] = NULL early so free_map() is always safe.
+ */
 static char	**dup_grid(t_game *g)
 {
 	char	**cpy;
@@ -37,10 +37,10 @@ static char	**dup_grid(t_game *g)
 }
 
 /*
-** Helper function to decide if a cell is walkable for flood fill.
-** '0' and player letters are/should be walkable
-** '1' and ' ' are not walkable (space means "void/outside)
-*/
+ ** Helper function to decide if a cell is walkable for flood fill.
+ ** '0' and player letters are/should be walkable
+ ** '1' and ' ' are not walkable (space means "void/outside)
+ */
 static int	is_walkable(char c)
 {
 	if (c == '0')
@@ -55,15 +55,15 @@ static int	is_void_neighbor(char **m, t_game *g, int y, int x)
 	if (y == 0 || x == 0 || y == g->map_h - 1 || x == g->map_w - 1)
 		return (1);
 	if (m[y - 1][x] == ' ' || m[y + 1][x] == ' ' || m[y][x - 1] == ' '
-		|| m[y][x + 1] == ' ')
+			|| m[y][x + 1] == ' ')
 		return (1);
 	return (0);
 }
 
 /*
-** DELETE LATER: Logic tested but seems to be broken on instance when mab is big
-** and valid but not connected to a other rooms
-*/
+ ** DELETE LATER: Logic tested but seems to be broken on instance when mab is big
+ ** and valid but not connected to a other rooms
+ */
 // static int	has_unreachable_walkable(char **m, t_game *g)
 // {
 // 	int	y;
@@ -85,10 +85,10 @@ static int	is_void_neighbor(char **m, t_game *g, int y, int x)
 // 	return (0);
 // }
 /*
-** Recursive flood fill.
-** Returns 1 if map is OPEN (invalid), 0 if OK.
-** We mark visited cells as 'V' so we don't loop forever.
-*/
+ ** Recursive flood fill.
+ ** Returns 1 if map is OPEN (invalid), 0 if OK.
+ ** We mark visited cells as 'V' so we don't loop forever.
+ */
 static int	flood(char **m, t_game *g, int y, int x)
 {
 	if (y < 0 || x < 0 || y >= g->map_h || x >= g->map_w)
@@ -97,6 +97,13 @@ static int	flood(char **m, t_game *g, int y, int x)
 		return (0);
 	if (is_void_neighbor(m, g, y, x))
 		return (1);
+
+	if (m[y][x] == ' ')
+		return (1);
+
+	if (m[y][x] == '1' || m[y][x] == 'V')
+		return (0);
+
 	m[y][x] = 'V';
 	if (flood(m, g, y - 1, x))
 		return (1);
