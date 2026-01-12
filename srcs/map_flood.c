@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 20:08:41 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/10 18:09:08 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/12 21:46:19 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,30 +61,6 @@ static int	is_void_neighbor(char **m, t_game *g, int y, int x)
 }
 
 /*
- ** DELETE LATER: Logic tested but seems to be broken on instance when mab is big
- ** and valid but not connected to a other rooms
- */
-// static int	has_unreachable_walkable(char **m, t_game *g)
-// {
-// 	int	y;
-// 	int	x;
-
-// 	y = 0;
-// 	while (y < g->map_h)
-// 	{
-// 		x = 0;
-// 		while (x < g->map_w)
-// 		{
-// 			if (m[y][x] == '0' || m[y][x] == 'N' || m[y][x] == 'S'
-// 				|| m[y][x] == 'E' || m[y][x] == 'W')
-// 				return (1);
-// 			x++;
-// 		}
-// 		y++;
-// 	}
-// 	return (0);
-// }
-/*
  ** Recursive flood fill.
  ** Returns 1 if map is OPEN (invalid), 0 if OK.
  ** We mark visited cells as 'V' so we don't loop forever.
@@ -97,13 +73,10 @@ static int	flood(char **m, t_game *g, int y, int x)
 		return (0);
 	if (is_void_neighbor(m, g, y, x))
 		return (1);
-
 	if (m[y][x] == ' ')
 		return (1);
-
 	if (m[y][x] == '1' || m[y][x] == 'V')
 		return (0);
-
 	m[y][x] = 'V';
 	if (flood(m, g, y - 1, x))
 		return (1);
@@ -130,4 +103,3 @@ int	validate_map_closed(t_game *g)
 		return (ft_error(MAP_OPEN_MSG));
 	return (0);
 }
-
