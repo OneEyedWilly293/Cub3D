@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 17:47:47 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/10 18:26:17 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/12 22:10:35 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ static int	has_png_ext(char *path)
 		return (0);
 	return (1);
 }
-
 
 /*
  ** Validate and store one texture path.
@@ -107,32 +106,3 @@ int	handle_texture_line(t_game *game, char *trim)
 		return (-1);
 	return (1);
 }
-
-
-/*
- ** - Scans the whole .cub file and store NO/SO/WE/EA.
- ** - This function is the same "scan all lines" approach like find_color_lines().
- ** TO DO: MERGE THEM INTO ONE PASS LATER
- */
-// int find_texture_lines(int fd, t_game *game)
-// {
-// 	char	*line;
-// 	char	*trim;
-
-// 	game->tex.no = NULL;
-// 	game->tex.so = NULL;
-// 	game->tex.we = NULL;
-// 	game->tex.ea = NULL;
-// 	line = get_line(fd);
-// 	while (line)
-// 	{
-// 		trim = skip_spaces(line);
-// 		if (handle_texture_line(game, trim))
-// 			return (free(line), 1);
-// 		free(line);
-// 		line = get_line(fd);
-// 	}
-// 	if (!game->tex.no || !game->tex.so || !game->tex.we || !game->tex.ea)
-// 		return (ft_error(INVALID_MISSING_TEX));
-// 	return (0);
-// }
