@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 18:36:47 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/10 03:32:22 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/12 21:41:09 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ void	get_line_reset(void)
 	(void)buf;
 }
 
-
 char	*get_line(int fd)
 {
 	static char	buf[BUFFER_SIZE + 1];
@@ -85,7 +84,7 @@ char	*get_line(int fd)
 	{
 		r = read(fd, tmp, BUFFER_SIZE);
 		if (r <= 0)
-			break;
+			break ;
 		tmp[r] = '\0';
 		content = append_buf(content, tmp);
 		if (!content)
