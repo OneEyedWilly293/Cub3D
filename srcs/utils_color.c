@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 21:27:19 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/12 21:30:20 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/12 22:11:45 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,11 @@ int	is_color_set(t_color c)
 	return (c.r != -1 && c.g != -1 && c.b != -1);
 }
 
-
 /*
 ** Store parsed RGB into game struct.
 ** This MUST be called, otherwise game stays at -1,-1,-1.
 */
-void store_color(t_game *game, char id, int *tmp)
+void	store_color(t_game *game, char id, int *tmp)
 {
 	if (id == 'F')
 	{
