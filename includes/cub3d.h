@@ -11,7 +11,8 @@
 #define WIN_W  1024 
 #define WIN_H  1024 
 #define MINIMAP_SIZE 200
-
+#define MM_CENTER (MINIMAP_SIZE / 2)
+#define MM_BORDER_THICKNESS 10
 #define MAP_W (WIN_W / 2)
 #define MAP_H (WIN_H / 2)
 #define PLAYER_SIZE 10   // Size of player (in pixels)
@@ -180,7 +181,7 @@ int			set_color(t_game *game, int visible, int invisible);
 int			ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
 void		clear_image(mlx_image_t *img, uint32_t color);
 void		draw_line(mlx_image_t *img, int x0, int y0, int x1, int y1, uint32_t color);
-void		draw_map2d(void *param);
+void		draw_minimap(void *param);
 void		draw_map3d(void *param);
 void		draw_player(t_game *game);
 void		ft_hook(void* param);

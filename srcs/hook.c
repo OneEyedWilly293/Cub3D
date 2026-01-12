@@ -51,7 +51,7 @@ void	game_loop(void *param)
 	render_background(game, game->window_width, game->window_height);
 	ft_hook(game);
 	draw_map3d(game);
-	draw_map2d(game);
+	draw_minimap(game);
 	if (game->mouse == true)
 		init_mouse(game);
 }
