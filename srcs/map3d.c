@@ -1,17 +1,45 @@
 #include "cub3d.h"
 
-static void	draw_column(mlx_image_t *img, int x, int top, int bottom, int color)
+static int get_tex_x(t_game *game, mlx_texture_t *tex, double dist)
 {
-	int	y;
+	double wall_x;
+	int tex_x;
 
-	y = top;
-	while (y <= bottom)
+	if (game->ray.side == 0)
+		wall_x = game->player.y + dist * game->ray.ray_dir_y;
+	else
+		wall_x = game->player.x + dist * game->ray.ray_dir_x;
+	wall_x -= floor(wall_x);
+	tex_x = (int)(wall_x * tex->width);
+	if ((game->ray.side == 0 && game->ray.step_x < 0) ||
+			(game->ray.side == 1 && game->ray.step_y > 0))
+		tex_x = tex->width - tex_x - 1;
+	return tex_x;
+}
+
+static void	draw_textured_column(t_game *game, int x, int wall_top, int wall_bottom, double dist)
+{
+	mlx_texture_t *tex;
+	int tex_x;
+	int tex_y;
+	int wall_height;
+	int y;
+	uint32_t color;
+	uint8_t *p;
+
+	tex = get_wall_texture(game);
+	tex_x = get_tex_x(game, tex, dist);
+	wall_height = wall_bottom - wall_top + 1;
+	y = wall_top;
+	while (y <= wall_bottom)
 	{
-		mlx_put_pixel(img, x, y, color);
+		tex_y = ((y - wall_top) * tex->height) / wall_height;
+		p = &tex->pixels[ (tex_y * tex->width + tex_x) * tex->bytes_per_pixel ];
+		color = (p[0] << 24) | (p[1] << 16) | (p[2] << 8) | p[3];
+		mlx_put_pixel(game->img_3d, x, y, color);
 		y++;
 	}
 }
-
 
 void	draw_map3d(void *param)
 {
@@ -43,8 +71,7 @@ void	draw_map3d(void *param)
 			wall_top = 0;
 		if (wall_bottom >= screen_h)
 			wall_bottom = screen_h - 1;
-		int texture = get_texture(game);
-		draw_column(game->img_3d, x, wall_top, wall_bottom, texture);
+		draw_textured_column(game, x, wall_top, wall_bottom, dist);
 		x++;
 	}
 }

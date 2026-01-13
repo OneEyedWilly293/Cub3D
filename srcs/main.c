@@ -4,11 +4,10 @@ void	init_player(t_game *game)
 {
 	game->player = (t_player)
 	{
-		// positions of player
 		.x = game->player_x,
 		.y = game->player_y,
-		.xPos = 0,
-		.yPos = 0,
+		.xpos = 0,
+		.ypos = 0,
 		.dx = cosf(0.0f),
 		.dy = sinf(0.0f),
 		.move_x = 0.0f,
@@ -22,20 +21,6 @@ void	init_player(t_game *game)
 		game->player.da = 0;
 	else if (game->player_dir == 'W')
 		game->player.da = M_PI;
-}
-
-int	init_mlx(t_game *game)
-{
-	game->mlx = mlx_init(WIN_W, WIN_H, "MLX42", true);
-	if (!game->mlx)
-	{
-		puts(mlx_strerror(mlx_errno));
-		return (EXIT_FAILURE);
-	}
-	mlx_set_window_title(game->mlx, "title");
-	create_img(game, &game->img_3d, game->window_width, game->window_height);
-	create_img(game, &game->img_map, MINIMAP_SIZE, MINIMAP_SIZE);
-	return(0);
 }
 
 int create_img(t_game *game, mlx_image_t **image, int width, int height)
@@ -63,6 +48,20 @@ int create_img(t_game *game, mlx_image_t **image, int width, int height)
 	return (EXIT_SUCCESS);
 }
 
+int	init_mlx(t_game *game)
+{
+	game->mlx = mlx_init(WIN_W, WIN_H, "MLX42", true);
+	if (!game->mlx)
+	{
+		puts(mlx_strerror(mlx_errno));
+		return (EXIT_FAILURE);
+	}
+	mlx_set_window_title(game->mlx, "title");
+	create_img(game, &game->img_3d, game->window_width, game->window_height);
+	create_img(game, &game->img_map, MINIMAP_SIZE, MINIMAP_SIZE);
+	return(0);
+}
+
 /*
 ** Function to replace the spawn character with '0' in the map after parsing.
 */
@@ -85,18 +84,17 @@ int	main(int argc, char **argv)
 	if (parse_scene(argv[1], &game) != 0)
 		return (1);
 	set_spawn_tile_walkable(game);
-	// game.map_width = game.map_w;
-	// game.map_height = game.map_h;
-	// game.window_width = WIN_W;
-	// game.window_height = WIN_H;
 	game.tile_size = game.map_w/ game.map_h;
 	init_player(&game);
-	// init_map(&game);
 	if (init_mlx(&game) == 1)
 	{
 		printf("error\n");
 		return (EXIT_FAILURE);
 	}
+
+	load_textures(&game);
+	// get_images(&game);
+
 	mlx_key_hook(game.mlx, key_hook, &game);
 	mlx_resize_hook(game.mlx, resize_callback, &game);
 	mlx_loop_hook(game.mlx, game_loop, &game);

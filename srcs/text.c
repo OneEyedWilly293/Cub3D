@@ -6,10 +6,14 @@ void	render_background(t_game *game, int32_t new_width, int32_t new_height)
 	size_t	y;
 	size_t	width;
 	size_t	height;
+	int		floor_color;
+	int		ceiling_color;
 
 	x = 0;
 	width = new_width;
 	height = new_height;
+	floor_color = ft_pixel(game->floor);
+	ceiling_color = ft_pixel(game->ceiling);
 	if (!game->img_3d)
 		return ;
 	while (x < width)
@@ -18,49 +22,44 @@ void	render_background(t_game *game, int32_t new_width, int32_t new_height)
 		while (y < height)
 		{
 			if (y < (height / 2))
-				mlx_put_pixel(game->img_3d, x, y, DARK_SKY);
+				// mlx_put_pixel(game->img_3d, x, y, 0x121a23FF);
+				mlx_put_pixel(game->img_3d, x, y, floor_color);
 			else
-				mlx_put_pixel(game->img_3d, x, y, GRASS);
+				mlx_put_pixel(game->img_3d, x, y, ceiling_color);
 			y++;
 		}
 		x++;
 	}
 }
 
-// mlx_image_t *get_texture(t_game *game)
-int	get_texture(t_game *game)
+void load_textures(t_game *game)
 {
-	if (game->ray.side == 0)
+	game->tex.n_wall = mlx_load_png(game->tex.no);
+	game->tex.s_wall = mlx_load_png(game->tex.so);
+	game->tex.w_wall = mlx_load_png(game->tex.we);
+	game->tex.e_wall = mlx_load_png(game->tex.ea);
+	if (!game->tex.n_wall || !game->tex.s_wall || !game->tex.w_wall || !game->tex.e_wall)
 	{
-		if (game->ray.step_x > 0)
-		{
-			// mlx_texture_t *blue = mlx_load_png(game->tex.ea);
-			// mlx_image_t *ret = mlx_texture_to_image(game->mlx, blue);
-			// return (ret); // east
-			return (BLUE); // east
-						   // return (game->tex.ea); // east
-		}
-		else
-			return (GREEN); // west
+		fprintf(stderr, "Failed to load textures!\n");
+		exit(EXIT_FAILURE);
 	}
-	else
-	{
-		if (game->ray.step_y > 0)
-			return (RED); //south
-		else
-			return (WHITE); // north
-	}
-	// return(NULL);
 }
 
-#if 0
-
-static uint32_t	texture_to_rgb(mlx_texture_t *texture, int x, int y)
+mlx_texture_t	*get_wall_texture(t_game *game)
 {
-	uint8_t	*rgb;
-
-	rgb = &texture->pixels[(y * texture->width + x) * texture->bytes_per_pixel];
-	return (rgb[0] << 24 | rgb[1] << 16 | rgb[2] << 8 | rgb[3]);
+    if (game->ray.side == 0)
+    {
+        if (game->ray.step_x > 0)
+            return (game->tex.e_wall);
+        else
+            return (game->tex.w_wall);
+    }
+    else
+    {
+        if (game->ray.step_y > 0)
+            return (game->tex.s_wall);
+        else
+            return (game->tex.n_wall);
+    }
 }
 
-#endif

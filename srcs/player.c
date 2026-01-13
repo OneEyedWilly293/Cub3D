@@ -1,10 +1,10 @@
 #include "cub3d.h"
 
-#define MM_CENTER (MINIMAP_SIZE / 2)
 // Convert RGB to 32-bit integer
-int	ft_pixel(int r, int g, int b, int a) // use uint8_t
+// int	ft_pixel(int r, int g, int b, int a) // use uint8_t
+int	ft_pixel(t_color color) // use uint8_t
 {
-	return (r << 24 | g << 16 | b << 8 | a);
+	return (color.r << 24 | color.g << 16 | color.b << 8 | 0xFF);
 }
 
 // void	draw_player(t_game *game)

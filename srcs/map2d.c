@@ -24,15 +24,11 @@ static void	draw_minimap_border(t_game *game)
 {
 	int	x;
 	int	y;
-	int	t;
 	int	color;
-	t = MM_BORDER_THICKNESS;
-
 
 	color = set_color(game, BLACK, TRANSPARENT);
-	/* Top & Bottom */
 	y = 0;
-	while (y < t)
+	while (y < MM_BORDER_THICKNESS)
 	{
 		x = 0;
 		while (x < MINIMAP_SIZE)
@@ -43,10 +39,8 @@ static void	draw_minimap_border(t_game *game)
 		}
 		y++;
 	}
-
-	/* Left & Right */
 	x = 0;
-	while (x < t)
+	while (x < MM_BORDER_THICKNESS)
 	{
 		y = 0;
 		while (y < MINIMAP_SIZE)
