@@ -137,9 +137,9 @@ typedef struct s_miniray
 /* Color struct */
 typedef struct s_color
 {
-	uint32_t	r;
-	uint32_t	g;
-	uint32_t	b;
+	int32_t	r;
+	int32_t	g;
+	int32_t	b;
 }	t_color;
 
 /* texture struct */
@@ -158,16 +158,6 @@ typedef struct s_textures
 	mlx_texture_t	*e_wall;
 }	t_textures;
 
-typedef struct s_images
-{
-	mlx_image_t	*floor;
-	mlx_image_t	*sky;
-	mlx_image_t	*n_wall;
-	mlx_image_t	*s_wall;
-	mlx_image_t	*w_wall;
-	mlx_image_t	*e_wall;
-}	t_images;
-
 typedef struct s_game
 {
 	bool		mouse;
@@ -184,7 +174,6 @@ typedef struct s_game
 	int			window_width;
 	mlx_image_t	*img_3d;
 	mlx_image_t	*img_map;
-	t_images	*images;
 	mlx_t		*mlx;
 	t_color		ceiling;
 	t_color		floor;
