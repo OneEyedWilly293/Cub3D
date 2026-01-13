@@ -1,0 +1,5 @@
+- check if the make fclean and clean are always printing messages despite the status
+of outcome?
+
+- COMPILE AND TEXTURE CHECK(couldnt validate at home windows wsl)
+

@@ -6,20 +6,41 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 17:47:47 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/12 22:10:35 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/14 00:42:08 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+/**
+ * @brief Check whether a character is considered whitespace for texture IDs.
+ *
+ * This helper treats common whitespace characters as separators after the
+ * 2-letter texture identifier (e.g., "NO ", "SO\t").
+ *
+ * @param c Character to test.
+ *
+ * @return 1 if @p c is a whitespace character, 0 otherwise.
+ */
 static int	is_ws(char c)
 {
 	return (c == ' ' || c == '\t' || c == '\r' || c == '\v' || c == '\f');
 }
 
-/*
- ** Checks if the trimmed line starts with "NO ", "SO ", "WE ", or "EA ".
- ** RULE: strict space/tab after 2 letters to prevent false matches like 'NOO'.
+/**
+ * @brief Check if a trimmed line starts with a specific 2-letter texture id.
+ *
+ * This function validates that:
+ * - The first two characters match the given @p id (eg."NO", "SO", "WE", "EA").
+ * - The third character is a whitespace separator.
+ *
+ * The strict whitespace rule prevents false matches like "NOO..." being
+ * accepted as "NO".
+ *
+ * @param s Trimmed input line.
+ * @param id Two-character identifier string (e.g., "NO").
+ *
+ * @return 1 if the line matches the identifier format, 0 otherwise.
  */
 static int	is_id(char *s, char *id)
 {
@@ -32,6 +53,15 @@ static int	is_id(char *s, char *id)
 	return (1);
 }
 
+/**
+ * @brief Check whether a texture path ends with the ".png" extension.
+ *
+ * This function performs a simple suffix check on the string.
+ *
+ * @param path Texture file path.
+ *
+ * @return 1 if @p path ends with ".png", 0 otherwise.
+ */
 static int	has_png_ext(char *path)
 {
 	int	len;
@@ -48,12 +78,23 @@ static int	has_png_ext(char *path)
 	return (1);
 }
 
-/*
- ** Validate and store one texture path.
- ** - Duplicate protection: if *dst already set => error
- ** - path must exist/openable
- ** - Extension must be "*.png".
- ** - Stores a duplicated copy(ft_strdup) so it survives after the line is freed.
+/**
+ * @brief Validate and store one texture path into a destination pointer.
+ *
+ * Validation rules:
+ * - Duplicate protection: if *dst is already set, it returns INVALID_DUP_TEX.
+ * - The path must not be NULL or empty.
+ * - The file extension must be ".png".
+ * - The file must be openable (open(path, O_RDONLY) succeeds).
+ *
+ * Storage rule:
+ * - The stored path is duplicated with ft_strdup so it remains valid even after
+ *   the original line buffer is freed by the parser.
+ *
+ * @param dst Address of the destination pointer (e.g., &game->tex.no).
+ * @param path Path string to validate and store.
+ *
+ * @return 0 on success, non-zero on failure (prints via ft_error).
  */
 static int	store_texture(char **dst, char *path)
 {
@@ -75,9 +116,23 @@ static int	store_texture(char **dst, char *path)
 	return (0);
 }
 
-/*
- ** - If line is a texture identifier line, parse and store the path.
- ** - If not a texture line, return 0 (no error).
+/**
+ * @brief Handle one trimmed line if it defines a wall texture identifier.
+ *
+ * If @p trim starts with one of the valid texture identifiers:
+ * - "NO", "SO", "WE", "EA"
+ * this function parses the path part (skipping spaces after the id),
+ * then validates/stores it into the matching field in game->tex.
+ *
+ * Return convention used:
+ * - 1: the line was a texture line and was successfully handled.
+ * - 0: the line is not a texture identifier line (no error).
+ * - -1: the line was a texture line but invalid (error already printed).
+ *
+ * @param game Game context where texture paths are stored.
+ * @param trim Trimmed input line.
+ *
+ * @return 1 if handled successfully, 0 if not a texture line, -1 on error.
  */
 int	handle_texture_line(t_game *game, char *trim)
 {

@@ -6,18 +6,29 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 18:06:36 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/12 22:12:13 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/14 00:44:59 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-/*
-** Small helper: skip leading spaces/tabs.
-** This allows us to accept lines like "   F 0,0,255" etc.
-**   - Windows CRLF leaves a '\r' at end of lines (before '\n').
-**  - Treating '\r' as whitespace avoids hidden "Invalid components" issues.
-*/
+/**
+ * @brief Skip leading whitespace characters in a string.
+ *
+ * This helper advances the pointer past leading whitespace so parsing can
+ * accept lines with indentation (e.g., "   F 0,0,255").
+ *
+ * Characters skipped include:
+ * - space ' '
+ * - tab '\t'
+ * - carriage return '\r' (useful for Windows CRLF handling)
+ * - vertical tab '\v'
+ * - form feed '\f'
+ *
+ * @param s Input string pointer (must be non-NULL).
+ *
+ * @return Pointer to the first non-whitespace character in @p s.
+ */
 char	*skip_spaces(char *s)
 {
 	while (*s == ' ' || *s == '\t' || *s == '\r' || *s == '\v' || *s == '\f')
@@ -25,6 +36,16 @@ char	*skip_spaces(char *s)
 	return (s);
 }
 
+/**
+ * @brief Free a NULL-terminated array of strings (char **).
+ *
+ * This function frees each string in the array, then frees the array itself.
+ * It safely does nothing if @p colors is NULL.
+ *
+ * @param colors NULL-terminated array of allocated strings.
+ *
+ * @return None.
+ */
 void	free_split(char **colors)
 {
 	int	i;
@@ -40,6 +61,23 @@ void	free_split(char **colors)
 	free(colors);
 }
 
+/**
+ * @brief Check whether a string is a valid signed integer representation.
+ *
+ * Accepted format:
+ * - Optional leading '+' or '-'
+ * - Followed by one or more digits only
+ *
+ * Rejected examples:
+ * - "" (empty)
+ * - "+" / "-" alone
+ * - "12a3"
+ * - " 42" (leading space is not allowed here; use skip_spaces() before)
+ *
+ * @param s Input string to validate.
+ *
+ * @return 1 if @p s is a valid signed number string, 0 otherwise.
+ */
 int	is_signed_number(char *s)
 {
 	int	i;
@@ -58,8 +96,16 @@ int	is_signed_number(char *s)
 	return (1);
 }
 
-// Helper function: to count elements in a NULL-terminated char **.
-// MOVE TO utils later
+/**
+ * @brief Count the number of elements in a NULL-terminated string array.
+ *
+ * This function counts how many non-NULL entries exist before the terminating
+ * NULL pointer.
+ *
+ * @param arr NULL-terminated array of strings (may be NULL).
+ *
+ * @return Number of elements in @p arr (0 if @p arr is NULL).
+ */
 int	arrlen(char **arr)
 {
 	int	len;
@@ -72,6 +118,16 @@ int	arrlen(char **arr)
 	return (len);
 }
 
+/**
+ * @brief Free a NULL-terminated map/grid (char **).
+ *
+ * This function frees each row string, then frees the array pointer itself.
+ * It safely handles a NULL input pointer.
+ *
+ * @param map NULL-terminated array representing a grid/map.
+ *
+ * @return None.
+ */
 void	free_map(char **map)
 {
 	int	i;

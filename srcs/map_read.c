@@ -6,12 +6,32 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 20:24:31 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/12 21:53:18 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/13 19:51:37 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+/**
+ * @brief Append one line pointer to a NULL-terminated array of lines.
+ *
+ * This function grows the dynamic array @p *arr by 1 element, stores @p line
+ * at the end, and keeps the array NULL-terminated.
+ *
+ * Memory behavior:
+ * - Allocates a new array of size (*n + 2).
+ * - Copies the existing pointers (does NOT duplicate the strings).
+ * - Frees the old array pointer (*arr), then updates *arr to the new array.
+ * - Increments *n.
+ *
+ * @param arr Address of the current NULL-terminated array of strings (may be
+ * 	NULL).
+ * @param n Address of the current number of stored lines (updated on success).
+ * @param line The line pointer to add (ownership is kept by the array after
+ * 	push).
+ *
+ * @return 0 on success, 1 on allocation failure.
+ */
 static int	push_line(char ***arr, int *n, char *line)
 {
 	char	**new_arr;
@@ -34,6 +54,27 @@ static int	push_line(char ***arr, int *n, char *line)
 	return (0);
 }
 
+/**
+ * @brief Build a padded rectangular map grid (game->map) from raw map lines.
+ *
+ * This function allocates game->map with height game->map_h, then for each row:
+ * - Allocates a string of length game->map_w.
+ * - Fills it with spaces ' ' (padding).
+ * - Copies the raw line content into the beginning of the row.
+ *
+ * This produces a rectangular map where shorter input lines are right-padded
+ * with spaces, which is useful for later validation (flood fill, borders, etc).
+ *
+ * On allocation failure mid-way, it frees the partially built grid and sets
+ * game->map to NULL.
+ *
+ * @param game Game context where map_h/map_w are already computed and map is
+ * 	stored.
+ * @param lines Raw map lines (NULL-terminated), typically gathered by
+ * 	read_map().
+ *
+ * @return 0 on success, 1 on allocation failure.
+ */
 static int	build_grid(t_game *game, char **lines)
 {
 	int		y;
@@ -62,11 +103,18 @@ static int	build_grid(t_game *game, char **lines)
 	return (0);
 }
 
-/*
-** Helper function to validate a map line under "map mode rules"
-** - spaces-only line => EMPTY_LINE_IN_MAP_MSG
-** - contains non-map charset => META_AFTER_MCAP_MSG
-*/
+/**
+ * @brief Validate one map line while reading the map section ("map mode").
+ *
+ * Rules enforced:
+ * - A line containing only spaces/tabs is forbidden (empty line inside map).
+ * - Every character must belong to the allowed map charset(via is_map_charset),
+ *   except '\r' which is ignored (Windows CRLF handling).
+ *
+ * @param line A raw line from the map section (as returned by get_line()).
+ *
+ * @return 0 if valid, non-zero if invalid (prints an error via ft_error).
+ */
 static int	check_map_mode_line(char *line)
 {
 	int	i;
@@ -88,10 +136,24 @@ static int	check_map_mode_line(char *line)
 	return (0);
 }
 
-/*
-** Helper function to read map lines for read_map() for Norm compliance.
-**
-*/
+/**
+ * @brief Read all remaining map lines from fd and collect them into @p *lines.
+ *
+ * This helper is used by read_map() to keep the function small for Norm.
+ * For each read line:
+ * - Validate it with check_map_mode_line().
+ * - Update game->map_w if the line is wider than the current max width.
+ * - Push it into the dynamic @p *lines array, updating game->map_h.
+ *
+ * On error, it frees the current line and the already collected lines.
+ *
+ * @param fd The file descriptor positioned at the first map line after
+ * 	first_line.
+ * @param game Game context updated with final map_h and map_w.
+ * @param lines Address of the collected raw lines array (NULL-terminated).
+ *
+ * @return 0 on success, 1 on error (validation or allocation).
+ */
 static int	read_map_lines(int fd, t_game *game, char ***lines)
 {
 	char	*line;
@@ -112,6 +174,25 @@ static int	read_map_lines(int fd, t_game *game, char ***lines)
 	return (0);
 }
 
+/**
+ * @brief Read and build the final padded map grid from the .cub file.
+ *
+ * This function assumes the parser already detected the start of the map and
+ * provides the first map line in @p first_line. It then:
+ * - Initializes game->map_h, game->map_w, and game->map.
+ * - Validates the first line under map rules.
+ * - Collects all map lines (including first_line) into a temporary array.
+ * - Builds a padded rectangular grid into game->map.
+ * - Frees the temporary raw lines array.
+ *
+ * @param fd The file descriptor for the .cub file (positioned after
+ * 	first_line).
+ * @param game Game context receiving map_h/map_w and the allocated game->map.
+ * @param first_line The first map line already read (ownership is consumed
+ * 	here).
+ *
+ * @return 0 on success, non-zero on error (prints error via ft_error).
+ */
 int	read_map(int fd, t_game *game, char *first_line)
 {
 	char	**lines;

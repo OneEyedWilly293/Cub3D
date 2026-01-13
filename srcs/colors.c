@@ -6,15 +6,29 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 22:08:33 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/12 21:54:10 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/13 19:33:32 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-// FUNCTION TO CHECK RGB VALUES 0~255 and if there is 3 values
-// color: char ** from ft_split(..., ',')
-// rgb: int[3] output
+/**
+ * @brief Parse and validate RGB tokens split by comma.
+ *
+ * This function expects an array of 3 strings (typically produced by
+ * ft_split(meta, ',')) where each token represents a numeric component
+ * of an RGB color. It validates:
+ * - There are exactly 3 tokens.
+ * - Each token is a signed number string.
+ * - Each parsed integer is within the valid RGB range (0..255).
+ *
+ * On success, it writes the 3 parsed integers into the @p rgb output array.
+ *
+ * @param color Array of strings containing the RGB components (size must be 3).
+ * @param rgb Output array of 3 integers receiving R, G, B.
+ *
+ * @return 0 on success, non-zero on failure.
+ */
 static int	parse_rgb_values(char **color, int *rgb)
 {
 	int	i;
@@ -38,9 +52,18 @@ static int	parse_rgb_values(char **color, int *rgb)
 	return (0);
 }
 
-// Handling spaces: trim tokens after ft_split
-// ft_split: "220, 100, 0" becomes tokens: "220" , " 100" , " 0"
-// This function creates new allocated strings so we need to free the old ones.
+/**
+ * @brief Trim whitespace around each token in a split RGB array.
+ *
+ * After splitting a color string like "220, 100, 0" by ',', tokens may contain
+ * leading/trailing spaces (e.g., " 100"). This function replaces each token
+ * with a newly allocated trimmed version (using ft_strtrim), freeing the old
+ * token strings to avoid leaks.
+ *
+ * @param colors NULL-terminated array of strings to trim in-place.
+ *
+ * @return 0 on success, 1 on allocation/trim failure.
+ */
 static int	trim_tokens(char **colors)
 {
 	int		i;
@@ -59,15 +82,28 @@ static int	trim_tokens(char **colors)
 	return (0);
 }
 
-// Function to parse a full line like
-// "F 220, 100, 0"
-// "C 225,30,0"
-// Identifier: 'F' or 'C'
-// Steps:
-// 1) Skip the identifier and spaces -> "200,100,0"
-// 2) Check there are exactly 2 commas
-// 3) Split by ',' using ft_split
-// 4) parse_rgb_values(colors, rgb)
+/**
+ * @brief Parse a full RGB line starting with a given identifier ('F' or 'C').
+ *
+ * This function parses lines like:
+ * - "F 220, 100, 0"
+ * - "C 225,30,0"
+ *
+ * Steps performed:
+ * - Ensure @p line starts with @p identifier.
+ * - Skip the identifier and any following spaces/tabs.
+ * - Ensure there are exactly 2 commas in the remaining string.
+ * - Split by ',' into 3 tokens.
+ * - Trim whitespace on each token.
+ * - Validate and convert tokens into 3 integers stored in @p rgb.
+ *
+ * @param identifier Expected identifier character ('F' for floor,
+ * 		'C' for ceiling).
+ * @param line Input line containing identifier + RGB values.
+ * @param rgb Output array of 3 integers receiving parsed R, G, B.
+ *
+ * @return 0 on success, non-zero on failure (also reports errors via ft_error).
+ */
 int	parse_rgb_line(char identifier, char *line, int *rgb)
 {
 	char	*meta;
@@ -96,19 +132,18 @@ int	parse_rgb_line(char identifier, char *line, int *rgb)
 	return (i);
 }
 
-/*
-** Flow example:
-** colors = ft_split(meta, ',');
-** trim_tokens(colors);
-** parse_rgb_values(colors, rgb);
-** free_split(colors);
-*/
-
-/*
-** Helper: verifies there is something after the identifier.
-** Example valid: "F 0,0,255"
-** Example invalid: "F"
-*/
+/**
+ * @brief Check whether a trimmed line contains a color value after its
+ * 		identifier.
+ *
+ * This helper assumes @p trim starts with 'F' or 'C'. It checks that there is
+ * something after the identifier (skipping spaces/tabs) and that the first
+ * non-space character is a digit. This rejects lines like "F" or "C   ".
+ *
+ * @param trim A trimmed line beginning with a color identifier.
+ *
+ * @return 1 if it looks like a color line with values, 0 otherwise.
+ */
 static int	is_color_line(char *trim)
 {
 	int	i;
@@ -123,12 +158,25 @@ static int	is_color_line(char *trim)
 	return (1);
 }
 
-/*
-** Handle ONE trimmed line if it is an F or C identifier.
-** - Duplicated detection
-** - parse_rgb_line validation
-** - Store into game
-*/
+/**
+ * @brief Handle one already-trimmed metadata line if it defines
+ * 		floor/ceiling color.
+ *
+ * If the line begins with:
+ * - 'F': validates floor color format, checks duplication, parses
+ *   the RGB values, then stores it into game->floor via store_color.
+ * - 'C': validates ceiling color format, checks duplication (already set),
+ *   parses the RGB values, then stores it into game->ceiling via store_color.
+ *
+ * Return convention used here:
+ * - 1 when a valid color line was handled (stored successfully).
+ * - -1 on error (invalid format, duplicate, parse failure).
+ *
+ * @param game Main game struct where floor/ceiling colors are stored.
+ * @param trim Trimmed input line starting with 'F' or 'C'.
+ *
+ * @return 1 if handled, -1 on error.
+ */
 int	handle_color_line(t_game *game, char *trim)
 {
 	int	tmp[3];
