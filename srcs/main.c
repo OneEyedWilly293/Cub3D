@@ -1,29 +1,19 @@
 #include "cub3d.h"
 
-void	init_player(t_game *game)
+static void	init_player(t_game *game)
 {
-	game->player = (t_player)
-	{
-		.x = game->player_x,
-		.y = game->player_y,
-		.xpos = 0,
-		.ypos = 0,
-		.dx = cosf(0.0f),
-		.dy = sinf(0.0f),
-		.move_x = 0.0f,
-		.move_y = 0.0f,
-	};
-	if (game->player_dir == 'N')
-		game->player.da = 3 * M_PI_2;
-	else if (game->player_dir== 'S')
-		game->player.da = M_PI_2;
-	else if (game->player_dir== 'E')
-		game->player.da = 0;
-	else if (game->player_dir == 'W')
-		game->player.da = M_PI;
+	game->player.x = game->player_x;
+	game->player.y = game->player_y;
+	game->player.xpos = 0;
+	game->player.ypos = 0;
+	game->player.dx = cosf(0.0f);
+	game->player.dy = sinf(0.0f);
+	game->player.move_x = 0.0f;
+	game->player.move_y = 0.0f;
+	get_player_dir(game);
 }
 
-int create_img(t_game *game, mlx_image_t **image, int width, int height)
+int	create_img(t_game *game, mlx_image_t **image, int width, int height)
 {
 	if (*image)
 	{
@@ -59,19 +49,20 @@ int	init_mlx(t_game *game)
 	mlx_set_window_title(game->mlx, "title");
 	create_img(game, &game->img_3d, game->window_width, game->window_height);
 	create_img(game, &game->img_map, MINIMAP_SIZE, MINIMAP_SIZE);
-	return(0);
+	return (0);
 }
 
 /*
-** Function to replace the spawn character with '0' in the map after parsing.
-*/
+ ** Function to replace the spawn character with '0' in the map after parsing.
+ */
 static void	set_spawn_tile_walkable(t_game game)
 {
-	if ( !game.map)
+	if (!game.map)
 		return ;
 	if (game.player_y < 0 || game.player_x < 0)
 		return ;
 	game.map[game.player_y][game.player_x] = '0';
+	game.tile_size = game.map_w / game.map_h;
 }
 
 // Main function
@@ -83,18 +74,14 @@ int	main(int argc, char **argv)
 		return (1);
 	if (parse_scene(argv[1], &game) != 0)
 		return (1);
-	set_spawn_tile_walkable(game);
-	game.tile_size = game.map_w/ game.map_h;
 	init_player(&game);
+	set_spawn_tile_walkable(game);
 	if (init_mlx(&game) == 1)
 	{
 		printf("error\n");
 		return (EXIT_FAILURE);
 	}
-
 	load_textures(&game);
-	// get_images(&game);
-
 	mlx_key_hook(game.mlx, key_hook, &game);
 	mlx_resize_hook(game.mlx, resize_callback, &game);
 	mlx_loop_hook(game.mlx, game_loop, &game);

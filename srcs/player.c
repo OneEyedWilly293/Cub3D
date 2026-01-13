@@ -7,34 +7,24 @@ int	ft_pixel(t_color color) // use uint8_t
 	return (color.r << 24 | color.g << 16 | color.b << 8 | 0xFF);
 }
 
-// void	draw_player(t_game *game)
-// {
-// 	int	py;
-// 	int	px;
-// 	int	color;
-//
-// 	color = set_color(game, RED, TRANSPARENT);
-// 	game->map2d.p_px = (int)(game->player.x * game->map2d.scale_x);
-// 	game->map2d.p_py = (int)(game->player.y * game->map2d.scale_y);
-// 	py = game->map2d.p_py - 2;
-// 	while (py <= game->map2d.p_py + 2)
-// 	{
-// 		px = game->map2d.p_px - 2;
-// 		while (px <= game->map2d.p_px + 2)
-// 		{
-// 			mlx_put_pixel(game->img_map, px, py, color);
-// 			++px;
-// 		}
-// 		++py;
-// 	}
-// }
+void	get_player_dir(t_game *game)
+{
+	if (game->player_dir == 'N')
+		game->player.da = 3 * M_PI_2;
+	else if (game->player_dir== 'S')
+		game->player.da = M_PI_2;
+	else if (game->player_dir== 'E')
+		game->player.da = 0;
+	else if (game->player_dir == 'W')
+		game->player.da = M_PI;
+}
 
 void	draw_player(t_game *game)
 {
 	int	x = MM_CENTER;
 	int	y = MM_CENTER;
 
-	mlx_put_pixel(game->img_map, x, y, GREEN);
+	mlx_put_pixel(game->img_map, x, y, WHITE);
 }
 
 int	set_color(t_game *game, int visible, int invisible)

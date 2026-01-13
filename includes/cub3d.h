@@ -11,10 +11,10 @@
 # define WIN_W  1024 
 # define WIN_H  1024 
 # define MINIMAP_SIZE 200
-# define MM_CENTER (MINIMAP_SIZE / 2)
+# define MM_CENTER (MINIMAP_SIZE * 0.5)
 # define MM_BORDER_THICKNESS 10
-# define MAP_W (WIN_W / 2)
-# define MAP_H (WIN_H / 2)
+# define MAP_W (WIN_W * 0.5)
+# define MAP_H (WIN_H * 0.5)
 # define PLAYER_RADIUS 0.1   // Size of player (in pixels)
 # define PLAYER_SPEED 0.1  // Size of player (in pixels)
 # define MOUSE_SENSITIVITY 0.0009
@@ -187,10 +187,8 @@ typedef struct s_game
 double	cast_ray(double ray_angle, t_game *g);
 int		create_img(t_game *game, mlx_image_t **image, int width, int height);
 int		get_texture(t_game *game);
-// mlx_image_t *get_texture(t_game *game);
 int		set_color(t_game *game, int visible, int invisible);
-// int		ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
-int	ft_pixel(t_color color); // use uint8_t
+int		ft_pixel(t_color color); // use uint8_t
 void	clear_image(mlx_image_t *img, uint32_t color);
 void	draw_minimap(void *param);
 void	draw_map3d(void *param);
@@ -200,16 +198,18 @@ void	game_loop(void	*param);
 void	horizontal_rotation(t_game	*game);
 void	init_mouse(t_game *game);
 void	key_hook(mlx_key_data_t keydata, void *param);
-void	left_right(t_game *game);
 void	mouse_hook(double xpos, double ypos, void *param);
 void	render_background(t_game *game, int32_t new_width, int32_t new_height);
 void	resize_callback(int32_t new_width, int32_t new_height, void *param);
-void	up_down(t_game *game);
+void	move_up(t_game *game);
+void	move_down(t_game *game);
+void	move_left(t_game *game);
+void	move_right(t_game *game);
 void	vertical_rotation(t_game *game);
 int		is_wall(t_game *game, double x, double y);
-
-void load_textures(t_game *game);
-void get_images(t_game *game);
+void	load_textures(t_game *game);
+void	get_player_dir(t_game *game);
+int	can_move_to(t_game *game, double nx, double ny);
 mlx_texture_t	*get_wall_texture(t_game *game);
 
 // ====== Parsing functions ========== //
