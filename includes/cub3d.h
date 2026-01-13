@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 22:15:43 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/12 22:28:40 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/13 19:11:05 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,5 +255,6 @@ void		free_partial_grid(char **grid, int y);
 
 // utils_parse_meta.c
 int			is_map_line(char *line);
+void		set_spawn_tile_walkable(t_game game);
 
 #endif

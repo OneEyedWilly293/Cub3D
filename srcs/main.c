@@ -63,18 +63,6 @@ int create_img(t_game *game, mlx_image_t **image, int width, int height)
 	return (EXIT_SUCCESS);
 }
 
-/*
-** Function to replace the spawn character with '0' in the map after parsing.
-*/
-static void	set_spawn_tile_walkable(t_game game)
-{
-	if ( !game.map)
-		return ;
-	if (game.player_y < 0 || game.player_x < 0)
-		return ;
-	game.map[game.player_y][game.player_x] = '0';
-}
-
 // Main function
 int	main(int argc, char **argv)
 {
