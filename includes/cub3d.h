@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 22:15:43 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/13 19:11:05 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/14 16:51:32 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,29 +20,29 @@
 # include <stdint.h>
 # include <stdio.h>
 
-# define WIN_W  1024
-# define WIN_H  1024
-# define MINIMAP_SIZE 200
+#define WIN_W  1024
+#define WIN_H  1024
+#define MINIMAP_SIZE 200
 
-# define MAP_W (WIN_W / 2)
-# define MAP_H (WIN_H / 2)
-# define PLAYER_SIZE 10   // Size of player (in pixels)
-# define PLAYER_SPEED 0.1  // Size of player (in pixels)
-# define MOUSE_SENSITIVITY 0.0009
-# define MAX_DOF 8
-# define NUM_RAYS  30
-# define FOV        (M_PI / 3)
+#define MAP_W (WIN_W / 2)
+#define MAP_H (WIN_H / 2)
+#define PLAYER_SIZE 10   // Size of player (in pixels)
+#define PLAYER_SPEED 0.1  // Size of player (in pixels)
+#define MOUSE_SENSITIVITY 0.0009
+#define MAX_DOF 8
+#define NUM_RAYS  30
+#define FOV        (M_PI / 3)
 
 # define RED			0xFF0000FF
-# define GREEN		0x00FF00FF
-# define BLUE		0x0000FFFF
-# define BLACK		0x000000FF
-# define WHITE		0xFFFFFFFF
-# define TRANSPARENT 0x00000000
-# define SKY_BLUE	0x87CEEBFF
-# define DARK_SKY  	0x4682B4FF
-# define GRASS     	0x228B22FF
-# define DIRT      	0x8B4513FF
+# define GREEN			0x00FF00FF
+# define BLUE			0x0000FFFF
+# define BLACK			0x000000FF
+# define WHITE			0xFFFFFFFF
+# define TRANSPARENT	0x00000000
+# define SKY_BLUE		0x87CEEBFF
+# define DARK_SKY  		0x4682B4FF
+# define GRASS     		0x228B22FF
+# define DIRT      		0x8B4513FF
 
 // ======= MAP FEATURES =======
 # define MAP_EXTENSION ".cub"
@@ -94,8 +94,8 @@ typedef struct s_player
 {
 	float	x;
 	float	y;
-	int		xPos;     //<----- user defined identifiers should contain only lowercase characters, digits or '_'; when running defnorm(norminette -R CheckDefine)
-	int		yPos;     //<----- user defined identifiers should contain only lowercase characters, digits or '_';
+	int		xpos;
+	int		ypos;
 	float	dx;
 	float	dy;
 	float	da;
@@ -148,19 +148,25 @@ typedef struct s_miniray
 /* Color struct */
 typedef struct s_color
 {
-	int	r;
-	int	g;
-	int	b;
+	int32_t	r;
+	int32_t	g;
+	int32_t	b;
 }	t_color;
 
 /* texture struct */
 /* rendering can later read 'game->tex.no' etc */
 typedef struct s_textures
 {
-	char	*no;
-	char	*so;
-	char	*we;
-	char	*ea;
+	char			*no;
+	char			*so;
+	char			*we;
+	char			*ea;
+	mlx_texture_t	*floor;
+	mlx_texture_t	*sky;
+	mlx_texture_t	*n_wall;
+	mlx_texture_t	*s_wall;
+	mlx_texture_t	*w_wall;
+	mlx_texture_t	*e_wall;
 }	t_textures;
 
 typedef struct s_game
@@ -189,72 +195,73 @@ typedef struct s_game
 	t_textures	tex;
 }	t_game;
 
-double		cast_ray(double ray_angle, t_game *g);
-int			create_img(t_game *game, mlx_image_t **image, int width,
-				int height);
-int			get_texture(t_game *game);
-// mlx_image_t *get_texture(t_game *game);
-int			set_color(t_game *game, int visible, int invisible);
-int			ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
-void		clear_image(mlx_image_t *img, uint32_t color);
-void		draw_line(mlx_image_t *img, int x0, int y0, int x1, int y1, uint32_t color);
-void		draw_map2d(void *param);
-void		draw_map3d(void *param);
-void		draw_player(t_game *game);
-void		ft_hook(void *param);
-void		game_loop(void *param);
-void		horizontal_rotation(t_game *game);
-void		init_mouse(t_game *game);
-void		key_hook(mlx_key_data_t keydata, void *param);
-void		left_right(t_game *game);
-void		mouse_hook(double xpos, double ypos, void *param);
-void		render_background(t_game *game, int32_t new_width,
-				int32_t new_height);
-void		resize_callback(int32_t new_width, int32_t new_height, void *param);
-void		up_down(t_game *game);
-void		vertical_rotation(t_game *game);
+double	cast_ray(double ray_angle, t_game *g);
+int		create_img(t_game *game, mlx_image_t **image, int width, int height);
+int		get_texture(t_game *game);
+int		set_color(t_game *game, int visible, int invisible);
+int		ft_pixel(t_color color); // use uint8_t
+void	clear_image(mlx_image_t *img, uint32_t color);
+void	draw_minimap(void *param);
+void	draw_map3d(void *param);
+void	draw_player(t_game *game);
+void	ft_hook(void	*param);
+void	game_loop(void	*param);
+void	horizontal_rotation(t_game	*game);
+void	init_mouse(t_game *game);
+void	key_hook(mlx_key_data_t keydata, void *param);
+void	mouse_hook(double xpos, double ypos, void *param);
+void	render_background(t_game *game, int32_t new_width, int32_t new_height);
+void	resize_callback(int32_t new_width, int32_t new_height, void *param);
+void	move_up(t_game *game);
+void	move_down(t_game *game);
+void	move_left(t_game *game);
+void	move_right(t_game *game);
+void	vertical_rotation(t_game *game);
+int		is_wall(t_game *game, double x, double y);
+void	load_textures(t_game *game);
+void	get_player_dir(t_game *game);
+int	can_move_to(t_game *game, double nx, double ny);
+mlx_texture_t	*get_wall_texture(t_game *game);
+
 // ====== Parsing functions ========== //
-char		*get_line(int fd);
-int			check_args(int argc, char **argv);
-int			ft_error(const char *msg);
-int			validate_map_closed(t_game *g);
-int			handle_color_line(t_game *game, char *trim);
-int			handle_texture_line(t_game *game, char *trim);
-int			is_map_charset(char c);
-int			parse_identifiers_until_map(int fd, t_game *game,
-				char **first_line);
-int			parse_rgb_line(char identifier, char *line, int *rgb);
-int			parse_scene(const char *path, t_game *game);
-int			read_map(int fd, t_game *game, char *first_line);
-int			validate_map(t_game *game);
-void		free_map(char **map);
-void		free_parser_game(t_game *game);
-void		ft_putstr_err(const char *s);
-void		get_line_reset(void);
-void		init_parser_game(t_game *g);
+char	*get_line(int fd);
+int		check_args(int argc, char **argv);
+int		ft_error(const char *msg);
+int		validate_map_closed(t_game *g);
+int		handle_color_line(t_game *game, char *trim);
+int		handle_texture_line(t_game *game, char *trim);
+int		is_map_charset(char c);
+int		parse_identifiers_until_map(int fd, t_game *game, char **first_line);
+int		parse_rgb_line(char identifier, char *line, int *rgb);
+int		parse_scene(const char *path, t_game *game);
+int		read_map(int fd, t_game *game, char *first_line);
+int		validate_map(t_game *game);
+void	free_map(char **map);
+void	free_parser_game(t_game *game);
+void	ft_putstr_err(const char *s);
+void	get_line_reset(void);
+void	init_parser_game(t_game *g);
 
 // utils.c
-void		free_split(char **colors);
-char		*skip_spaces(char *s);
-int			is_signed_number(char *s);
-int			arrlen(char **arr);
-void		free_map(char **map);
+// void		free_split(char **colors);
+char	*skip_spaces(char *s);
+// int			is_signed_number(char *s);
+int		arrlen(char **arr);
+void	free_map(char **map);
 
 //utils2.c
-int			is_map_charset(char c);
+int		is_map_charset(char c);
 
 // utils_color.c
-int			get_nb_comma(char *line);
-int			check_rgb_range(int i);
-int			is_color_set(t_color c);
-void		store_color(t_game *game, char id, int *tmp);
+int		get_nb_comma(char *line);
+int		check_rgb_range(int i);
+// int			is_color_set(t_color c);
+// void		store_color(t_game *game, char id, int *tmp);
 
 // utils_map_read.c
-int			row_len(char *s);
-void		free_partial_grid(char **grid, int y);
+// int			row_len(char *s);
+// void		free_partial_grid(char **grid, int y);
 
 // utils_parse_meta.c
-int			is_map_line(char *line);
-void		set_spawn_tile_walkable(t_game game);
-
+// int			is_map_line(char *line);
 #endif

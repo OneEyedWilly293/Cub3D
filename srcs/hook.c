@@ -18,8 +18,10 @@ void	ft_hook(void *param)
 	game = (t_game *)param;
 	if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(game->mlx);
-	up_down(game);
-	left_right(game);
+	move_up(game);
+	move_down(game);
+	move_left(game);
+	move_right(game);
 	horizontal_rotation(game);
 }
 
@@ -51,7 +53,7 @@ void	game_loop(void *param)
 	render_background(game, game->window_width, game->window_height);
 	ft_hook(game);
 	draw_map3d(game);
-	draw_map2d(game);
+	draw_minimap(game);
 	if (game->mouse == true)
 		init_mouse(game);
 }
