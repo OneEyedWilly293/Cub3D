@@ -83,6 +83,7 @@ int	main(int argc, char **argv)
 	if (init_mlx(&game) == 1)
 	{
 		printf("error\n");
+		free_parser_game(&game);
 		return (EXIT_FAILURE);
 	}
 	mlx_key_hook(game.mlx, key_hook, &game);
@@ -92,5 +93,6 @@ int	main(int argc, char **argv)
 	mlx_delete_image(game.mlx, game.img_3d);
 	mlx_delete_image(game.mlx, game.img_map);
 	mlx_terminate(game.mlx);
+	free_parser_game(&game);
 	return (EXIT_SUCCESS);
 }
