@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map2d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edlucca <edlucca@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 16:15:52 by edlucca           #+#    #+#             */
-/*   Updated: 2026/01/14 16:35:09 by edlucca          ###   ########.fr       */
+/*   Updated: 2026/01/14 17:11:36 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,10 @@ static void	minimap_draw_ray(t_game *g)
 	{
 		angle = g->player.da - (double)FOV * 0.5 + r * ANGULAR_STEP;
 		cast_ray(angle, g);
-		x = (int)(g->ray.ray_dir_x * g->ray.dist * g->map2d.scale_x + MM_CENTER);
-		y = (int)(g->ray.ray_dir_y * g->ray.dist * g->map2d.scale_y + MM_CENTER);
+		x = (int)(g->ray.ray_dir_x * g->ray.dist * g->map2d.scale_x
+				+ MM_CENTER);
+		y = (int)(g->ray.ray_dir_y * g->ray.dist * g->map2d.scale_y
+				+ MM_CENTER);
 		draw_line(g->img_map, x, y, color);
 		r++;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edlucca <edlucca@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 16:15:45 by edlucca           #+#    #+#             */
-/*   Updated: 2026/01/14 16:15:46 by edlucca          ###   ########.fr       */
+/*   Updated: 2026/01/14 17:56:26 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,19 +62,6 @@ int	init_mlx(t_game *game)
 	create_img(game, &game->img_3d, game->window_width, game->window_height);
 	create_img(game, &game->img_map, MINIMAP_SIZE, MINIMAP_SIZE);
 	return (0);
-}
-
-/*
- ** Function to replace the spawn character with '0' in the map after parsing.
- */
-static void	set_spawn_tile_walkable(t_game game)
-{
-	if (!game.map)
-		return ;
-	if (game.player_y < 0 || game.player_x < 0)
-		return ;
-	game.map[game.player_y][game.player_x] = '0';
-	game.tile_size = game.map_w / game.map_h;
 }
 
 // Main function

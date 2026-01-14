@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edlucca <edlucca@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 16:15:24 by edlucca           #+#    #+#             */
-/*   Updated: 2026/01/14 16:15:25 by edlucca          ###   ########.fr       */
+/*   Updated: 2026/01/14 17:11:20 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ void	draw_map3d(t_game *game)
 		game->tex.wall_height = (int)(game->img_3d->height / dist);
 		if (game->tex.wall_height > game->img_3d->height)
 			game->tex.wall_height = game->img_3d->height;
-		game->tex.wall_top = (game->img_3d->height - game->tex.wall_height) * 0.5;
+		game->tex.wall_top = (game->img_3d->height
+				- game->tex.wall_height) * 0.5;
 		game->tex.wall_bottom = game->tex.wall_top + game->tex.wall_height;
 		draw_textured_column(game, x, dist);
 		x++;

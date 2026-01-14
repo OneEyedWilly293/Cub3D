@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 22:02:22 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/14 13:13:56 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/14 17:35:40 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,5 @@ void	set_spawn_tile_walkable(t_game game)
 	if (game.player_y < 0 || game.player_x < 0)
 		return ;
 	game.map[game.player_y][game.player_x] = '0';
+	game.tile_size = game.map_w / game.map_h;
 }

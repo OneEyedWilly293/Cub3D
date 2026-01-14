@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 22:15:43 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/14 17:00:05 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/14 17:37:34 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # define MAX_DOF 8
 # define NUM_RAYS  30
 # define FOV        (M_PI / 3)
+# define ANGULAR_STEP       FOV / NUM_RAYS
 
 # define RED			0xFF0000FF
 # define GREEN			0x00FF00FF
@@ -114,17 +115,6 @@ typedef struct s_line
 	int	err;
 }	t_line;
 
-typedef struct s_line
-{
-	int	x;
-	int	y;
-	int	dx;
-	int	dy;
-	int	sx;
-	int	sy;
-	int	err;
-}	t_line;
-
 typedef struct s_raycast
 {
 	int		map_x;
@@ -138,7 +128,6 @@ typedef struct s_raycast
 	double	side_dist_x;
 	double	side_dist_y;
 	int		side;
-	double	dist;
 	double	dist;
 }	t_raycast;
 
@@ -180,9 +169,6 @@ typedef struct s_textures
 	uint32_t		wall_height;
 	uint32_t		wall_top;
 	uint32_t		wall_bottom;
-	uint32_t		wall_height;
-	uint32_t		wall_top;
-	uint32_t		wall_bottom;
 }	t_textures;
 
 typedef struct s_game
@@ -210,83 +196,87 @@ typedef struct s_game
 	t_textures	tex;
 }	t_game;
 
-// double	cast_ray(double ray_angle, t_game *g);
-void	cast_ray(double ray_angle, t_game *game);
-// double	cast_ray(double ray_angle, t_game *g);
-void	cast_ray(double ray_angle, t_game *game);
-int		create_img(t_game *game, mlx_image_t **image, int width, int height);
-int		get_texture(t_game *game);
-int		set_color(t_game *game, int visible, int invisible);
-int		ft_pixel(t_color color); // use uint8_t
-void	clear_image(mlx_image_t *img, uint32_t color);
-void	draw_minimap(void *param);
-void	draw_map3d(t_game *game);
-void	draw_player(t_game *game);
-void	ft_hook(void	*param);
-void	game_loop(void	*param);
-void	horizontal_rotation(t_game	*game);
-void	init_mouse(t_game *game);
-void	key_hook(mlx_key_data_t keydata, void *param);
-void	mouse_hook(double xpos, double ypos, void *param);
-void	render_background(t_game *game, int32_t new_width, int32_t new_height);
-void	resize_callback(int32_t new_width, int32_t new_height, void *param);
-void	move_up(t_game *game);
-void	move_down(t_game *game);
-void	move_left(t_game *game);
-void	move_right(t_game *game);
-void	vertical_rotation(t_game *game);
-int		is_wall(t_game *game, double x, double y);
-void	load_textures(t_game *game);
-void	get_player_dir(t_game *game);
-int	can_move_to(t_game *game, double nx, double ny);
+void			cast_ray(double ray_angle, t_game *game);
+void			cast_ray(double ray_angle, t_game *game);
+int				create_img(t_game *game, mlx_image_t **image, int width,
+					int height);
+int				get_texture(t_game *game);
+int				set_color(t_game *game, int visible, int invisible);
+int				ft_pixel(t_color color); // use uint8_t
+void			clear_image(mlx_image_t *img, uint32_t color);
+void			draw_minimap(void *param);
+void			draw_map3d(t_game *game);
+void			draw_player(t_game *game);
+void			ft_hook(void	*param);
+void			game_loop(void	*param);
+void			horizontal_rotation(t_game	*game);
+void			init_mouse(t_game *game);
+void			key_hook(mlx_key_data_t keydata, void *param);
+void			mouse_hook(double xpos, double ypos, void *param);
+void			render_background(t_game *game, int32_t new_width,
+					int32_t new_height);
+void			resize_callback(int32_t new_width, int32_t new_height,
+					void *param);
+void			move_up(t_game *game);
+void			move_down(t_game *game);
+void			move_left(t_game *game);
+void			move_right(t_game *game);
+void			vertical_rotation(t_game *game);
+int				is_wall(t_game *game, double x, double y);
+void			load_textures(t_game *game);
+void			get_player_dir(t_game *game);
+int				can_move_to(t_game *game, double nx, double ny);
 mlx_texture_t	*get_wall_texture(t_game *game);
-// void	draw_line(mlx_image_t *img, int x0, int y0, int x1, int y1, uint32_t color);
-void	draw_line(mlx_image_t *img, int x1, int y1, uint32_t color);
-
-void	draw_minimap_border(t_game *game);
-void	draw_minimap_background(t_game *game);
-int	tile_color(t_game *game);
+void			draw_line(mlx_image_t *img, int x1, int y1, uint32_t color);
+void			draw_minimap_border(t_game *game);
+void			draw_minimap_background(t_game *game);
+int				tile_color(t_game *game);
 
 // ====== Parsing functions ========== //
-char	*get_line(int fd);
-int		check_args(int argc, char **argv);
-int		ft_error(const char *msg);
-int		validate_map_closed(t_game *g);
-int		handle_color_line(t_game *game, char *trim);
-int		handle_texture_line(t_game *game, char *trim);
-int		is_map_charset(char c);
-int		parse_identifiers_until_map(int fd, t_game *game, char **first_line);
-int		parse_rgb_line(char identifier, char *line, int *rgb);
-int		parse_scene(const char *path, t_game *game);
-int		read_map(int fd, t_game *game, char *first_line);
-int		validate_map(t_game *game);
-void	free_map(char **map);
-void	free_parser_game(t_game *game);
-void	ft_putstr_err(const char *s);
-void	get_line_reset(void);
-void	init_parser_game(t_game *g);
+char			*get_line(int fd);
+int				check_args(int argc, char **argv);
+int				ft_error(const char *msg);
+int				validate_map_closed(t_game *g);
+int				handle_color_line(t_game *game, char *trim);
+int				handle_texture_line(t_game *game, char *trim);
+int				is_map_charset(char c);
+int				parse_identifiers_until_map(int fd, t_game *game,
+					char **first_line);
+int				parse_rgb_line(char identifier, char *line, int *rgb);
+int				parse_scene(const char *path, t_game *game);
+int				read_map(int fd, t_game *game, char *first_line);
+int				validate_map(t_game *game);
+void			free_map(char **map);
+void			free_parser_game(t_game *game);
+void			ft_putstr_err(const char *s);
+void			get_line_reset(void);
+void			init_parser_game(t_game *g);
 
 // utils.c
-// void		free_split(char **colors);
-char	*skip_spaces(char *s);
-// int			is_signed_number(char *s);
-int		arrlen(char **arr);
-void	free_map(char **map);
+void			free_split(char **colors);
+char			*skip_spaces(char *s);
+int				is_signed_number(char *s);
+int				arrlen(char **arr);
+void			free_map(char **map);
 
 //utils2.c
-int		is_map_charset(char c);
+int				is_map_charset(char c);
+int				is_wall(t_game *game, double x, double y);
+int				can_move_to(t_game *game, double nx, double ny);
+void			init_mouse(t_game *game);
 
 // utils_color.c
-int		get_nb_comma(char *line);
-int		check_rgb_range(int i);
-int			is_color_set(t_color c);
-void		store_color(t_game *game, char id, int *tmp);
+int				get_nb_comma(char *line);
+int				check_rgb_range(int i);
+int				is_color_set(t_color c);
+void			store_color(t_game *game, char id, int *tmp);
 
 // utils_map_read.c
-int			row_len(char *s);
-void		free_partial_grid(char **grid, int y);
+int				row_len(char *s);
+void			free_partial_grid(char **grid, int y);
 
 // utils_parse_meta.c
-int			is_map_line(char *line);
+int				is_map_line(char *line);
+void			set_spawn_tile_walkable(t_game game);
 
 #endif
