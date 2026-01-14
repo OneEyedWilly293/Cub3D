@@ -21,6 +21,7 @@
 # define MAX_DOF 8 
 # define NUM_RAYS  30
 # define FOV        (M_PI / 3)
+# define ANGULAR_STEP       FOV / NUM_RAYS 
 
 # define RED			0xFF0000FF
 # define GREEN			0x00FF00FF
@@ -75,7 +76,6 @@
 typedef struct s_player		t_player;
 typedef struct s_raycast	t_raycast ;
 typedef struct s_map2d		t_map2d;
-typedef struct s_miniray	t_miniray;
 typedef struct s_color		t_color;
 typedef struct s_textures	t_textures;
 
@@ -92,6 +92,17 @@ typedef struct s_player
 	float	move_y;
 }	t_player;
 
+typedef struct s_line
+{
+	int	x;
+	int	y;
+	int	dx;
+	int	dy;
+	int	sx;
+	int	sy;
+	int	err;
+}	t_line;
+
 typedef struct s_raycast
 {
 	int		map_x;
@@ -105,6 +116,7 @@ typedef struct s_raycast
 	double	side_dist_x;
 	double	side_dist_y;
 	int		side;
+	double	dist;
 }	t_raycast;
 
 typedef struct s_map2d
@@ -119,20 +131,6 @@ typedef struct s_map2d
 	int		p_px;
 	int		p_py;
 }	t_map2d;
-
-typedef struct s_miniray
-{
-	double	start_angle;
-	double	angle_step;
-	double	ray_angle;
-	double	ray_dist;
-	double	x;
-	double	y;
-	double	rx;
-	double	ry;
-	double	px;
-	double	py;
-}	t_miniray;
 
 /* Color struct */
 typedef struct s_color
@@ -156,6 +154,9 @@ typedef struct s_textures
 	mlx_texture_t	*s_wall;
 	mlx_texture_t	*w_wall;
 	mlx_texture_t	*e_wall;
+	uint32_t		wall_height;
+	uint32_t		wall_top;
+	uint32_t		wall_bottom;
 }	t_textures;
 
 typedef struct s_game
@@ -178,20 +179,20 @@ typedef struct s_game
 	t_color		ceiling;
 	t_color		floor;
 	t_map2d		map2d;
-	t_miniray	m_ray;
 	t_player	player;
 	t_raycast	ray;
 	t_textures	tex;
 }	t_game;
 
-double	cast_ray(double ray_angle, t_game *g);
+// double	cast_ray(double ray_angle, t_game *g);
+void	cast_ray(double ray_angle, t_game *game);
 int		create_img(t_game *game, mlx_image_t **image, int width, int height);
 int		get_texture(t_game *game);
 int		set_color(t_game *game, int visible, int invisible);
 int		ft_pixel(t_color color); // use uint8_t
 void	clear_image(mlx_image_t *img, uint32_t color);
 void	draw_minimap(void *param);
-void	draw_map3d(void *param);
+void	draw_map3d(t_game *game);
 void	draw_player(t_game *game);
 void	ft_hook(void	*param);
 void	game_loop(void	*param);
@@ -211,6 +212,12 @@ void	load_textures(t_game *game);
 void	get_player_dir(t_game *game);
 int	can_move_to(t_game *game, double nx, double ny);
 mlx_texture_t	*get_wall_texture(t_game *game);
+// void	draw_line(mlx_image_t *img, int x0, int y0, int x1, int y1, uint32_t color);
+void	draw_line(mlx_image_t *img, int x1, int y1, uint32_t color);
+
+void	draw_minimap_border(t_game *game);
+void	draw_minimap_background(t_game *game);
+int	tile_color(t_game *game);
 
 // ====== Parsing functions ========== //
 char	*get_line(int fd);

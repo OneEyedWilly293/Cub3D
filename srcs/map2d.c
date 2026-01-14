@@ -1,57 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map2d.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edlucca <edlucca@student.hive.fi>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/14 16:15:52 by edlucca           #+#    #+#             */
+/*   Updated: 2026/01/14 16:35:09 by edlucca          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
-
-static void	draw_minimap_background(t_game *game)
-{
-	int	x;
-	int	y;
-	int	color;
-
-	y = 0;
-	color = set_color(game, BLACK, TRANSPARENT);
-	while (y < MINIMAP_SIZE)
-	{
-		x = 0;
-		while (x < MINIMAP_SIZE)
-		{
-			mlx_put_pixel(game->img_map, x, y, color);
-			x++;
-		}
-		y++;
-	}
-}
-
-static void	draw_minimap_border(t_game *game)
-{
-	int	x;
-	int	y;
-	int	color;
-
-	color = set_color(game, BLACK, TRANSPARENT);
-	y = 0;
-	while (y < MM_BORDER_THICKNESS)
-	{
-		x = 0;
-		while (x < MINIMAP_SIZE)
-		{
-			mlx_put_pixel(game->img_map, x, y, color);
-			mlx_put_pixel(game->img_map, x, MINIMAP_SIZE - 1 - y, color);
-			x++;
-		}
-		y++;
-	}
-	x = 0;
-	while (x < MM_BORDER_THICKNESS)
-	{
-		y = 0;
-		while (y < MINIMAP_SIZE)
-		{
-			mlx_put_pixel(game->img_map, x, y, color);
-			mlx_put_pixel(game->img_map, MINIMAP_SIZE - 1 - x, y, color);
-			y++;
-		}
-		x++;
-	}
-}
 
 static void	minimap_prepare_tile(int x, int y, t_game *game)
 {
@@ -67,8 +26,8 @@ static void	minimap_prepare_tile(int x, int y, t_game *game)
 	rel_y = (double)y - cam_y;
 	game->map2d.start_x = (int)(rel_x * game->map2d.scale_x + MM_CENTER);
 	game->map2d.start_y = (int)(rel_y * game->map2d.scale_y + MM_CENTER);
-	game->map2d.end_x   = (int)((rel_x + 1) * game->map2d.scale_x + MM_CENTER);
-	game->map2d.end_y   = (int)((rel_y + 1) * game->map2d.scale_y + MM_CENTER);
+	game->map2d.end_x = (int)((rel_x + 1) * game->map2d.scale_x + MM_CENTER);
+	game->map2d.end_y = (int)((rel_y + 1) * game->map2d.scale_y + MM_CENTER);
 }
 
 static void	minimap_draw_tile(t_game *game)
@@ -77,18 +36,10 @@ static void	minimap_draw_tile(t_game *game)
 	int	py;
 	int	px;
 
-	if (game->map2d.end_x < 0 || game->map2d.start_x >= MINIMAP_SIZE ||
-			game->map2d.end_y < 0 || game->map2d.start_y >= MINIMAP_SIZE)
-		return;
-	if (game->show_map == true)
-	{
-		if (game->map2d.tile == '1')
-			color = WHITE;
-		else
-			color = BLACK;
-	}
-	else
-		color = TRANSPARENT;
+	if (game->map2d.end_x < 0 || game->map2d.start_x >= MINIMAP_SIZE
+		|| game->map2d.end_y < 0 || game->map2d.start_y >= MINIMAP_SIZE)
+		return ;
+	color = tile_color(game);
 	py = game->map2d.start_y;
 	while (py < game->map2d.end_y)
 	{
@@ -106,44 +57,23 @@ static void	minimap_draw_tile(t_game *game)
 	}
 }
 
-static void	minimap_draw_ray(t_game *game)
+static void	minimap_draw_ray(t_game *g)
 {
-	double	i;
 	int		r;
+	double	angle;
+	int		x;
+	int		y;
 	int		color;
-	double	cam_x;
-	double	cam_y;
-
-	cam_x = game->player.x;
-	cam_y = game->player.y;
-
-	color = set_color(game, RED, TRANSPARENT);
-	game->m_ray.start_angle = game->player.da - (double)FOV / 2;
-	game->m_ray.angle_step = (double)FOV / NUM_RAYS;
 
 	r = 0;
+	color = set_color(g, RED, TRANSPARENT);
 	while (r < NUM_RAYS)
 	{
-		game->m_ray.ray_angle = game->m_ray.start_angle + r * game->m_ray.angle_step;
-		game->m_ray.ray_dist = cast_ray(game->m_ray.ray_angle, game);
-
-		i = 0;
-		while (i < game->m_ray.ray_dist)
-		{
-			double	rx = cam_x + cos(game->m_ray.ray_angle) * i;
-			double	ry = cam_y + sin(game->m_ray.ray_angle) * i;
-
-			double	rel_x = rx - cam_x;
-			double	rel_y = ry - cam_y;
-
-			int	px = (int)(rel_x * game->map2d.scale_x + MM_CENTER);
-			int	py = (int)(rel_y * game->map2d.scale_y + MM_CENTER);
-
-			if (px >= 0 && px < MINIMAP_SIZE && py >= 0 && py < MINIMAP_SIZE)
-				mlx_put_pixel(game->img_map, px, py, color);
-
-			i += 0.02;
-		}
+		angle = g->player.da - (double)FOV * 0.5 + r * ANGULAR_STEP;
+		cast_ray(angle, g);
+		x = (int)(g->ray.ray_dir_x * g->ray.dist * g->map2d.scale_x + MM_CENTER);
+		y = (int)(g->ray.ray_dir_y * g->ray.dist * g->map2d.scale_y + MM_CENTER);
+		draw_line(g->img_map, x, y, color);
 		r++;
 	}
 }
@@ -155,8 +85,8 @@ void	draw_minimap(void *param)
 	int		x;
 
 	game = (t_game *)param;
-	game->map2d.scale_x = (double)MINIMAP_SIZE / 20.0;
-	game->map2d.scale_y = (double)MINIMAP_SIZE / 20.0;
+	game->map2d.scale_x = (double)MINIMAP_SIZE * 0.05;
+	game->map2d.scale_y = (double)MINIMAP_SIZE * 0.05;
 	draw_minimap_background(game);
 	y = 0;
 	while (y < game->map_h)

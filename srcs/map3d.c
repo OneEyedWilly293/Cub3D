@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map3d.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edlucca <edlucca@student.hive.fi>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/14 16:15:24 by edlucca           #+#    #+#             */
+/*   Updated: 2026/01/14 16:15:25 by edlucca          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
-static int get_tex_x(t_game *game, mlx_texture_t *tex, double dist)
+static int	get_tex_x(t_game *game, mlx_texture_t *tex, double dist)
 {
-	double wall_x;
-	int tex_x;
+	double	wall_x;
+	int		tex_x;
 
 	if (game->ray.side == 0)
 		wall_x = game->player.y + dist * game->ray.ray_dir_y;
@@ -11,81 +23,76 @@ static int get_tex_x(t_game *game, mlx_texture_t *tex, double dist)
 		wall_x = game->player.x + dist * game->ray.ray_dir_x;
 	wall_x -= floor(wall_x);
 	tex_x = (int)(wall_x * tex->width);
-	if ((game->ray.side == 0 && game->ray.step_x < 0) ||
-			(game->ray.side == 1 && game->ray.step_y > 0))
+	if ((game->ray.side == 0 && game->ray.step_x < 0)
+		|| (game->ray.side == 1 && game->ray.step_y > 0))
 		tex_x = tex->width - tex_x - 1;
-	return tex_x;
+	return (tex_x);
 }
 
-static void	draw_textured_column(t_game *game, int x, int wall_top, int wall_bottom, double dist)
+static	uint32_t	get_tex_color(mlx_texture_t *tex, int x, int y)
 {
-	mlx_texture_t *tex;
-	int tex_x;
-	int tex_y;
-	int wall_height;
-	int y;
-	uint32_t color;
-	uint8_t *p;
+	uint8_t	*p;
+
+	p = &tex->pixels[(y * tex->width + x) * tex->bytes_per_pixel];
+	return ((p[0] << 24) | (p[1] << 16) | (p[2] << 8) | p[3]);
+}
+
+static void	draw_textured_column(t_game *game, int x, double dist)
+{
+	mlx_texture_t	*tex;
+	int				tex_x;
+	uint32_t		tex_y;
+	int				y;
+	int				wall_h;
 
 	tex = get_wall_texture(game);
 	tex_x = get_tex_x(game, tex, dist);
-	wall_height = wall_bottom - wall_top + 1;
-	y = wall_top;
-	while (y <= wall_bottom)
+	wall_h = game->tex.wall_bottom - game->tex.wall_top + 1;
+	y = game->tex.wall_top;
+	while (y <= (int)game->tex.wall_bottom)
 	{
-		tex_y = ((y - wall_top) * tex->height) / wall_height;
-		p = &tex->pixels[ (tex_y * tex->width + tex_x) * tex->bytes_per_pixel ];
-		color = (p[0] << 24) | (p[1] << 16) | (p[2] << 8) | p[3];
-		mlx_put_pixel(game->img_3d, x, y, color);
+		tex_y = ((y - game->tex.wall_top) * tex->height) / wall_h;
+		if (tex_y >= tex->height)
+			tex_y = tex->height - 1;
+		mlx_put_pixel(game->img_3d, x, y, get_tex_color(tex, tex_x, tex_y));
 		y++;
 	}
 }
 
-void	draw_map3d(void *param)
+void	draw_map3d(t_game *game)
 {
-	t_game	*game;
-	double	ray_angle;
-	double	dist;
-	int		screen_w;
-	int		screen_h;
-	int		x;
-	int		wall_height;
-	int		wall_top;
-	int		wall_bottom;
+	uint32_t	x;
+	double		ray_angle;
+	double		dist;
 
 	x = 0;
-	game = param;
-	screen_w = game->img_3d->width;
-	screen_h = game->img_3d->height;
-	while (x < screen_w)
+	while (x < game->img_3d->width)
 	{
-		ray_angle = game->player.da - (double)FOV / 2 + ((double)x / screen_w) * FOV;
-		dist = cast_ray(ray_angle, game);
-		dist *= cos(ray_angle - game->player.da);
-		if (dist < 0.01)
-			dist = 0.01;
-		wall_height = (int)((double)screen_h / dist);
-		wall_top = (screen_h / 2) - (wall_height / 2);
-		wall_bottom = wall_top + wall_height;
-		if (wall_top < 0)
-			wall_top = 0;
-		if (wall_bottom >= screen_h)
-			wall_bottom = screen_h - 1;
-		draw_textured_column(game, x, wall_top, wall_bottom, dist);
+		ray_angle = game->player.da - FOV * 0.5
+			+ ((double)x / game->img_3d->width) * FOV;
+		cast_ray(ray_angle, game);
+		dist = game->ray.dist * cos(ray_angle - game->player.da);
+		if (dist < 0.1)
+			dist = 0.1;
+		game->tex.wall_height = (int)(game->img_3d->height / dist);
+		if (game->tex.wall_height > game->img_3d->height)
+			game->tex.wall_height = game->img_3d->height;
+		game->tex.wall_top = (game->img_3d->height - game->tex.wall_height) * 0.5;
+		game->tex.wall_bottom = game->tex.wall_top + game->tex.wall_height;
+		draw_textured_column(game, x, dist);
 		x++;
 	}
 }
 
 void	resize_callback(int new_width, int new_height, void *param)
 {
-	t_game *game = param;
+	t_game	*game;
 
+	game = param;
 	if (new_width <= 0 || new_height <= 0)
 		return ;
-
 	game->window_width = new_width;
 	game->window_height = new_height;
-
 	create_img(game, &game->img_3d, game->window_width, game->window_height);
 	create_img(game, &game->img_map, MINIMAP_SIZE, MINIMAP_SIZE);
 }

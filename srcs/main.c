@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edlucca <edlucca@student.hive.fi>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/14 16:15:45 by edlucca           #+#    #+#             */
+/*   Updated: 2026/01/14 16:15:46 by edlucca          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 static void	init_player(t_game *game)
 {
-	game->player.x = game->player_x;
-	game->player.y = game->player_y;
+	game->player.x = game->player_x + 0.5;
+	game->player.y = game->player_y + 0.5;
 	game->player.xpos = 0;
 	game->player.ypos = 0;
 	game->player.dx = cosf(0.0f);
