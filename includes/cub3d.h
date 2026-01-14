@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 22:15:43 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/14 16:56:46 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/14 17:00:05 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@
 # define MAX_DOF 8
 # define NUM_RAYS  30
 # define FOV        (M_PI / 3)
-# define ANGULAR_STEP       FOV / NUM_RAYS
 
 # define RED			0xFF0000FF
 # define GREEN			0x00FF00FF
@@ -115,6 +114,17 @@ typedef struct s_line
 	int	err;
 }	t_line;
 
+typedef struct s_line
+{
+	int	x;
+	int	y;
+	int	dx;
+	int	dy;
+	int	sx;
+	int	sy;
+	int	err;
+}	t_line;
+
 typedef struct s_raycast
 {
 	int		map_x;
@@ -128,6 +138,7 @@ typedef struct s_raycast
 	double	side_dist_x;
 	double	side_dist_y;
 	int		side;
+	double	dist;
 	double	dist;
 }	t_raycast;
 
@@ -169,6 +180,9 @@ typedef struct s_textures
 	uint32_t		wall_height;
 	uint32_t		wall_top;
 	uint32_t		wall_bottom;
+	uint32_t		wall_height;
+	uint32_t		wall_top;
+	uint32_t		wall_bottom;
 }	t_textures;
 
 typedef struct s_game
@@ -196,6 +210,8 @@ typedef struct s_game
 	t_textures	tex;
 }	t_game;
 
+// double	cast_ray(double ray_angle, t_game *g);
+void	cast_ray(double ray_angle, t_game *game);
 // double	cast_ray(double ray_angle, t_game *g);
 void	cast_ray(double ray_angle, t_game *game);
 int		create_img(t_game *game, mlx_image_t **image, int width, int height);

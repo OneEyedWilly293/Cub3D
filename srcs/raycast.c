@@ -1,15 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   raycast.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edlucca <edlucca@student.hive.fi>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/14 16:16:30 by edlucca           #+#    #+#             */
+/*   Updated: 2026/01/14 16:16:31 by edlucca          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
-static int get_step(double dir)
+static int	get_step(double dir)
 {
 	if (dir < 0)
 		return (-1);
 	return (1);
 }
 
-static double get_side_dist(t_game *game, bool is_x)
+static double	get_side_dist(t_game *game, bool is_x)
 {
-	double ret;
+	double	ret;
 
 	ret = 0;
 	if (is_x == true)
@@ -45,7 +57,7 @@ static void	init_ray_struct(double ray_angle, t_game *g)
 	g->ray.side_dist_y = get_side_dist(g, false);
 }
 
-static int perform_dda(t_game *game)
+static int	perform_dda(t_game *game)
 {
 	int	hit;
 	int	side;
@@ -70,20 +82,23 @@ static int perform_dda(t_game *game)
 	return (side);
 }
 
-double	cast_ray(double ray_angle, t_game *game)
+void	cast_ray(double ray_angle, t_game *game)
 {
-	int	side;
-	double horizontal_ray;
-	double vertical_ray;
+	int		side;
+	double	h_ray;
+	double	v_ray;
+	double	p_to_grid_x;
+	double	p_to_grid_y;
 
 	init_ray_struct(ray_angle, game);
 	side = perform_dda(game);
 	game->ray.side = side;
-
-	vertical_ray = (game->ray.map_x - game->player.x + (1 - game->ray.step_x) * 0.5) / game->ray.ray_dir_x; 
-	horizontal_ray = (game->ray.map_y - game->player.y + (1 - game->ray.step_y) * 0.5) / game->ray.ray_dir_y; 
-
+	p_to_grid_x = game->ray.map_x - game->player.x;
+	p_to_grid_y = game->ray.map_y - game->player.y;
+	v_ray = (p_to_grid_x + (1 - game->ray.step_x) * 0.5) / game->ray.ray_dir_x;
+	h_ray = (p_to_grid_y + (1 - game->ray.step_y) * 0.5) / game->ray.ray_dir_y;
 	if (side == 0)
-		return (vertical_ray);
-	return (horizontal_ray);
+		game->ray.dist = v_ray;
+	else
+		game->ray.dist = h_ray;
 }

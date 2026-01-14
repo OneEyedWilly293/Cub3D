@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   text.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edlucca <edlucca@student.hive.fi>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/14 16:16:35 by edlucca           #+#    #+#             */
+/*   Updated: 2026/01/14 16:16:36 by edlucca          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 void	render_background(t_game *game, int32_t new_width, int32_t new_height)
@@ -39,6 +51,9 @@ void	load_textures(t_game *game)
 		fprintf(stderr, "Failed to load textures!\n");
 		exit(EXIT_FAILURE);
 	}
+	game->tex.wall_height = 0;
+	game->tex.wall_top = 0;
+	game->tex.wall_bottom = 0;
 }
 
 mlx_texture_t	*get_wall_texture(t_game *game)
