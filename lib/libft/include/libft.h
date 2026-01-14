@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 09:19:38 by edlucca           #+#    #+#             */
-/*   Updated: 2026/01/12 19:39:38 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/14 19:58:39 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ typedef struct s_exec
  * @param str: The string to be converted
  * @return The converted integer value
  */
-int	ft_atoi(const char *str);
+int		ft_atoi(const char *str);
 // /**
 //  * @brief Converts a string into an integer.
 //  * @param nptr String to convert.

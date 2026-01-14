@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 16:15:24 by edlucca           #+#    #+#             */
-/*   Updated: 2026/01/14 17:11:20 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/14 18:59:30 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	get_tex_x(t_game *game, mlx_texture_t *tex, double dist)
 	wall_x -= floor(wall_x);
 	tex_x = (int)(wall_x * tex->width);
 	if ((game->ray.side == 0 && game->ray.step_x < 0)
-			|| (game->ray.side == 1 && game->ray.step_y > 0))
+		|| (game->ray.side == 1 && game->ray.step_y > 0))
 		tex_x = tex->width - tex_x - 1;
 	return (tex_x);
 }
@@ -57,7 +57,7 @@ static void	draw_textured_column(t_game *game, int x, double dist)
 			if (tex_y >= tex->height)
 				tex_y = tex->height - 1;
 			mlx_put_pixel(game->img_3d, x, y,
-					get_tex_color(tex, tex_x, tex_y));
+				get_tex_color(tex, tex_x, tex_y));
 		}
 		y++;
 	}
