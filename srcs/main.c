@@ -64,6 +64,17 @@ int	init_mlx(t_game *game)
 	return (0);
 }
 
+void	free_mlx_assets(t_game *game)
+{
+	mlx_delete_image(game->mlx, game->img_3d);
+	mlx_delete_image(game->mlx, game->img_map);
+	mlx_terminate(game->mlx);
+	mlx_delete_texture(game->tex.n_wall);
+	mlx_delete_texture(game->tex.s_wall);
+	mlx_delete_texture(game->tex.w_wall);
+	mlx_delete_texture(game->tex.e_wall);
+}
+
 // Main function
 int	main(int argc, char **argv)
 {
@@ -86,9 +97,7 @@ int	main(int argc, char **argv)
 	mlx_resize_hook(game.mlx, resize_callback, &game);
 	mlx_loop_hook(game.mlx, game_loop, &game);
 	mlx_loop(game.mlx);
-	mlx_delete_image(game.mlx, game.img_3d);
-	mlx_delete_image(game.mlx, game.img_map);
-	mlx_terminate(game.mlx);
+	free_mlx_assets(&game);
 	free_parser_game(&game);
 	return (EXIT_SUCCESS);
 }

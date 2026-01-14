@@ -24,7 +24,7 @@ static int	get_tex_x(t_game *game, mlx_texture_t *tex, double dist)
 	wall_x -= floor(wall_x);
 	tex_x = (int)(wall_x * tex->width);
 	if ((game->ray.side == 0 && game->ray.step_x < 0)
-		|| (game->ray.side == 1 && game->ray.step_y > 0))
+			|| (game->ray.side == 1 && game->ray.step_y > 0))
 		tex_x = tex->width - tex_x - 1;
 	return (tex_x);
 }
@@ -51,10 +51,14 @@ static void	draw_textured_column(t_game *game, int x, double dist)
 	y = game->tex.wall_top;
 	while (y <= (int)game->tex.wall_bottom)
 	{
-		tex_y = ((y - game->tex.wall_top) * tex->height) / wall_h;
-		if (tex_y >= tex->height)
-			tex_y = tex->height - 1;
-		mlx_put_pixel(game->img_3d, x, y, get_tex_color(tex, tex_x, tex_y));
+		if (y >= 0 && y < (int)game->img_3d->height)
+		{
+			tex_y = ((y - game->tex.wall_top) * tex->height) / wall_h;
+			if (tex_y >= tex->height)
+				tex_y = tex->height - 1;
+			mlx_put_pixel(game->img_3d, x, y,
+					get_tex_color(tex, tex_x, tex_y));
+		}
 		y++;
 	}
 }
