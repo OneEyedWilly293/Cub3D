@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 13:40:25 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/14 00:32:42 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/14 13:13:35 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,8 @@ static int	check_meta_complete(t_game *game)
  * @param s Input string to scan (may be NULL).
  *
  * @return 1 if a map tile character is found, 0 otherwise.
- */has_map_tile(char *s)
+ */
+static int	has_map_tile(char *s)
 {
 	int	i;
 

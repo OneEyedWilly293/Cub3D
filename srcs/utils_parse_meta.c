@@ -6,7 +6,7 @@
 /*   By: jgueon <jgueon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 22:02:22 by jgueon            #+#    #+#             */
-/*   Updated: 2026/01/14 00:47:54 by jgueon           ###   ########.fr       */
+/*   Updated: 2026/01/14 13:13:56 by jgueon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	is_map_line(char *line)
  */
 void	set_spawn_tile_walkable(t_game game)
 {
-	if ( !game.map)
+	if (!game.map)
 		return ;
 	if (game.player_y < 0 || game.player_x < 0)
 		return ;
