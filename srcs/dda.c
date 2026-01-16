@@ -16,8 +16,9 @@
  * @brief Initializes a t_line structure for line drawing.
  *
  * This function prepares a t_line structure used for drawing a line
- * from the center of the minimap (MM_CENTER, MM_CENTER) to the target
- * point (x1, y1). It computes the deltas, step directions, and initial
+ * from the center of the minimap (MINIMAP_SIZE * 0.5, MINIMAP_SIZE * 0.5)
+ * to the target point (x1, y1).
+ * It computes the deltas, step directions, and initial
  * error value required for a Bresenham-style line drawing algorithm.
  *
  * @param x1 The x-coordinate of the destination point.
@@ -30,8 +31,8 @@ static t_line	init_line(int x1, int y1)
 {
 	t_line	line;
 
-	line.x = MM_CENTER;
-	line.y = MM_CENTER;
+	line.x = MINIMAP_SIZE * 0.5;
+	line.y = MINIMAP_SIZE * 0.5;
 	line.dx = abs(x1 - line.x);
 	line.dy = abs(y1 - line.y);
 	line.sx = (line.x < x1) - (line.x > x1);
@@ -44,9 +45,9 @@ static t_line	init_line(int x1, int y1)
  * @brief Draws a line from the minimap center to a target point.
  *
  * This function draws a line on the given MLX image from the minimap
- * center (MM_CENTER, MM_CENTER) to the specified endpoint (x1, y1),
- * using a Bresenham line drawing algorithm. Pixels are drawn only if
- * they fall within the minimap boundaries.
+ * center (MINIMAP_SIZE * 0.5, MINIMAP_SIZE * 0.5) to the specified
+ * endpoint (x1, y1), using a Bresenham line drawing algorithm. 
+ * Pixels are drawn only if they fall within the minimap boundaries.
  *
  * @param img   Pointer to the MLX image where the line will be drawn.
  * @param x1    The x-coordinate of the destination point.

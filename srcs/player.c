@@ -61,8 +61,8 @@ void	draw_player(t_game *game)
 	int	x;
 	int	y;
 
-	x = MM_CENTER;
-	y = MM_CENTER;
+	x = MINIMAP_SIZE * 0.5;
+	y = MINIMAP_SIZE * 0.5;
 	mlx_put_pixel(game->img_map, x, y, GREEN);
 }
 

@@ -23,17 +23,13 @@
 # define WIN_W  1024
 # define WIN_H  1024
 # define MINIMAP_SIZE 200
-# define MM_CENTER (MINIMAP_SIZE * 0.5)
 # define MM_BORDER_THICKNESS 10
-# define MAP_W (WIN_W * 0.5)
-# define MAP_H (WIN_H * 0.5)
 # define PLAYER_RADIUS 0.1   // Size of player (in pixels)
 # define PLAYER_SPEED 0.1  // Size of player (in pixels)
 # define MOUSE_SENSITIVITY 0.0009
 # define MAX_DOF 8
 # define NUM_RAYS  30
-# define FOV        (M_PI / 3)
-# define ANGULAR_STEP       FOV / NUM_RAYS
+# define FOV 1.0471975512
 
 # define RED			0xFF0000FF
 # define GREEN			0x00FF00FF

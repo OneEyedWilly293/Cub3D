@@ -36,10 +36,14 @@ static void	minimap_prepare_tile(int x, int y, t_game *game)
 	game->map2d.tile = game->map[y][x];
 	rel_x = (double)x - cam_x;
 	rel_y = (double)y - cam_y;
-	game->map2d.start_x = (int)(rel_x * game->map2d.scale_x + MM_CENTER);
-	game->map2d.start_y = (int)(rel_y * game->map2d.scale_y + MM_CENTER);
-	game->map2d.end_x = (int)((rel_x + 1) * game->map2d.scale_x + MM_CENTER);
-	game->map2d.end_y = (int)((rel_y + 1) * game->map2d.scale_y + MM_CENTER);
+	game->map2d.start_x = (int)(rel_x * game->map2d.scale_x
+			+ MINIMAP_SIZE * 0.5);
+	game->map2d.start_y = (int)(rel_y * game->map2d.scale_y
+			+ MINIMAP_SIZE * 0.5);
+	game->map2d.end_x = (int)((rel_x + 1) * game->map2d.scale_x
+			+ MINIMAP_SIZE * 0.5);
+	game->map2d.end_y = (int)((rel_y + 1) * game->map2d.scale_y
+			+ MINIMAP_SIZE * 0.5);
 }
 
 /**
@@ -101,12 +105,12 @@ static void	minimap_draw_ray(t_game *g)
 	color = set_color(g, RED, TRANSPARENT);
 	while (r < NUM_RAYS)
 	{
-		angle = g->player.da - (double)FOV * 0.5 + r * ANGULAR_STEP;
+		angle = g->player.da - (double)FOV * 0.5 + r * (FOV / NUM_RAYS);
 		cast_ray(angle, g);
 		x = (int)(g->ray.ray_dir_x * g->ray.dist * g->map2d.scale_x
-				+ MM_CENTER);
+				+ MINIMAP_SIZE * 0.5);
 		y = (int)(g->ray.ray_dir_y * g->ray.dist * g->map2d.scale_y
-				+ MM_CENTER);
+				+ MINIMAP_SIZE * 0.5);
 		draw_line(g->img_map, x, y, color);
 		r++;
 	}

@@ -39,7 +39,7 @@ static int	get_tex_x(t_game *game, mlx_texture_t *tex, double dist)
 	wall_x -= floor(wall_x);
 	tex_x = (int)(wall_x * tex->width);
 	if ((game->ray.side == 0 && game->ray.ray_dir_x > 0)
-			|| (game->ray.side == 1 && game->ray.ray_dir_y < 0))
+		|| (game->ray.side == 1 && game->ray.ray_dir_y < 0))
 	{
 		tex_x = tex->width - tex_x - 1;
 	}
@@ -101,12 +101,11 @@ static void	draw_textured_column(t_game *game, int x, double dist)
 			if (tex_y >= tex->height)
 				tex_y = tex->height - 1;
 			mlx_put_pixel(game->img_3d, x, y,
-					get_tex_color(tex, tex_x, tex_y));
+				get_tex_color(tex, tex_x, tex_y));
 		}
 		y++;
 	}
 }
-
 
 /**
  * @brief Renders the 3D view of the map.
@@ -136,7 +135,8 @@ void	draw_map3d(t_game *game)
 		if (dist < 0.1)
 			dist = 0.1;
 		game->tex.wall_height = (int)(game->img_3d->height / dist);
-		game->tex.wall_top = (game->img_3d->height * 0.5) - (game->tex.wall_height * 0.5);
+		game->tex.wall_top = (game->img_3d->height * 0.5)
+			- (game->tex.wall_height * 0.5);
 		game->tex.wall_bottom = game->tex.wall_top + game->tex.wall_height;
 		draw_textured_column(game, x, dist);
 		x++;
