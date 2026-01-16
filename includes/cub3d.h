@@ -41,10 +41,6 @@
 # define BLACK			0x000000FF
 # define WHITE			0xFFFFFFFF
 # define TRANSPARENT	0x00000000
-# define SKY_BLUE		0x87CEEBFF
-# define DARK_SKY  		0x4682B4FF
-# define GRASS     		0x228B22FF
-# define DIRT      		0x8B4513FF
 
 // ======= MAP FEATURES =======
 # define MAP_EXTENSION ".cub"
@@ -129,6 +125,7 @@ typedef struct s_raycast
 	double	side_dist_y;
 	int		side;
 	double	dist;
+	double	raw_dist;
 }	t_raycast;
 
 typedef struct s_map2d

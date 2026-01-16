@@ -98,7 +98,7 @@ fclean: clean
 re: fclean all
 
 run: all
-	./$(NAME) maps/cheese_maze.cub
+	./$(NAME) maps/different_textures.cub
 
 .SECONDARY: $(OBJ)
 .SECONDARY: $(OBJ_BONUS)
