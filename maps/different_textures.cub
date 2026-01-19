@@ -1,10 +1,10 @@
-NO ./textures/bird.png
-SO ./textures/brickwall.png
-WE ./textures/dark_forest.png
-EA ./textures/white_forest.png
+NO ./textures/bluestone.png
+SO ./textures/redbrick.png
+WE ./textures/greystone.png
+EA ./textures/eagle.png
 
-F 0,0,255
-C 0,0,255
+F 80,80,85
+C 60,35,55
 
 111111111111111111111
 101000001000000000001
