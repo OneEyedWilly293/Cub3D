@@ -22,16 +22,14 @@
  *
  * @param game Pointer to the game structure containing ray and player info.
  * @param tex  Pointer to the wall texture.
- * @param dist Distance from the player to the wall along the ray.
  *
  * @return The x-coordinate on the texture corresponding to the wall hit.
  */
-static int	get_tex_x(t_game *game, mlx_texture_t *tex, double dist)
+static int	get_tex_x(t_game *game, mlx_texture_t *tex)
 {
 	double	wall_x;
 	int		tex_x;
 
-	(void)dist;
 	if (game->ray.side == 0)
 		wall_x = game->player.y + game->ray.raw_dist * game->ray.ray_dir_y;
 	else
@@ -79,7 +77,7 @@ static	uint32_t	get_tex_color(mlx_texture_t *tex, int x, int y)
  * @param x    X-coordinate of the column on the screen.
  * @param dist Distance from the player to the wall along the ray.
  */
-static void	draw_textured_column(t_game *game, int x, double dist)
+static void	draw_textured_column(t_game *game, int x)
 {
 	mlx_texture_t	*tex;
 	int				tex_x;
@@ -88,7 +86,7 @@ static void	draw_textured_column(t_game *game, int x, double dist)
 	int				wall_h;
 
 	tex = get_wall_texture(game);
-	tex_x = get_tex_x(game, tex, dist);
+	tex_x = get_tex_x(game, tex);
 	wall_h = game->tex.wall_bottom - game->tex.wall_top + 1;
 	y = game->tex.wall_top;
 	while (y <= (int)game->tex.wall_bottom)
@@ -136,7 +134,7 @@ void	draw_map3d(t_game *game)
 		game->tex.wall_top = (game->img_3d->height * 0.5)
 			- (game->tex.wall_height * 0.5);
 		game->tex.wall_bottom = game->tex.wall_top + game->tex.wall_height;
-		draw_textured_column(game, x, dist);
+		draw_textured_column(game, x);
 		x++;
 	}
 }
