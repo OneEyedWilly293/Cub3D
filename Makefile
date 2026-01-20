@@ -68,10 +68,6 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 
 $(OBJ_DIR):
 	@mkdir -p $@
-	-include $(DEPS)
-
-$(OBJ_DIR):
-	@mkdir -p $@
 
 OBJ_GDB := $(OBJ:$(OBJ_DIR)/%.o=$(OBJ_DIR)/gdb_%.o)
 

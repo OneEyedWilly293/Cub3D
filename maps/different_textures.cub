@@ -3,7 +3,7 @@ SO ./textures/redbrick.png
 WE ./textures/greystone.png
 EA ./textures/eagle.png
 
-F 80,80,85
+F 0,0,0
 C 60,35,55
 
 111111111111111111111

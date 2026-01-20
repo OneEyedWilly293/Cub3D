@@ -43,9 +43,9 @@ void	render_background(t_game *game, int32_t new_width, int32_t new_height)
 		while (y < new_height)
 		{
 			if (y < (new_height / 2))
-				mlx_put_pixel(game->img_3d, x, y, floor_color);
-			else
 				mlx_put_pixel(game->img_3d, x, y, ceiling_color);
+			else
+				mlx_put_pixel(game->img_3d, x, y, floor_color);
 			y++;
 		}
 		x++;
