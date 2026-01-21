@@ -33,11 +33,10 @@ void	move_up(t_game *game)
 		game->player.move_y = sin(game->player.da) * PLAYER_SPEED;
 		nx = game->player.x + game->player.move_x;
 		ny = game->player.y + game->player.move_y;
-		if (can_move_to(game, nx, ny))
-		{
+		if (can_move_to(game, nx, game->player.y))
 			game->player.x = nx;
+		if (can_move_to(game, game->player.x, ny))
 			game->player.y = ny;
-		}
 	}
 }
 
@@ -62,11 +61,10 @@ void	move_down(t_game *game)
 		game->player.move_y = sin(game->player.da) * PLAYER_SPEED;
 		nx = game->player.x - game->player.move_x;
 		ny = game->player.y - game->player.move_y;
-		if (can_move_to(game, nx, ny))
-		{
+		if (can_move_to(game, nx, game->player.y))
 			game->player.x = nx;
+		if (can_move_to(game, game->player.x, ny))
 			game->player.y = ny;
-		}
 	}
 }
 
@@ -92,11 +90,10 @@ void	move_left(t_game *game)
 		game->player.move_y = sin(game->player.da - M_PI_2) * PLAYER_SPEED;
 		nx = game->player.x + game->player.move_x;
 		ny = game->player.y + game->player.move_y;
-		if (can_move_to(game, nx, ny))
-		{
+		if (can_move_to(game, nx, game->player.y))
 			game->player.x = nx;
+		if (can_move_to(game, game->player.x, ny))
 			game->player.y = ny;
-		}
 	}
 }
 
@@ -122,11 +119,10 @@ void	move_right(t_game *game)
 		game->player.move_y = sin(game->player.da + M_PI_2) * PLAYER_SPEED;
 		nx = game->player.x + game->player.move_x;
 		ny = game->player.y + game->player.move_y;
-		if (can_move_to(game, nx, ny))
-		{
+		if (can_move_to(game, nx, game->player.y))
 			game->player.x = nx;
+		if (can_move_to(game, game->player.x, ny))
 			game->player.y = ny;
-		}
 	}
 }
 
